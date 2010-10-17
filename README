@@ -14,9 +14,22 @@ Trabalho de AD: Simulador de Filas
    - Linguagem utilizada: python.
    - Método usado: Replicativo.
 
-2) To DO:
+
+2) Testes de Correção
+
+3) Estimativa da fase transiente
+
+4) Tabelas com os resultados e comentários pertinentes (Irá ser renomeada para Resultados)
+
+5) Otimização
+
+6) Conclusões
+
+7) Documentação
+
+TO DO:
    - Construir métodos internos que façam as seguintes operações básicas:
-       > Decidir um seed inicial, e a partir deste, pré-calcular os seeds que serão utilizados em cada rodada da simulação.
+       (Feito)> Decidir um seed inicial, e a partir deste, pré-calcular os seeds que serão utilizados em cada rodada da simulação.
        > Calcular o estimador da esperança.
        > Calcular o estimador da variância usando a fórmula da variância incremental.
        > Dar o tempo entre chegadas de fregueses para cada chegada (Distribuição exponencial).

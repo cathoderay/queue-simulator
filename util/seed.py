@@ -9,7 +9,6 @@ import primes
 def set_seed(n):
 	if n > primes.limit:
 		n = primes.limit
-	print "Prime found!: ", primes.list[n]
 	random.seed(primes.list[n])
 
 def take_random_number():
