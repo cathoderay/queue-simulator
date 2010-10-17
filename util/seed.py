@@ -17,10 +17,7 @@ def take_random_number():
 def generate_random_numbers(seed, n):
 	"Generate [n] random numbers starting with [seed]."
 	set_seed(seed)
-	random_numbers = []
-	for i in range(n):
-		 random_numbers.append(take_random_number())
-	return random_numbers
+	return [take_random_number() for i in range(n)]
 
 
 if __name__ == "__main__":
