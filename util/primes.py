@@ -1,5 +1,3 @@
-import math
-
 #Helper for prime number manipulation
 
 #Sieve algorithm: (Returns a list of prime numbers < n)

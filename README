@@ -29,7 +29,7 @@ Trabalho de AD: Simulador de Filas
 
 TO DO:
    - Construir métodos internos que façam as seguintes operações básicas:
-       (Feito)> Decidir um seed inicial, e a partir deste, pré-calcular os seeds que serão utilizados em cada rodada da simulação.
+       > Decidir um seed inicial, e a partir deste, pré-calcular os seeds que serão utilizados em cada rodada da simulação.
        > Calcular o estimador da esperança.
        > Calcular o estimador da variância usando a fórmula da variância incremental.
        > Dar o tempo entre chegadas de fregueses para cada chegada (Distribuição exponencial).
