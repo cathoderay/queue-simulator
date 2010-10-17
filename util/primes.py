@@ -6,6 +6,7 @@ import math
 #Credits:
     # Code from: <dickinsm@gmail.com>, Nov 30 2006
     # http://groups.google.com/group/comp.lang.python/msg/f1f10ced88c68c2d
+
 def primes(n):
 	if n <= 2:
 		return []
