@@ -14,7 +14,7 @@ def is_prime(n):
 #Method that returns the n-th prime number
 def get_prime(n):
 	if n == 1: 
-		print "prime number found: 2"
+		print "prime number found!: 2"
 		return 2
 	get_prime2(n)
 
@@ -23,7 +23,7 @@ def get_prime2(n):
 	#Get only odd numbers first
 	prime = 3 + ((n - 2)*2)
 	if is_prime(prime):
-		print "prime number found: ", prime
+		print "prime number found!: ", prime
 		return prime
 	get_prime2(n+1)
 
