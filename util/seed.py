@@ -22,4 +22,4 @@ def generate_random_numbers(seed, n):
 
 if __name__ == "__main__":
     "Testing..."
-    print generate_random_numbers(99998, 10)	
+    print generate_random_numbers(50000, 10)	
