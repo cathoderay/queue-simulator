@@ -10,6 +10,6 @@ def variance(list):
 		   
 if __name__ == "__main__":
 	"Testing..."
-	list = [11.0, 5.0, 10.0, 9.0, 15.0, 6.0, 20.0, 8.0, 12.0, 9.0, 5.0, 10.0, 7.0, 13.0, 15.0]
+	list = [11.0, 5.0, 10.0, 9.0, 15.0, 6.0, 18.0, 8.0, 12.0, 9.0, 5.0, 10.0, 7.0, 13.0, 15.0]
 	print "Average: ", average(list)
 	print "Variance: ", variance(list)
