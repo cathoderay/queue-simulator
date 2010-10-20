@@ -1,5 +1,6 @@
 import math
 import seed
+import estimator
 
 #Helper method to calculate Poisson and Exponential distribution properties
 
@@ -11,4 +12,4 @@ def exp_time(rate, s, n):
 	
 if __name__ == "__main__":
 	"Testing..."
-	print exp_time(0.5, 24, 10)
+	print estimator.average(exp_time(2, 650, 1000000))

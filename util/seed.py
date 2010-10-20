@@ -11,9 +11,13 @@ def set_seed(n):
         n = primes.limit
     random.seed(primes.list[n])
 
+
 def take_random_number():
     "Rounds by 2 decimal."
-    return round(random.random(), 2)
+    r = round(random.random(), 2)
+    while(r >= 1.0):
+        r = round(random.random(), 2)
+    return r
 
 def generate_random_numbers(seed, n):
     "Generate [n] random numbers starting with [seed]."
