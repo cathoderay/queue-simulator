@@ -1,6 +1,5 @@
 import random
 import primes
-
 #Helper for seed generation...
 
 def set_seed(n):
@@ -11,7 +10,6 @@ def set_seed(n):
         n = primes.limit
     random.seed(primes.list[n])
 
-
 def take_random_number():
     "Rounds by 2 decimal."
     r = round(random.random(), 2)
@@ -19,11 +17,6 @@ def take_random_number():
         r = round(random.random(), 2)
     return r
 
-def generate_random_numbers(seed, n):
-    "Generate [n] random numbers starting with [seed]."
-    set_seed(seed)
-    return [take_random_number() for i in range(n)]
-
 if __name__ == "__main__":
     "Testing..."
-    print generate_random_numbers(50000, 10)
+    print generate_random_numbers(50000)

@@ -4,12 +4,10 @@ import estimator
 
 #Helper method to calculate Poisson and Exponential distribution properties
 
-def exp_time(rate, s, n):
-	"""Returns [n] random Times of an exponential distribution given the rate [rate], 
-	using [s] for the seed of the random function."""
-	return [round(-(math.log(1.0 - r)/rate), 3) for r in seed.generate_random_numbers(s, n)]
-	
+def exp_time(rate):
+	"""Returns 1 random Time of an exponential distribution given the rate [rate]."""
+	return round(-(math.log(1.0 - seed.take_random_number())/rate), 3)
 	
 if __name__ == "__main__":
 	"Testing..."
-	print estimator.average(exp_time(2, 650, 1000000))
+	print estimator.mean(exp_time(2, 650))
