@@ -15,11 +15,11 @@ unit = 0.1
 clients = []
 
 # testing
-time = 36000
+time = 360000
 entry_rate = 0.9
-seed.set_seed(1)
-
-for i in range(time):
+seed.set_seed(2)
+i = 0
+while i < time or wait_queue:
 	#chegou alguem
 	if next <= 0:
 		clients.append(client.client(len(clients)))
@@ -33,7 +33,7 @@ for i in range(time):
 			clients[-1].set_server(x)
 		else:
 			wait_queue.append(clients[-1])
-	else:
+	elif i < time:
 		next -= unit
 	
 	#servico terminou
@@ -48,9 +48,11 @@ for i in range(time):
 			server_occupied = 0
 	else:
 		x -= unit
-		
-print [clients[i].wait(unit) for i in range(len(clients))]
-print estimator.mean([clients[i].wait(unit) for i in range(len(clients))])
+	
+	i += 1
+
+print "Media dos tempos de espera: ", estimator.mean([clients[i].wait(unit) for i in range(len(clients))])
+print "Media dos tempos no servidor: ", estimator.mean([clients[i].server for i in range(len(clients))])
 
 
 
