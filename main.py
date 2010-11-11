@@ -22,9 +22,9 @@ clients = []
 # testing
 time = 360000
 entry_rate = 0.5
-seed.set_seed(12)
+seed.set_seed(14)
 # 1 = FCFS; 2 = LCFS
-service_policy = 1
+service_policy = 2
 #########
 
 i = 0
@@ -55,10 +55,28 @@ while i < time or wait_queue1 or wait_queue2:
 			wait_queue2[-1].set_arrival(2, i)
 		#fila 1 nao esta vazia
 		if wait_queue1:
-			wait_queue1 = queue.leave(wait_queue1, 1, service_policy, i, x, server_client, server_occupied)
+			#wait_queue1 = queue.leave(wait_queue1, 1, service_policy, i, x, server_client, server_occupied)
+			if service_policy == 1:
+				wait_queue1[0].set_leave(1, i)
+				wait_queue1[0].set_server(1, x)
+				server_client = wait_queue1.popleft()
+			elif service_policy == 2:
+				wait_queue1[-1].set_leave(1, i)
+				wait_queue1[-1].set_server(1, x)
+				server_client = wait_queue1.pop()			
+			server_occupied = 1
 		#fila 1 vazia, testar se existem clientes na fila 2
 		elif wait_queue2:
-			wait_queue2 = queue.leave(wait_queue2, 2, service_policy, i, x, server_client, server_occupied)
+			#wait_queue2 = queue.leave(wait_queue2, 2, service_policy, i, x, server_client, server_occupied)
+			if service_policy == 1:
+				wait_queue2[0].set_leave(2, i)
+				wait_queue2[0].set_server(2, x)
+				server_client = wait_queue2.popleft()
+			elif service_policy == 2:
+				wait_queue2[-1].set_leave(2, i)
+				wait_queue2[-1].set_server(2, x)
+				server_client = wait_queue2.pop()
+			server_occupied = 2
 		else:
 			server_client = None
 			server_occupied = 0
@@ -66,7 +84,8 @@ while i < time or wait_queue1 or wait_queue2:
 		x -= unit
 	
 	i += 1
-	
+
+
 print "Media dos tempos de espera na fila 1: ", estimator.mean([clients[i].wait(1, unit) for i in range(len(clients))])
 print "Media dos tempos no servidor de clientes da fila 1: ", estimator.mean([clients[i].server[1] for i in range(len(clients))])
 print "Media dos tempos de espera na fila 2: ", estimator.mean([clients[i].wait(2, unit) for i in range(len(clients))])
