@@ -16,5 +16,3 @@ def leave(wait_queue, index, service_policy, time, x, server_client, server_occu
 	server_occupied = index
 	
 	return wait_queue
-	
-	

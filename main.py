@@ -1,95 +1,116 @@
+# -*- coding:utf-8 -*-
+
 # Main code that will generate a single sample
-import sys
-sys.path.append('util')
-sys.path.append('obj')
+from copy import copy
+
 from collections import deque
-import dist
-import seed
-import estimator
-import queue
-import client
-
-wait_queue1 = deque([])
-wait_queue2 = deque([])
-#0 = ocioso; 1 = cliente da fila 1; 2 = cliente da fila 2
-server_occupied = 0
-server_client = None
-next = 0
-x = 0 #time being served ( E[x] = 1/mi = 1 )
-unit = 0.1
-clients = []
-
-# testing
-time = 360000
-entry_rate = 0.5
-seed.set_seed(14)
-# 1 = FCFS; 2 = LCFS
-service_policy = 2
-#########
-
-i = 0
-while i < time or wait_queue1 or wait_queue2:
-	#chegou alguem
-	if next <= 0:
-		clients.append(client.client(len(clients)))
-		clients[-1].set_arrival(1, i)
-		next = dist.exp_time(entry_rate)
-		#se filas vazias e servidor ocioso
-		if not(wait_queue1 or wait_queue2 or server_occupied):
-			server_client = clients[-1]
-			server_occupied = 1
-			x = dist.exp_time(1)
-			clients[-1].set_leave(1, i)
-			clients[-1].set_server(1, x)
-		else:
-			wait_queue1.append(clients[-1])
-	elif i < time:
-		next -= unit
-	
-	#servico terminou
-	if x <= 0:
-		x = dist.exp_time(1)
-		#se quem estava no servidor era da fila 1, manda-lo para a fila 2
-		if server_occupied == 1:
-			wait_queue2.append(server_client)
-			wait_queue2[-1].set_arrival(2, i)
-		#fila 1 nao esta vazia
-		if wait_queue1:
-			#wait_queue1 = queue.leave(wait_queue1, 1, service_policy, i, x, server_client, server_occupied)
-			if service_policy == 1:
-				wait_queue1[0].set_leave(1, i)
-				wait_queue1[0].set_server(1, x)
-				server_client = wait_queue1.popleft()
-			elif service_policy == 2:
-				wait_queue1[-1].set_leave(1, i)
-				wait_queue1[-1].set_server(1, x)
-				server_client = wait_queue1.pop()			
-			server_occupied = 1
-		#fila 1 vazia, testar se existem clientes na fila 2
-		elif wait_queue2:
-			#wait_queue2 = queue.leave(wait_queue2, 2, service_policy, i, x, server_client, server_occupied)
-			if service_policy == 1:
-				wait_queue2[0].set_leave(2, i)
-				wait_queue2[0].set_server(2, x)
-				server_client = wait_queue2.popleft()
-			elif service_policy == 2:
-				wait_queue2[-1].set_leave(2, i)
-				wait_queue2[-1].set_server(2, x)
-				server_client = wait_queue2.pop()
-			server_occupied = 2
-		else:
-			server_client = None
-			server_occupied = 0
-	else:
-		x -= unit
-	
-	i += 1
+from util import dist, seed, estimator, queue
+from obj.client import *
+from obj.event import *
 
 
-print "Media dos tempos de espera na fila 1: ", estimator.mean([clients[i].wait(1, unit) for i in range(len(clients))])
-print "Media dos tempos no servidor de clientes da fila 1: ", estimator.mean([clients[i].server[1] for i in range(len(clients))])
-print "Media dos tempos de espera na fila 2: ", estimator.mean([clients[i].wait(2, unit) for i in range(len(clients))])
-print "Media dos tempos no servidor de clientes da fila 2: ", estimator.mean([clients[i].server[2] for i in range(len(clients))])
+SERVER_RATE = 1
+
+class Simulator:
+    def print_events(self):
+        for event in self.events:
+            print event
+
+    def __init__(self, sample_seed, entry_rate, service_policy, T=1000000):
+        self.queue1 = deque([])
+        self.queue2 = deque([])
+        self.server_current_client = None
+        self.clients = []
+        self.T = T
+        self.t = 0
+        self.sample_seed = seed.set_seed(sample_seed)
+        self.entry_rate = entry_rate
+        self.events = [Event(INCOMING, dist.exp_time(self.entry_rate))]
+        self.service_policy = service_policy
+
+    def reached_stop_condition(self):
+        return self.t > self.T
+
+    def generate_event(self, event_type, time):
+        self.events.append(Event(event_type, time))
+        self.events.sort(key=lambda event: event.time, reverse=True) #fodão! =)
+
+    def process_event(self):
+        current_event = copy(self.events[-1])
+        self.remove_event()
+        self.t = current_event.time
+
+        if current_event.event_type == INCOMING:
+            new_client = Client(len(self.clients))
+            new_client.set_queue(1)
+            new_client.set_arrival(self.t)
+            self.queue1.append(new_client)
+            self.clients.append(new_client)
+            self.generate_event(INCOMING, self.t + dist.exp_time(self.entry_rate))
+            if not self.server_current_client:
+                self.generate_event(SERVER_1_IN, self.t)
+
+        elif current_event.event_type == SERVER_1_IN:
+            server_time = dist.exp_time(SERVER_RATE)
+            self.server_current_client = self.queue1.popleft()
+            self.server_current_client.set_leave(self.t)
+            self.server_current_client.set_server(server_time)
+            self.generate_event(SERVER_OUT, self.t + server_time)
+
+        elif current_event.event_type == SERVER_2_IN:
+            server_time = dist.exp_time(SERVER_RATE)
+            self.server_current_client = self.queue2.popleft()
+            self.server_current_client.set_leave(self.t)
+            self.server_current_client.set_server(server_time)
+            self.generate_event(SERVER_OUT, self.t + server_time)
+
+        elif current_event.event_type == QUEUE_2_IN:
+            client = self.queue2[-1]
+            client.set_queue(2)
+            client.set_arrival(self.t)
+
+        elif current_event.event_type == SERVER_OUT:
+            if self.queue1:
+                self.generate_event(SERVER_1_IN, self.t)
+            elif self.queue2:
+                self.generate_event(SERVER_2_IN, self.t)
+            if self.server_current_client.queue == 1:
+                self.queue2.append(self.server_current_client)
+                self.generate_event(QUEUE_2_IN, self.t)
+            self.server_current_client = None
+
+    def remove_event(self):
+        self.events.pop()
+
+    def discard_remaining_clients(self):
+        served_clients = []
+        for client in self.clients:
+            arrivals = client.arrival
+            leaves = client.leave
+            if  ((1 in arrivals and 2 in arrivals) and \
+                (1 in leaves and 2 in leaves)):
+                served_clients.append(client)
+        self.clients = served_clients
+
+    def start(self):
+        while not self.reached_stop_condition():
+            self.process_event()
+        self.discard_remaining_clients()
+
+    def report(self):
+        #print [self.clients[-i].arrival for i in range(1, 10)]
+        #print [self.clients[-i].leave for i in range(1, 10)]
+        print "Media dos tempos de espera na fila 1: ", estimator.mean([self.clients[i].wait(1) for i in range(len(self.clients))])
+        print "Media dos tempos no servidor de clientes da fila 1: ", estimator.mean([self.clients[i].server[1] for i in range(len(self.clients))])
+        print "Media dos tempos de espera na fila 2: ", estimator.mean([self.clients[i].wait(2) for i in range(len(self.clients))])
+        print "Media dos tempos no servidor de clientes da fila 2: ", estimator.mean([self.clients[i].server[2] for i in range(len(self.clients))])
 
 
-
+if __name__ == "__main__":
+    simulator = Simulator(sample_seed=1230, entry_rate=0.1, service_policy=1)
+    import time
+    before = time.time()
+    simulator.start()
+    after = time.time()
+    print after - before
+    simulator.report()
