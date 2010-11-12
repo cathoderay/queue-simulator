@@ -28,11 +28,10 @@ Trabalho de AD: Simulador de Filas
 7) Documentação
 
 TO DO:
-   - Construir métodos internos que façam as seguintes operações básicas:
-       > Decidir um seed inicial, e a partir deste, pré-calcular os seeds que serão utilizados em cada rodada da simulação.
-       > Calcular o estimador da esperança.
-       > Calcular o estimador da variância usando a fórmula da variância incremental.
-       > Dar o tempo entre chegadas de fregueses para cada chegada (Distribuição exponencial).
-	      * Tempo = x em que F(x) = random() --> F(x) é a c.d.f de uma distribuição exponencial com taxa dada = λ.
-		  * random() = 1 - e**(-λx) --> -λx = ln(1 - random()) --> x = -(ln(1 - random())/λ)
-       > Validação do intervalo de confiança (Não pode ultrapassar 10% da média para cada valor de entrada).
+	- Adicionar logica para escolha da politica de atendimento das filas (FCFS ou LCFS).
+	- Criar loop no módulo principal para executar n rodadas de simulação.
+	- Definir o começo da fase transiente (Adicionar atributo cor no objeto Client para definir qual fase o cliente pertence).
+	- Adicionar métodos para calcular os dados de forma analítica (para comparação)
+	- Plotar os graficos e/ou tabelas com os resultados obtidos.
+	- Calcular o estimador da variância amostral usando a fórmula da variância incremental.
+	- Validação do intervalo de confiança (Não pode ultrapassar 10% da média para cada valor de entrada).
