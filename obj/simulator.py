@@ -1,3 +1,11 @@
+# -*- coding:utf-8 -*-
+#Simulator object
+from copy import copy
+from collections import deque
+from util import dist, seed, estimator
+from client import *
+from event import *
+
 SERVER_RATE = 1
 
 class Simulator:
@@ -5,7 +13,7 @@ class Simulator:
         for event in self.events:
             print event
 
-    def __init__(self, sample_seed, entry_rate, service_policy, T=1000000):
+    def __init__(self, sample_seed, entry_rate, service_policy, T=28800):
         self.queue1 = deque([])
         self.queue2 = deque([])
         self.server_current_client = None

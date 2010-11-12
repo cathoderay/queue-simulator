@@ -1,11 +1,5 @@
 # -*- coding:utf-8 -*-
 # Main code
-from copy import copy
-
-from collections import deque
-from util import dist, seed, estimator, queue
-from obj.client import *
-from obj.event import *
 from obj.simulator import *
 
 if __name__ == "__main__":
