@@ -30,7 +30,6 @@ Trabalho de AD: Simulador de Filas
 7) Documentação
 
 TO DO:
-	- Adicionar logica para escolha da politica de atendimento das filas (FCFS ou LCFS).
 	- Criar loop no módulo principal para executar n rodadas de simulação.
 	- Definir o começo da fase transiente (Adicionar atributo cor no objeto Client para definir qual fase o cliente pertence).
 	- Adicionar métodos para calcular os dados de forma analítica (para comparação)

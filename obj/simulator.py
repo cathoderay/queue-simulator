@@ -1,11 +1,14 @@
 # -*- coding:utf-8 -*-
 #Simulator object
-from copy import copy
 from collections import deque
+import new
 from util import dist, seed, estimator
 from client import *
 from event import *
 from node import *
+
+FCFS = 1
+LCFS = 2
 
 class Simulator:
     def print_events(self):
@@ -57,14 +60,14 @@ class Simulator:
 
         elif current_event.event_type == SERVER_1_IN:
             server_time = dist.exp_time(self.server_rate)
-            self.server_current_client = self.queue1.popleft()
+            self.server_current_client = self.pop_queue1()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
             self.generate_event(SERVER_OUT, self.t + server_time)
 
         elif current_event.event_type == SERVER_2_IN:
             server_time = dist.exp_time(self.server_rate)
-            self.server_current_client = self.queue2.popleft()
+            self.server_current_client = self.pop_queue2()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
             self.generate_event(SERVER_OUT, self.t + server_time)
@@ -98,13 +101,42 @@ class Simulator:
         self.clients = served_clients
 
     def start(self):
+        if self.service_policy == FCFS:
+            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_fcfs, self, Simulator)
+            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_fcfs, self, Simulator)
+        elif self.service_policy == LCFS:
+            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_lcfs, self, Simulator)
+            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_lcfs, self, Simulator)          
+
         while self.t < self.T:
             self.process_event()
             self.remove_event()
         self.discard_remaining_clients()
 
     def report(self):
+        print "Politica de atendimento: ", self.service_policy
+        print "Numero de clientes atendidos: ", len(self.clients)
         print "Media dos tempos de espera na fila 1: ", estimator.mean([self.clients[i].wait(1) for i in range(len(self.clients))])
         print "Media dos tempos no servidor de clientes da fila 1: ", estimator.mean([self.clients[i].server[1] for i in range(len(self.clients))])
         print "Media dos tempos de espera na fila 2: ", estimator.mean([self.clients[i].wait(2) for i in range(len(self.clients))])
         print "Media dos tempos no servidor de clientes da fila 2: ", estimator.mean([self.clients[i].server[2] for i in range(len(self.clients))])
+        print "Variancia dos tempos de espera na fila 1: ", estimator.variance([self.clients[i].wait(1) for i in range(len(self.clients))])
+        print "Variancia dos tempos no servidor de clientes da fila 1: ", estimator.variance([self.clients[i].server[1] for i in range(len(self.clients))])
+        print "Variancia dos tempos de espera na fila 2: ", estimator.variance([self.clients[i].wait(2) for i in range(len(self.clients))])
+        print "Variancia dos tempos no servidor de clientes da fila 2: ", estimator.variance([self.clients[i].server[2] for i in range(len(self.clients))])        
+    
+    @staticmethod
+    def pop_queue1_fcfs(instance):
+        return instance.queue1.popleft()
+        
+    @staticmethod
+    def pop_queue2_fcfs(instance):
+        return instance.queue2.popleft()
+        
+    @staticmethod
+    def pop_queue1_lcfs(instance):
+        return instance.queue1.pop()
+        
+    @staticmethod
+    def pop_queue2_lcfs(instance):
+        return instance.queue2.pop()
