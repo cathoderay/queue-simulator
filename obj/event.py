@@ -1,9 +1,8 @@
-INCOMING = 'incoming'
-SERVER_OUT = 'server_out'
-SERVER_1_IN = 'server_1_in'
-SERVER_2_IN = 'server_2_in'
-QUEUE_2_IN = 'queue_2_in'
-SYSTEM_OUT = 'system_out'
+INCOMING = 1
+SERVER_OUT = 2
+SERVER_1_IN = 3
+SERVER_2_IN = 4
+QUEUE_2_IN = 5
 
 class Event:
   def __init__(self, event_type, time):

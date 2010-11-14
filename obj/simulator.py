@@ -7,8 +7,6 @@ from client import *
 from event import *
 from node import *
 
-SERVER_RATE = 1
-
 class Simulator:
     def print_events(self):
         node = self.event_list_head
@@ -16,20 +14,18 @@ class Simulator:
             print node
             node = node.next
             
-    def __init__(self, sample_seed, entry_rate, service_policy, T=28800):
+    def __init__(self, sample_seed, entry_rate, service_policy, T=28800, server_rate=1):
         self.queue1 = deque([])
         self.queue2 = deque([])
         self.server_current_client = None
         self.clients = []
         self.T = T
         self.t = 0
+        self.server_rate = 1
         self.sample_seed = seed.set_seed(sample_seed)
         self.entry_rate = entry_rate
         self.event_list_head = Node(Event(INCOMING, dist.exp_time(self.entry_rate)))
         self.service_policy = service_policy
-
-    def reached_stop_condition(self):
-        return self.t > self.T
 
     def generate_event(self, event_type, time):
         node = self.event_list_head
@@ -60,14 +56,14 @@ class Simulator:
                 self.generate_event(SERVER_1_IN, self.t)
 
         elif current_event.event_type == SERVER_1_IN:
-            server_time = dist.exp_time(SERVER_RATE)
+            server_time = dist.exp_time(self.server_rate)
             self.server_current_client = self.queue1.popleft()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
             self.generate_event(SERVER_OUT, self.t + server_time)
 
         elif current_event.event_type == SERVER_2_IN:
-            server_time = dist.exp_time(SERVER_RATE)
+            server_time = dist.exp_time(self.server_rate)
             self.server_current_client = self.queue2.popleft()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
@@ -102,7 +98,7 @@ class Simulator:
         self.clients = served_clients
 
     def start(self):
-        while not self.reached_stop_condition():
+        while self.t < self.T:
             self.process_event()
             self.remove_event()
         self.discard_remaining_clients()
