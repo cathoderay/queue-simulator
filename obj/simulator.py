@@ -5,14 +5,17 @@ from collections import deque
 from util import dist, seed, estimator
 from client import *
 from event import *
+from node import *
 
 SERVER_RATE = 1
 
 class Simulator:
     def print_events(self):
-        for event in self.events:
-            print event
-
+        node = self.event_list_head
+        while node:
+            print node
+            node = node.next
+            
     def __init__(self, sample_seed, entry_rate, service_policy, T=28800):
         self.queue1 = deque([])
         self.queue2 = deque([])
@@ -22,19 +25,28 @@ class Simulator:
         self.t = 0
         self.sample_seed = seed.set_seed(sample_seed)
         self.entry_rate = entry_rate
-        self.events = [Event(INCOMING, dist.exp_time(self.entry_rate))]
+        self.event_list_head = Node(Event(INCOMING, dist.exp_time(self.entry_rate)))
         self.service_policy = service_policy
 
     def reached_stop_condition(self):
         return self.t > self.T
 
     def generate_event(self, event_type, time):
-        self.events.append(Event(event_type, time))
-        self.events.sort(key=lambda event: event.time, reverse=True) #fod„o! =)
+        node = self.event_list_head
+        new_node = Node(Event(event_type, time))
+        while node:
+            if not(node.next):
+                node.next = new_node
+                break
+            elif (node.value.time <= new_node.value.time and node.next.value.time >= new_node.value.time):
+                next_node = node.next
+                node.next = new_node
+                new_node.next = next_node
+                break
+            node = node.next
 
     def process_event(self):
-        current_event = copy(self.events[-1])
-        self.remove_event()
+        current_event = self.event_list_head.value
         self.t = current_event.time
 
         if current_event.event_type == INCOMING:
@@ -77,7 +89,7 @@ class Simulator:
             self.server_current_client = None
 
     def remove_event(self):
-        self.events.pop()
+        self.event_list_head = self.event_list_head.next
 
     def discard_remaining_clients(self):
         served_clients = []
@@ -92,6 +104,7 @@ class Simulator:
     def start(self):
         while not self.reached_stop_condition():
             self.process_event()
+            self.remove_event()
         self.discard_remaining_clients()
 
     def report(self):
