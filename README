@@ -22,6 +22,7 @@ Trabalho de AD: Simulador de Filas
 4) Tabelas com os resultados e comentários pertinentes (Irá ser renomeada para Resultados)
 
 5) Otimização
+   - Objeto deque para as filas de espera
    - Uso de listas encadeadas para a lista de eventos
 
 6) Conclusões
