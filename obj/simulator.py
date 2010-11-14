@@ -28,7 +28,14 @@ class Simulator:
         self.sample_seed = seed.set_seed(sample_seed)
         self.entry_rate = entry_rate
         self.event_list_head = Node(Event(INCOMING, dist.exp_time(self.entry_rate)))
-        self.service_policy = service_policy
+        if service_policy == FCFS:
+            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_fcfs, self, Simulator)
+            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_fcfs, self, Simulator)
+            self.service_policy = 'First Come First Served (FCFS)'
+        elif service_policy == LCFS:
+            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_lcfs, self, Simulator)
+            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_lcfs, self, Simulator)
+            self.service_policy = 'Last Come First Served (LCFS)'            
 
     def generate_event(self, event_type, time):
         node = self.event_list_head
@@ -100,14 +107,7 @@ class Simulator:
                 served_clients.append(client)
         self.clients = served_clients
 
-    def start(self):
-        if self.service_policy == FCFS:
-            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_fcfs, self, Simulator)
-            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_fcfs, self, Simulator)
-        elif self.service_policy == LCFS:
-            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_lcfs, self, Simulator)
-            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_lcfs, self, Simulator)          
-
+    def start(self):          
         while self.t < self.T:
             self.process_event()
             self.remove_event()
