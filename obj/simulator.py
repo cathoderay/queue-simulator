@@ -23,11 +23,6 @@ class Simulator:
         self.server_rate = server_rate
         self.entry_rate = entry_rate
         self.sample_seed = sample_seed
-        self.number_clients_attended = []
-        self.waiting_queue1_times = []
-        self.server_queue1_times = []
-        self.waiting_queue2_times = []
-        self.server_queue2_times = []
         if service_policy == FCFS:
             Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_fcfs, self, Simulator)
             Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_fcfs, self, Simulator)
@@ -37,8 +32,19 @@ class Simulator:
             Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_lcfs, self, Simulator)
             self.service_policy = 'Last Come First Served (LCFS)'
         self.init_sample()
+        self.results = {
+            'm_s_W1': 0,
+            'm_s_s_W1': 0,
+            'm_s_N1': 0,
+            'm_s_Nq1': 0,
+            'm_s_X1': 0,
+            'm_s_W2': 0,
+            'm_s_s_W2': 0,
+            'm_s_N2': 0,
+            'm_s_Nq2': 0,
+            'm_s_X2': 0
+        }
         
-
     def init_sample(self):
         seed.set_seed(self.sample_seed)    
         self.queue1 = deque([])
@@ -125,49 +131,35 @@ class Simulator:
                 self.remove_event()
             self.discard_remaining_clients()
             data = [[], [], [], []]
-            for i in xrange(len(self.clients)):
-                data[0].append(self.clients[i].wait(1))
-                data[1].append(self.clients[i].server[1])
-                data[2].append(self.clients[i].wait(2))
-                data[3].append(self.clients[i].server[2])
-            self.number_clients_attended.append(len(self.clients))
-            self.waiting_queue1_times.append(estimator.mean(data[0]))
-            self.server_queue1_times.append(estimator.mean(data[1]))
-            self.waiting_queue2_times.append(estimator.mean(data[2]))
-            self.server_queue2_times.append(estimator.mean(data[3]))
+            for j in xrange(len(self.clients)):
+                data[0].append(self.clients[j].wait(1))
+                data[1].append(self.clients[j].server[1])
+                data[2].append(self.clients[j].wait(2))
+                data[3].append(self.clients[j].server[2])
+            self.results['m_s_W1'] += estimator.sample_mean(data[0])
+            self.results['m_s_s_W1'] += estimator.sample_mean(data[0])**2
+            self.results['m_s_X1'] += estimator.sample_mean(data[1])
+            self.results['m_s_W2'] += estimator.sample_mean(data[2])
+            self.results['m_s_s_W2'] += estimator.sample_mean(data[2])**2
+            self.results['m_s_X2'] += estimator.sample_mean(data[3])
+            print "Tempos de W1 da rodada ", (i+1), ": ", self.results['m_s_W1'], self.results['m_s_s_W1']
             self.sample_seed += 1
             self.init_sample()
 
-    def get_average_number_clients_attended(self):
-        return estimator.mean(self.number_clients_attended)
-    
-    def get_average_waiting_queue1_time(self):
-        return round(estimator.mean(self.waiting_queue1_times),5)
-    
-    def get_average_server_queue1_time(self):
-        return round(estimator.mean(self.server_queue1_times),5)
-    
-    def get_average_waiting_queue2_time(self):
-        return round(estimator.mean(self.waiting_queue2_times),5)
-    
-    def get_average_server_queue2_time(self):
-        return round(estimator.mean(self.server_queue2_times),5)
-    
-    def get_variance_waiting_queue1_time(self):
-        return round(estimator.variance(self.waiting_queue1_times),5)
-    
-    def get_variance_waiting_queue2_time(self):
-        return round(estimator.variance(self.waiting_queue2_times),5)
-
     def report(self):
         print "Politica de atendimento: ", self.service_policy
-        print "Numero de clientes atendidos: ", self.get_average_number_clients_attended()
-        print "Media dos tempos de espera na fila 1: ", self.get_average_waiting_queue1_time()
-        print "Media dos tempos no servidor de clientes da fila 1: ", self.get_average_server_queue1_time()
-        print "Media dos tempos de espera na fila 2: ", self.get_average_waiting_queue2_time()
-        print "Media dos tempos no servidor de clientes da fila 2: ", self.get_average_server_queue2_time()
-        print "Variancia dos tempos de espera na fila 1: ", self.get_variance_waiting_queue1_time()
-        print "Variancia dos tempos de espera na fila 2: ", self.get_variance_waiting_queue2_time()
+        print "Rô calculado: ", (2*self.entry_rate)/self.server_rate
+        print "E[N1]: "
+        print "E[N2]: " 
+        print "E[T1]: ", (estimator.mean(self.results['m_s_W1'], self.samples) + estimator.mean(self.results['m_s_X1'], self.samples))
+        print "E[T2]: ", (estimator.mean(self.results['m_s_W2'], self.samples) + estimator.mean(self.results['m_s_X2'], self.samples))
+        print "E[Nq1]: "
+        print "E[Nq2]: "
+        print "E[W1]: ", estimator.mean(self.results['m_s_W1'], self.samples)
+        print "E[W2]: ", estimator.mean(self.results['m_s_W2'], self.samples)
+        print "V[W1]: ", estimator.variance(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
+        print "V[W2]: ", estimator.variance(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples)        
+                 
     
     @staticmethod
     def pop_queue1_fcfs(instance):
