@@ -3,7 +3,7 @@
 from obj.simulator import *
 
 if __name__ == "__main__":
-    simulator = Simulator(sample_seed=1, entry_rate=0.1, samples=100, service_policy=LCFS, T=28800)
+    simulator = Simulator(sample_seed=1, entry_rate=0.45, samples=10, service_policy=LCFS, T=28800)
     import time
     before = time.time()
     simulator.start()

@@ -2,6 +2,7 @@
 #Simulator object
 from collections import deque
 import new
+import math
 from util import dist, seed, estimator
 from client import *
 from event import *
@@ -75,12 +76,19 @@ class Simulator:
         if current_event.event_type == INCOMING:
             new_client = Client(len(self.clients))
             new_client.set_queue(1)
-            new_client.set_arrival(self.t)
+            new_client.set_arrival(self.t)    
+            new_client.set_Nq(len(self.queue1))
             self.queue1.append(new_client)
             self.clients.append(new_client)
             self.generate_event(INCOMING, self.t + dist.exp_time(self.entry_rate))
             if not self.server_current_client:
                 self.generate_event(SERVER_1_IN, self.t)
+                new_client.set_N(len(self.queue1)-1)
+            elif self.server_current_client.queue == 1:
+                new_client.set_N(len(self.queue1))
+            else:
+                new_client.set_N(len(self.queue1)-1)
+                
 
         elif current_event.event_type == SERVER_1_IN:
             server_time = dist.exp_time(self.server_rate)
@@ -100,6 +108,11 @@ class Simulator:
             client = self.queue2[-1]
             client.set_queue(2)
             client.set_arrival(self.t)
+            client.set_Nq((len(self.queue2)-1))
+            if (self.server_current_client and (self.server_current_client.queue == 2)):
+                client.set_N(len(self.queue2))
+            else:
+                client.set_N(len(self.queue2)-1)
 
         elif current_event.event_type == SERVER_OUT:
             if self.queue1:
@@ -108,7 +121,7 @@ class Simulator:
                 self.generate_event(SERVER_2_IN, self.t)
             if self.server_current_client.queue == 1:
                 self.queue2.append(self.server_current_client)
-                self.generate_event(QUEUE_2_IN, self.t)
+                self.generate_event(QUEUE_2_IN, self.t)                
             self.server_current_client = None
 
     def remove_event(self):
@@ -130,31 +143,38 @@ class Simulator:
                 self.process_event()
                 self.remove_event()
             self.discard_remaining_clients()
-            data = [[], [], [], []]
+            data = [[], [], [], [], [], [], [], []]
             for j in xrange(len(self.clients)):
                 data[0].append(self.clients[j].wait(1))
-                data[1].append(self.clients[j].server[1])
-                data[2].append(self.clients[j].wait(2))
-                data[3].append(self.clients[j].server[2])
+                data[1].append(self.clients[j].N[1])
+                data[2].append(self.clients[j].Nq[1])
+                data[3].append(self.clients[j].server[1])
+                data[4].append(self.clients[j].wait(2))
+                data[5].append(self.clients[j].N[2])
+                data[6].append(self.clients[j].Nq[2])
+                data[7].append(self.clients[j].server[2])                
             self.results['m_s_W1'] += estimator.sample_mean(data[0])
             self.results['m_s_s_W1'] += estimator.sample_mean(data[0])**2
-            self.results['m_s_X1'] += estimator.sample_mean(data[1])
-            self.results['m_s_W2'] += estimator.sample_mean(data[2])
-            self.results['m_s_s_W2'] += estimator.sample_mean(data[2])**2
-            self.results['m_s_X2'] += estimator.sample_mean(data[3])
-            print "Tempos de W1 da rodada ", (i+1), ": ", self.results['m_s_W1'], self.results['m_s_s_W1']
+            self.results['m_s_N1'] += estimator.sample_mean(data[1])
+            self.results['m_s_Nq1'] += estimator.sample_mean(data[2])
+            self.results['m_s_X1'] += estimator.sample_mean(data[3])
+            self.results['m_s_W2'] += estimator.sample_mean(data[4])
+            self.results['m_s_s_W2'] += estimator.sample_mean(data[4])**2
+            self.results['m_s_N2'] += estimator.sample_mean(data[5])
+            self.results['m_s_Nq2'] += estimator.sample_mean(data[6])            
+            self.results['m_s_X2'] += estimator.sample_mean(data[7])
             self.sample_seed += 1
             self.init_sample()
 
     def report(self):
         print "Politica de atendimento: ", self.service_policy
         print "Rô calculado: ", (2*self.entry_rate)/self.server_rate
-        print "E[N1]: "
-        print "E[N2]: " 
+        print "E[N1]: ", estimator.mean(self.results['m_s_N1'], self.samples)
+        print "E[N2]: ", estimator.mean(self.results['m_s_N2'], self.samples)
         print "E[T1]: ", (estimator.mean(self.results['m_s_W1'], self.samples) + estimator.mean(self.results['m_s_X1'], self.samples))
         print "E[T2]: ", (estimator.mean(self.results['m_s_W2'], self.samples) + estimator.mean(self.results['m_s_X2'], self.samples))
-        print "E[Nq1]: "
-        print "E[Nq2]: "
+        print "E[Nq1]: ", estimator.mean(self.results['m_s_Nq1'], self.samples)
+        print "E[Nq2]: ", estimator.mean(self.results['m_s_Nq2'], self.samples)
         print "E[W1]: ", estimator.mean(self.results['m_s_W1'], self.samples)
         print "E[W2]: ", estimator.mean(self.results['m_s_W2'], self.samples)
         print "V[W1]: ", estimator.variance(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
