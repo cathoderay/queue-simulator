@@ -30,9 +30,12 @@ Trabalho de AD: Simulador de Filas
 7) Documentação
 
 TO DO:
-	- Criar loop no módulo principal para executar n rodadas de simulação.
+    - Calcular o estimador do numero de pessoas na fila em relacao ao tempo, ao inves de adicionar um atributo no objeto Client
+	- Calcular o estimador da variância amostral usando a fórmula da variância incremental.
+       * feito, testar sua Correção
 	- Definir o começo da fase transiente (Adicionar atributo cor no objeto Client para definir qual fase o cliente pertence).
+       * plotar um grafico de (usuarios X tempo de espera) para definir a fase de equilibrio
+       * comparar com o intervalo de confiança
+	- Validação usando intervalo de confiança (Não pode ultrapassar 10% da média para cada valor de entrada).       
 	- Adicionar métodos para calcular os dados de forma analítica (para comparação)
 	- Plotar os graficos e/ou tabelas com os resultados obtidos.
-	- Calcular o estimador da variância amostral usando a fórmula da variância incremental.
-	- Validação do intervalo de confiança (Não pode ultrapassar 10% da média para cada valor de entrada).
