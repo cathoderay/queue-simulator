@@ -7,12 +7,12 @@ def sample_mean(list):
     
 def mean(mean_sum, samples):
     """Returns the estimated mean using the sum of the calculated sample means and the number -N- of samples """
-    return mean_sum/samples
+    return mean_sum/float(samples)
 
 def variance(mean_sum, mean_square_sum, samples):
     """Returns the estimated variance using the incremental form.
        sums -mean_sum- and -mean_square_sum- of each sample mean and the number -samples- of samples """
-    return mean_square_sum/(samples-1) - (mean_sum**2)/(samples*(samples-1))
+    return mean_square_sum/float(samples-1) - (mean_sum**2)/float(samples*(samples-1))
 
 if __name__ == "__main__":
     "Testing..."

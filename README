@@ -30,8 +30,7 @@ Trabalho de AD: Simulador de Filas
 7) Documentação
 
 TO DO:
-    - Calcular o estimador do numero de pessoas na fila em relacao ao tempo, ao inves de adicionar um atributo no objeto Client
-	- Calcular o estimador da variância amostral usando a fórmula da variância incremental.
+    - Calcular o estimador da variância amostral usando a fórmula da variância incremental.
        * feito, testar sua Correção
 	- Definir o começo da fase transiente (Adicionar atributo cor no objeto Client para definir qual fase o cliente pertence).
        * plotar um grafico de (usuarios X tempo de espera) para definir a fase de equilibrio

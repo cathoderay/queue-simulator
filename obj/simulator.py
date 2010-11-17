@@ -1,9 +1,7 @@
 # -*- coding:utf-8 -*-
 #Simulator object
 from collections import deque
-import new
-import math
-from util import dist, seed, estimator
+from util import dist, seed, estimator, plot
 from client import *
 from event import *
 from node import *
@@ -25,12 +23,12 @@ class Simulator:
         self.entry_rate = entry_rate
         self.sample_seed = sample_seed
         if service_policy == FCFS:
-            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_fcfs, self, Simulator)
-            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_fcfs, self, Simulator)
+            Simulator.__dict__['pop_queue1'] = Simulator.pop_queue1_fcfs
+            Simulator.__dict__['pop_queue2'] = Simulator.pop_queue2_fcfs
             self.service_policy = 'First Come First Served (FCFS)'
         elif service_policy == LCFS:
-            Simulator.__dict__['pop_queue1'] = new.instancemethod(Simulator.pop_queue1_lcfs, self, Simulator)
-            Simulator.__dict__['pop_queue2'] = new.instancemethod(Simulator.pop_queue2_lcfs, self, Simulator)
+            Simulator.__dict__['pop_queue1'] = Simulator.pop_queue1_lcfs
+            Simulator.__dict__['pop_queue2'] = Simulator.pop_queue2_lcfs
             self.service_policy = 'Last Come First Served (LCFS)'
         self.init_sample()
         self.results = {
@@ -52,8 +50,18 @@ class Simulator:
         self.queue2 = deque([])
         self.server_current_client = None
         self.clients = []
-        self.t = 0
+        self.N_samples = {
+            'Nq_1': 0,
+            'N_1': 0,
+            'Nq_2': 0,
+            'N_2': 0,
+        }
+        self.t = 0.0
+        self.previous_event_time = 0.0
         self.event_list_head = Node(Event(INCOMING, dist.exp_time(self.entry_rate)))
+        self.occupied_period = 0.0
+        self.idle_period = 0.0
+        self.utilization = []
 
     def generate_event(self, event_type, time):
         node = self.event_list_head
@@ -74,21 +82,15 @@ class Simulator:
         self.t = current_event.time
 
         if current_event.event_type == INCOMING:
+            self.update_n()
             new_client = Client(len(self.clients))
             new_client.set_queue(1)
-            new_client.set_arrival(self.t)    
-            new_client.set_Nq(len(self.queue1))
+            new_client.set_arrival(self.t)
             self.queue1.append(new_client)
             self.clients.append(new_client)
             self.generate_event(INCOMING, self.t + dist.exp_time(self.entry_rate))
             if not self.server_current_client:
                 self.generate_event(SERVER_1_IN, self.t)
-                new_client.set_N(len(self.queue1)-1)
-            elif self.server_current_client.queue == 1:
-                new_client.set_N(len(self.queue1))
-            else:
-                new_client.set_N(len(self.queue1)-1)
-                
 
         elif current_event.event_type == SERVER_1_IN:
             server_time = dist.exp_time(self.server_rate)
@@ -108,24 +110,42 @@ class Simulator:
             client = self.queue2[-1]
             client.set_queue(2)
             client.set_arrival(self.t)
-            client.set_Nq((len(self.queue2)-1))
-            if (self.server_current_client and (self.server_current_client.queue == 2)):
-                client.set_N(len(self.queue2))
-            else:
-                client.set_N(len(self.queue2)-1)
 
         elif current_event.event_type == SERVER_OUT:
+            self.update_n()
             if self.queue1:
                 self.generate_event(SERVER_1_IN, self.t)
             elif self.queue2:
                 self.generate_event(SERVER_2_IN, self.t)
             if self.server_current_client.queue == 1:
                 self.queue2.append(self.server_current_client)
-                self.generate_event(QUEUE_2_IN, self.t)                
+                self.generate_event(QUEUE_2_IN, self.t)
             self.server_current_client = None
 
     def remove_event(self):
         self.event_list_head = self.event_list_head.next
+
+    def update_n(self):
+        delta = self.t - self.previous_event_time
+        n1 = len(self.queue1)
+        n2 = len(self.queue2)
+        self.N_samples['Nq_1'] += n1*delta
+        self.N_samples['Nq_2'] += n2*delta
+        if self.server_current_client:
+            self.occupied_period += delta
+            if self.server_current_client.queue == 1:
+                n1 += 1
+            elif self.server_current_client.queue == 2:
+                n2 += 1
+        elif self.occupied_period > 0.0:
+            self.utilization.append(self.occupied_period/(self.occupied_period + self.idle_period))
+            self.occupied_period = 0.0
+            self.idle_period = delta
+        else:
+            self.idle_period = delta
+        self.N_samples['N_1'] += n1*delta
+        self.N_samples['N_2'] += n2*delta
+        self.previous_event_time = self.t
 
     def discard_remaining_clients(self):
         served_clients = []
@@ -143,28 +163,32 @@ class Simulator:
                 self.process_event()
                 self.remove_event()
             self.discard_remaining_clients()
-            data = [[], [], [], [], [], [], [], []]
+
+            wait_1 = []; server_1 = []
+            wait_2 = []; server_2 = []
+
             for j in xrange(len(self.clients)):
-                data[0].append(self.clients[j].wait(1))
-                data[1].append(self.clients[j].N[1])
-                data[2].append(self.clients[j].Nq[1])
-                data[3].append(self.clients[j].server[1])
-                data[4].append(self.clients[j].wait(2))
-                data[5].append(self.clients[j].N[2])
-                data[6].append(self.clients[j].Nq[2])
-                data[7].append(self.clients[j].server[2])                
-            self.results['m_s_W1'] += estimator.sample_mean(data[0])
-            self.results['m_s_s_W1'] += estimator.sample_mean(data[0])**2
-            self.results['m_s_N1'] += estimator.sample_mean(data[1])
-            self.results['m_s_Nq1'] += estimator.sample_mean(data[2])
-            self.results['m_s_X1'] += estimator.sample_mean(data[3])
-            self.results['m_s_W2'] += estimator.sample_mean(data[4])
-            self.results['m_s_s_W2'] += estimator.sample_mean(data[4])**2
-            self.results['m_s_N2'] += estimator.sample_mean(data[5])
-            self.results['m_s_Nq2'] += estimator.sample_mean(data[6])            
-            self.results['m_s_X2'] += estimator.sample_mean(data[7])
+                wait_1.append(self.clients[j].wait(1))
+                server_1.append(self.clients[j].server[1])
+                wait_2.append(self.clients[j].wait(2))
+                server_2.append(self.clients[j].server[2])
+            self.results['m_s_W1'] += estimator.sample_mean(wait_1)
+            self.results['m_s_s_W1'] += estimator.sample_mean(wait_1)**2
+            self.results['m_s_X1'] += estimator.sample_mean(server_1)
+            self.results['m_s_W2'] += estimator.sample_mean(wait_2)
+            self.results['m_s_s_W2'] += estimator.sample_mean(wait_2)**2
+            self.results['m_s_X2'] += estimator.sample_mean(server_2)
+            self.results['m_s_N1'] += self.N_samples['N_1']/self.t
+            self.results['m_s_Nq1'] += self.N_samples['Nq_1']/self.t
+            self.results['m_s_N2'] += self.N_samples['N_2']/self.t
+            self.results['m_s_Nq2'] += self.N_samples['Nq_2']/self.t
             self.sample_seed += 1
+            print len(self.clients)
+            print "-"*34
+            print len(wait_1)
+            plot.plot(xrange(len(self.utilization)), self.utilization)
             self.init_sample()
+            
 
     def report(self):
         print "Politica de atendimento: ", self.service_policy
@@ -178,7 +202,7 @@ class Simulator:
         print "E[W1]: ", estimator.mean(self.results['m_s_W1'], self.samples)
         print "E[W2]: ", estimator.mean(self.results['m_s_W2'], self.samples)
         print "V[W1]: ", estimator.variance(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
-        print "V[W2]: ", estimator.variance(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples)        
+        print "V[W2]: ", estimator.variance(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples)
                  
     
     @staticmethod
