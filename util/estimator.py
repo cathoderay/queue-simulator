@@ -1,18 +1,23 @@
 #Helper module to calculate average and variance estimators
 #Mean returning functions separated for legibility
+import math
 
-def sample_mean(list):
-    """Returns the estimated sample mean using the sample -list- """
-    return sum(list)/len(list)
-    
-def mean(mean_sum, samples):
-    """Returns the estimated mean using the sum of the calculated sample means and the number -N- of samples """
-    return mean_sum/float(samples)
+#t_student table value for alpha = 0.05
+t_st_value = 1.96
 
-def variance(mean_sum, mean_square_sum, samples):
+def mean(sum, samples):
+    """Returns the estimated mean using the -sum- of the calculated values and the number of -samples- """
+    return sum/float(samples)
+
+def variance(sum, square_sum, samples):
     """Returns the estimated variance using the incremental form.
-       sums -mean_sum- and -mean_square_sum- of each sample mean and the number -samples- of samples """
-    return mean_square_sum/float(samples-1) - (mean_sum**2)/float(samples*(samples-1))
+       sums -sum- and -square_sum- of each sample mean and the number -samples- of samples """
+    return square_sum/float(samples-1) - (sum**2)/float(samples*(samples-1))
+    
+def confidence_interval(std_deviation, samples):
+    """Returns the confidence interval bound, given the standard deviation -std_deviation- and the total
+       number of -samples- """
+    return 2*(t_st_value*std_deviation)/math.sqrt(samples) 
 
 if __name__ == "__main__":
     "Testing..."

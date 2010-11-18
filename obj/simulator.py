@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 #Simulator object
+import math
 from collections import deque
-from util import dist, seed, estimator, plot
+from util import dist, seed, estimator
 from client import *
 from event import *
 from node import *
@@ -34,14 +35,24 @@ class Simulator:
         self.results = {
             'm_s_W1': 0,
             'm_s_s_W1': 0,
+            'v_s_W1': 0,
+            'v_s_s_W1': 0,            
             'm_s_N1': 0,
+            'm_s_s_N1': 0,            
             'm_s_Nq1': 0,
-            'm_s_X1': 0,
+            'm_s_s_Nq1': 0,            
+            'm_s_T1': 0,
+            'm_s_s_T1': 0,            
             'm_s_W2': 0,
-            'm_s_s_W2': 0,
+            'm_s_s_W2': 0,            
+            'v_s_W2': 0,
+            'v_s_s_W2': 0,            
             'm_s_N2': 0,
+            'm_s_s_N2': 0,            
             'm_s_Nq2': 0,
-            'm_s_X2': 0
+            'm_s_s_Nq2': 0,            
+            'm_s_T2': 0,
+            'm_s_s_T2': 0,            
         }
         
     def init_sample(self):
@@ -59,9 +70,6 @@ class Simulator:
         self.t = 0.0
         self.previous_event_time = 0.0
         self.event_list_head = Node(Event(INCOMING, dist.exp_time(self.entry_rate)))
-        self.occupied_period = 0.0
-        self.idle_period = 0.0
-        self.utilization = []
 
     def generate_event(self, event_type, time):
         node = self.event_list_head
@@ -132,17 +140,10 @@ class Simulator:
         self.N_samples['Nq_1'] += n1*delta
         self.N_samples['Nq_2'] += n2*delta
         if self.server_current_client:
-            self.occupied_period += delta
             if self.server_current_client.queue == 1:
                 n1 += 1
             elif self.server_current_client.queue == 2:
                 n2 += 1
-        elif self.occupied_period > 0.0:
-            self.utilization.append(self.occupied_period/(self.occupied_period + self.idle_period))
-            self.occupied_period = 0.0
-            self.idle_period = delta
-        else:
-            self.idle_period = delta
         self.N_samples['N_1'] += n1*delta
         self.N_samples['N_2'] += n2*delta
         self.previous_event_time = self.t
@@ -158,6 +159,7 @@ class Simulator:
         self.clients = served_clients
 
     def start(self):
+        #while not self.confidence_interval_satisfied()
         for i in xrange(self.samples):
             while self.t < self.T:
                 self.process_event()
@@ -165,28 +167,42 @@ class Simulator:
             self.discard_remaining_clients()
 
             wait_1 = []; server_1 = []
+            s_wait_1 = 0; s_s_wait_1 = 0
             wait_2 = []; server_2 = []
+            s_wait_2 = 0; s_s_wait_2 = 0            
 
             for j in xrange(len(self.clients)):
                 wait_1.append(self.clients[j].wait(1))
+                s_wait_1 += self.clients[j].wait(1)
+                s_s_wait_1 += self.clients[j].wait(1)**2
                 server_1.append(self.clients[j].server[1])
                 wait_2.append(self.clients[j].wait(2))
+                s_wait_2 += self.clients[j].wait(2)
+                s_s_wait_2 += self.clients[j].wait(2)**2
                 server_2.append(self.clients[j].server[2])
-            self.results['m_s_W1'] += estimator.sample_mean(wait_1)
-            self.results['m_s_s_W1'] += estimator.sample_mean(wait_1)**2
-            self.results['m_s_X1'] += estimator.sample_mean(server_1)
-            self.results['m_s_W2'] += estimator.sample_mean(wait_2)
-            self.results['m_s_s_W2'] += estimator.sample_mean(wait_2)**2
-            self.results['m_s_X2'] += estimator.sample_mean(server_2)
-            self.results['m_s_N1'] += self.N_samples['N_1']/self.t
-            self.results['m_s_Nq1'] += self.N_samples['Nq_1']/self.t
-            self.results['m_s_N2'] += self.N_samples['N_2']/self.t
-            self.results['m_s_Nq2'] += self.N_samples['Nq_2']/self.t
+                
+            self.results['m_s_W1'] += estimator.mean(sum(wait_1), len(wait_1))
+            self.results['m_s_s_W1'] += estimator.mean(sum(wait_1), len(wait_1))**2            
+            self.results['v_s_W1'] += estimator.variance(s_wait_1, s_s_wait_1, len(wait_1))
+            self.results['v_s_s_W1'] += estimator.variance(s_wait_1, s_s_wait_1, len(wait_1))**2
+            self.results['m_s_N1'] += estimator.mean(self.N_samples['N_1'], self.t)
+            self.results['m_s_s_N1'] += estimator.mean(self.N_samples['N_1'], self.t)**2            
+            self.results['m_s_Nq1'] += estimator.mean(self.N_samples['Nq_1'], self.t)
+            self.results['m_s_s_Nq1'] += estimator.mean(self.N_samples['Nq_1'], self.t)**2            
+            self.results['m_s_T1'] += estimator.mean(sum(wait_1), len(wait_1)) + estimator.mean(sum(server_1), len(server_1))
+            self.results['m_s_s_T1'] += (estimator.mean(sum(wait_1), len(wait_1)) + estimator.mean(sum(server_1), len(server_1)))**2
+            self.results['m_s_W2'] += estimator.mean(sum(wait_2), len(wait_2))
+            self.results['m_s_s_W2'] += estimator.mean(sum(wait_2), len(wait_2))**2            
+            self.results['v_s_W2'] += estimator.variance(s_wait_2, s_s_wait_2, len(wait_2))
+            self.results['v_s_s_W2'] += estimator.variance(s_wait_2, s_s_wait_2, len(wait_2))**2            
+            self.results['m_s_N2'] += estimator.mean(self.N_samples['N_2'], self.t)
+            self.results['m_s_s_N2'] += estimator.mean(self.N_samples['N_2'], self.t)**2            
+            self.results['m_s_Nq2'] += estimator.mean(self.N_samples['Nq_2'], self.t)
+            self.results['m_s_s_Nq2'] += estimator.mean(self.N_samples['Nq_2'], self.t)**2            
+            self.results['m_s_T2'] += estimator.mean(sum(wait_2), len(wait_2)) + estimator.mean(sum(server_2), len(server_2))
+            self.results['m_s_s_T2'] += (estimator.mean(sum(wait_2), len(wait_2)) + estimator.mean(sum(server_2), len(server_2)))**2
+            
             self.sample_seed += 1
-            print len(self.clients)
-            print "-"*34
-            print len(wait_1)
-            plot.plot(xrange(len(self.utilization)), self.utilization)
             self.init_sample()
             
 
@@ -195,14 +211,15 @@ class Simulator:
         print "Rô calculado: ", (2*self.entry_rate)/self.server_rate
         print "E[N1]: ", estimator.mean(self.results['m_s_N1'], self.samples)
         print "E[N2]: ", estimator.mean(self.results['m_s_N2'], self.samples)
-        print "E[T1]: ", (estimator.mean(self.results['m_s_W1'], self.samples) + estimator.mean(self.results['m_s_X1'], self.samples))
-        print "E[T2]: ", (estimator.mean(self.results['m_s_W2'], self.samples) + estimator.mean(self.results['m_s_X2'], self.samples))
+        print "E[T1]: ", estimator.mean(self.results['m_s_T1'], self.samples)
+        print "E[T2]: ", estimator.mean(self.results['m_s_T2'], self.samples)
         print "E[Nq1]: ", estimator.mean(self.results['m_s_Nq1'], self.samples)
         print "E[Nq2]: ", estimator.mean(self.results['m_s_Nq2'], self.samples)
         print "E[W1]: ", estimator.mean(self.results['m_s_W1'], self.samples)
+        print "IC - E[W1]: ", estimator.confidence_interval(math.sqrt(estimator.variance(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)), self.samples)
         print "E[W2]: ", estimator.mean(self.results['m_s_W2'], self.samples)
-        print "V[W1]: ", estimator.variance(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
-        print "V[W2]: ", estimator.variance(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples)
+        print "V[W1]: ", estimator.mean(self.results['v_s_W1'], self.samples)
+        print "V[W2]: ", estimator.mean(self.results['v_s_W2'], self.samples)
                  
     
     @staticmethod
