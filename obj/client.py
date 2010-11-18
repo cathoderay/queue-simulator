@@ -1,11 +1,15 @@
+TRANSIENT = 1
+EQUILIBRIUM = 2
+
 class Client:
-    def __init__(self, id):
+    def __init__(self, id, color):
         self.id = id
         #Times of the client in the system
         self.arrival = {}
         self.leave = {}
         self.server = {}
         self.queue = 0
+        self.color = color
 
     def set_arrival(self, arrival):
         self.arrival[self.queue] = arrival

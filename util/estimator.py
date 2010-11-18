@@ -17,7 +17,7 @@ def variance(sum, square_sum, samples):
 def confidence_interval(std_deviation, samples):
     """Returns the confidence interval bound, given the standard deviation -std_deviation- and the total
        number of -samples- """
-    return 2*(t_st_value*std_deviation)/math.sqrt(samples) 
+    return 2*(t_st_value*std_deviation)/math.sqrt(samples)
 
 if __name__ == "__main__":
     "Testing..."

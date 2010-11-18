@@ -2,10 +2,11 @@
 #Simulator object
 import math
 from collections import deque
-from util import dist, seed, estimator
+from util import dist, estimator, plot
 from client import *
-from event import *
-from node import *
+#from event import *
+#from node import *
+from event_heap import *
 
 FCFS = 1
 LCFS = 2
@@ -17,12 +18,12 @@ class Simulator:
             print node
             node = node.next
             
-    def __init__(self, sample_seed, entry_rate, service_policy, samples, T=28800, server_rate=1):
-        self.T = T
+    def __init__(self, entry_rate, warm_up, service_policy, sample_limit, samples, server_rate=1):
+        self.sample_limit = sample_limit
         self.samples = samples
         self.server_rate = server_rate
         self.entry_rate = entry_rate
-        self.sample_seed = sample_seed
+        self.warm_up = warm_up
         if service_policy == FCFS:
             Simulator.__dict__['pop_queue1'] = Simulator.pop_queue1_fcfs
             Simulator.__dict__['pop_queue2'] = Simulator.pop_queue2_fcfs
@@ -55,8 +56,7 @@ class Simulator:
             'm_s_s_T2': 0,            
         }
         
-    def init_sample(self):
-        seed.set_seed(self.sample_seed)    
+    def init_sample(self):    
         self.queue1 = deque([])
         self.queue2 = deque([])
         self.server_current_client = None
@@ -69,69 +69,57 @@ class Simulator:
         }
         self.t = 0.0
         self.previous_event_time = 0.0
-        self.event_list_head = Node(Event(INCOMING, dist.exp_time(self.entry_rate)))
-
-    def generate_event(self, event_type, time):
-        node = self.event_list_head
-        new_node = Node(Event(event_type, time))
-        while node:
-            if not(node.next):
-                node.next = new_node
-                break
-            elif (node.value.time <= new_node.value.time and node.next.value.time >= new_node.value.time):
-                next_node = node.next
-                node.next = new_node
-                new_node.next = next_node
-                break
-            node = node.next
+        self.events = EventHeap()
+        print self.events
+        self.events.push((dist.exp_time(self.entry_rate), INCOMING))
 
     def process_event(self):
-        current_event = self.event_list_head.value
-        self.t = current_event.time
+        self.t, event_type = self.events.pop()
 
-        if current_event.event_type == INCOMING:
+        if event_type == INCOMING:
             self.update_n()
-            new_client = Client(len(self.clients))
+            if self.warm_up:
+                new_client = Client(len(self.clients), TRANSIENT)
+                self.warm_up -= 1
+            else:
+                new_client = Client(len(self.clients), EQUILIBRIUM)
             new_client.set_queue(1)
             new_client.set_arrival(self.t)
             self.queue1.append(new_client)
             self.clients.append(new_client)
-            self.generate_event(INCOMING, self.t + dist.exp_time(self.entry_rate))
+            self.events.push((self.t + dist.exp_time(self.entry_rate), INCOMING))
             if not self.server_current_client:
-                self.generate_event(SERVER_1_IN, self.t)
+                self.events.push((self.t, SERVER_1_IN))
 
-        elif current_event.event_type == SERVER_1_IN:
+        elif event_type == SERVER_1_IN:
             server_time = dist.exp_time(self.server_rate)
             self.server_current_client = self.pop_queue1()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
-            self.generate_event(SERVER_OUT, self.t + server_time)
+            self.events.push((self.t + server_time, SERVER_OUT))
 
-        elif current_event.event_type == SERVER_2_IN:
+        elif event_type == SERVER_2_IN:
             server_time = dist.exp_time(self.server_rate)
             self.server_current_client = self.pop_queue2()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
-            self.generate_event(SERVER_OUT, self.t + server_time)
+            self.events.push((self.t + server_time, SERVER_OUT))
 
-        elif current_event.event_type == QUEUE_2_IN:
+        elif event_type == QUEUE_2_IN:
             client = self.queue2[-1]
             client.set_queue(2)
             client.set_arrival(self.t)
 
-        elif current_event.event_type == SERVER_OUT:
+        elif event_type == SERVER_OUT:
             self.update_n()
             if self.queue1:
-                self.generate_event(SERVER_1_IN, self.t)
+                self.events.push((self.t, SERVER_1_IN))
             elif self.queue2:
-                self.generate_event(SERVER_2_IN, self.t)
+                self.events.push((self.t, SERVER_2_IN))
             if self.server_current_client.queue == 1:
                 self.queue2.append(self.server_current_client)
-                self.generate_event(QUEUE_2_IN, self.t)
+                self.events.push((self.t, QUEUE_2_IN))
             self.server_current_client = None
-
-    def remove_event(self):
-        self.event_list_head = self.event_list_head.next
 
     def update_n(self):
         delta = self.t - self.previous_event_time
@@ -148,7 +136,8 @@ class Simulator:
         self.N_samples['N_2'] += n2*delta
         self.previous_event_time = self.t
 
-    def discard_remaining_clients(self):
+    def discard_clients(self):
+        """Descarta os clientes da fase transiente e os clientes que ainda estao no sistema. """
         served_clients = []
         for client in self.clients:
             arrivals = client.arrival
@@ -161,15 +150,15 @@ class Simulator:
     def start(self):
         #while not self.confidence_interval_satisfied()
         for i in xrange(self.samples):
-            while self.t < self.T:
+            while len(self.clients) < self.sample_limit:
                 self.process_event()
-                self.remove_event()
-            self.discard_remaining_clients()
+            self.discard_clients()
 
             wait_1 = []; server_1 = []
             s_wait_1 = 0; s_s_wait_1 = 0
             wait_2 = []; server_2 = []
-            s_wait_2 = 0; s_s_wait_2 = 0            
+            s_wait_2 = 0; s_s_wait_2 = 0
+            variances_1 = []         
 
             for j in xrange(len(self.clients)):
                 wait_1.append(self.clients[j].wait(1))
@@ -180,6 +169,8 @@ class Simulator:
                 s_wait_2 += self.clients[j].wait(2)
                 s_s_wait_2 += self.clients[j].wait(2)**2
                 server_2.append(self.clients[j].server[2])
+                if j > 0:
+                    variances_1.append(estimator.variance(s_wait_1, s_s_wait_1, j+1))
                 
             self.results['m_s_W1'] += estimator.mean(sum(wait_1), len(wait_1))
             self.results['m_s_s_W1'] += estimator.mean(sum(wait_1), len(wait_1))**2            
@@ -202,10 +193,18 @@ class Simulator:
             self.results['m_s_T2'] += estimator.mean(sum(wait_2), len(wait_2)) + estimator.mean(sum(server_2), len(server_2))
             self.results['m_s_s_T2'] += (estimator.mean(sum(wait_2), len(wait_2)) + estimator.mean(sum(server_2), len(server_2)))**2
             
-            self.sample_seed += 1
+            if i == 0:
+                plot.plot(xrange(len(variances_1)), variances_1, 'r')
+            elif i == 1:
+                plot.plot(xrange(len(variances_1)), variances_1, 'g')
+            elif i == 2:
+                plot.plot(xrange(len(variances_1)), variances_1, 'b')
+            elif i == 3:
+                plot.plot(xrange(len(variances_1)), variances_1, 'y')
+            print "Amostra ", (i+1)
             self.init_sample()
+        plot.show()
             
-
     def report(self):
         print "Politica de atendimento: ", self.service_policy
         print "Rô calculado: ", (2*self.entry_rate)/self.server_rate
