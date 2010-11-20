@@ -1,5 +1,4 @@
-TRANSIENT = 1
-EQUILIBRIUM = 2
+
 
 class Client:
     def __init__(self, color):

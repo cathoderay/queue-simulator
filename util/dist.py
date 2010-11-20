@@ -2,7 +2,7 @@ import math
 import random
 import estimator
 
-#Helper method to calculate Poisson and Exponential distribution properties
+#Helper module to calculate Exponential distribution properties
 
 def exp_time(rate):
 	"""Returns 1 random Time of an exponential distribution given the rate [rate]."""

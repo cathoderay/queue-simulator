@@ -3,23 +3,17 @@
 import math
 import numpy as np
 from collections import deque
+from util.constants import *
 from util import dist, plot
 from util import estimator as est
 from client import *
 from event_heap import *
 
-FCFS = 1
-LCFS = 2
 
 class Simulator:
-    def print_events(self):
-        node = self.event_list_head
-        while node:
-            print node
-            node = node.next
-            
-    def __init__(self, entry_rate, warm_up, service_policy, sample_limit, samples, server_rate=1):
-        self.sample_limit = sample_limit
+
+    def __init__(self, entry_rate, warm_up, service_policy, clients, samples, server_rate=1.0):
+        self.total_clients = warm_up + clients
         self.samples = samples
         self.server_rate = server_rate
         self.entry_rate = entry_rate
@@ -67,6 +61,7 @@ class Simulator:
             'Nq_2': 0,
             'N_2': 0,
         }
+        self.warm_up_sample = self.warm_up
         self.t = 0.0
         self.previous_event_time = 0.0
         self.events = EventHeap()
@@ -77,9 +72,9 @@ class Simulator:
 
         if event_type == INCOMING:
             self.update_n()
-            if self.warm_up:
+            if self.warm_up_sample > 0:
                 new_client = Client(TRANSIENT)
-                self.warm_up -= 1
+                self.warm_up_sample -= 1
             else:
                 new_client = Client(EQUILIBRIUM)
             new_client.set_queue(1)
@@ -110,7 +105,6 @@ class Simulator:
                 self.events.push((self.t, SERVER_1_IN))
             elif self.queue2:
                 self.events.push((self.t, SERVER_2_IN))
-                
             if self.server_current_client.queue == 1:
                 self.queue_2_in()
             else:
@@ -144,75 +138,61 @@ class Simulator:
         """Descarta os clientes da fase transiente e os clientes que ainda estao no sistema. """
         served_clients = []
         for client in self.clients:
-            if client.served:
+            if client.served and client.color == EQUILIBRIUM:
                 served_clients.append(client)
         self.clients = served_clients
 
     def start(self):
         for i in xrange(self.samples):
-            while len(self.clients) < self.sample_limit:
+            while len(self.clients) < self.total_clients:
                 self.process_event()
             self.discard_clients()
 
-            wait_1 = []; server_1 = []
             s_wait_1 = 0; s_s_wait_1 = 0
-            wait_2 = []; server_2 = []
             s_wait_2 = 0; s_s_wait_2 = 0
-            variances_1 = []
+            s_server_1 = 0; s_server_2 = 0
 
-            for j in xrange(len(self.clients)):
-                wait_1.append(self.clients[j].wait(1))
-                s_wait_1 += self.clients[j].wait(1)
-                s_s_wait_1 += self.clients[j].wait(1)**2
-                server_1.append(self.clients[j].server[1])
-                wait_2.append(self.clients[j].wait(2))
-                s_wait_2 += self.clients[j].wait(2)
-                s_s_wait_2 += self.clients[j].wait(2)**2
-                server_2.append(self.clients[j].server[2])
-                if j > 0:
-                    variances_1.append(est.variance(s_wait_1, s_s_wait_1, j+1))
+            print self.clients[5000].arrival[2]
+            print self.clients[5000].leave[2]
+
+            for client in self.clients:
+                s_wait_1 += client.wait(1)
+                s_s_wait_1 += client.wait(1)**2
+                s_server_1 += client.server[1]
+                s_wait_2 += client.wait(2)
+                s_s_wait_2 += client.wait(2)**2
+                s_server_2 += client.server[2]
                 
-            self.results['m_s_W1'] += est.mean(sum(wait_1), len(wait_1))
-            self.results['m_s_s_W1'] += est.mean(sum(wait_1), len(wait_1))**2            
-            self.results['v_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(wait_1))
-            self.results['v_s_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(wait_1))**2
+            self.results['m_s_W1'] += est.mean(s_wait_1, len(self.clients))
+            self.results['m_s_s_W1'] += est.mean(s_wait_1, len(self.clients))**2
+            self.results['v_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))
+            self.results['v_s_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))**2
             self.results['m_s_N1'] += est.mean(self.N_samples['N_1'], self.t)
-            self.results['m_s_s_N1'] += est.mean(self.N_samples['N_1'], self.t)**2            
+            self.results['m_s_s_N1'] += est.mean(self.N_samples['N_1'], self.t)**2
             self.results['m_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)
-            self.results['m_s_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)**2            
-            self.results['m_s_T1'] += est.mean(sum(wait_1), len(wait_1)) + est.mean(sum(server_1), len(server_1))
-            self.results['m_s_s_T1'] += (est.mean(sum(wait_1), len(wait_1)) + est.mean(sum(server_1), len(server_1)))**2
-            self.results['m_s_W2'] += est.mean(sum(wait_2), len(wait_2))
-            self.results['m_s_s_W2'] += est.mean(sum(wait_2), len(wait_2))**2            
-            self.results['v_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(wait_2))
-            self.results['v_s_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(wait_2))**2            
+            self.results['m_s_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)**2
+            self.results['m_s_T1'] += est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients))
+            self.results['m_s_s_T1'] += (est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients)))**2
+            self.results['m_s_W2'] += est.mean(s_wait_2, len(self.clients))
+            self.results['m_s_s_W2'] += est.mean(s_wait_2, len(self.clients))**2
+            self.results['v_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))
+            self.results['v_s_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))**2
             self.results['m_s_N2'] += est.mean(self.N_samples['N_2'], self.t)
-            self.results['m_s_s_N2'] += est.mean(self.N_samples['N_2'], self.t)**2            
+            self.results['m_s_s_N2'] += est.mean(self.N_samples['N_2'], self.t)**2
             self.results['m_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)
-            self.results['m_s_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)**2            
-            self.results['m_s_T2'] += est.mean(sum(wait_2), len(wait_2)) + est.mean(sum(server_2), len(server_2))
-            self.results['m_s_s_T2'] += (est.mean(sum(wait_2), len(wait_2)) + est.mean(sum(server_2), len(server_2)))**2
-            
-            if i == 0:
-                plot.plot(variances_1, 'r-', linewidth=1)
-            elif i == 1:
-                plot.plot(variances_1, 'g-', linewidth=1)              
-            elif i == 2:
-                plot.plot(variances_1, 'b-', linewidth=1)              
-            elif i == 3:
-                plot.plot(variances_1, 'y-', linewidth=1)              
-            elif i == 4:
-                plot.plot(variances_1, 'k-', linewidth=1)
-            
-            print "Amostra ", (i+1)
+            self.results['m_s_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)**2
+            self.results['m_s_T2'] += est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients))
+            self.results['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
             self.init_sample()
-        plot.show('V(W1) para p = 0,9 (Politica FCFS)')
+            
+            print "Amostra", (i+1)
             
     def report(self):
         print "Politica de atendimento: ", self.service_policy
         print "Rô calculado: ", (2*self.entry_rate)/self.server_rate
         print "E[N1]: ", est.mean(self.results['m_s_N1'], self.samples)
         print "E[N2]: ", est.mean(self.results['m_s_N2'], self.samples)
+        print "IC - E[N2]: ", est.confidence_interval(self.results['m_s_N2'], self.results['m_s_s_N2'], self.samples)        
         print "E[T1]: ", est.mean(self.results['m_s_T1'], self.samples)
         print "E[T2]: ", est.mean(self.results['m_s_T2'], self.samples)
         print "E[Nq1]: ", est.mean(self.results['m_s_Nq1'], self.samples)

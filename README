@@ -30,8 +30,6 @@ Trabalho de AD: Simulador de Filas
 7) Documentação
 
 TO DO:
-	- Definir o começo da fase transiente (Adicionar atributo cor no objeto Client para definir qual fase o cliente pertence).
-       * plotar um grafico de (clientes X variancias) para definir a fase de equilibrio
 	- Terminar as rodadas de simulacao usando intervalo de confiança (Não pode ultrapassar 10% da média para cada valor de entrada).
 	- Adicionar métodos para calcular os dados de forma analítica (para comparação)
 	- Plotar os graficos e/ou tabelas com os resultados obtidos.
