@@ -5,7 +5,6 @@ INCOMING = 1
 SERVER_OUT = 2
 SERVER_1_IN = 3
 SERVER_2_IN = 4
-QUEUE_2_IN = 5
 
 
 class EventHeap(list):

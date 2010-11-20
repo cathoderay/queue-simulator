@@ -2,13 +2,13 @@ TRANSIENT = 1
 EQUILIBRIUM = 2
 
 class Client:
-    def __init__(self, id, color):
-        self.id = id
+    def __init__(self, color):
         #Times of the client in the system
         self.arrival = {}
         self.leave = {}
         self.server = {}
         self.queue = 0
+        self.served = 0
         self.color = color
 
     def set_arrival(self, arrival):
@@ -22,6 +22,9 @@ class Client:
 
     def set_queue(self, queue):
         self.queue = queue
+        
+    def set_served(self, served):
+        self.served = served
 
     def wait(self, queue):
         return (self.leave[queue] - self.arrival[queue])
