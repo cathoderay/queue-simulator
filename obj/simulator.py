@@ -141,67 +141,87 @@ class Simulator:
             if client.served and client.color == EQUILIBRIUM:
                 served_clients.append(client)
         self.clients = served_clients
+        
+    def process_sample():
+        s_wait_1 = 0; s_s_wait_1 = 0
+        s_wait_2 = 0; s_s_wait_2 = 0
+        s_server_1 = 0; s_server_2 = 0
+
+        for client in self.clients:
+            s_wait_1 += client.wait(1)
+            s_s_wait_1 += client.wait(1)**2
+            s_server_1 += client.server[1]
+            s_wait_2 += client.wait(2)
+            s_s_wait_2 += client.wait(2)**2
+            s_server_2 += client.server[2]
+            
+        self.results['m_s_W1'] += est.mean(s_wait_1, len(self.clients))
+        self.results['m_s_s_W1'] += est.mean(s_wait_1, len(self.clients))**2
+        self.results['v_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))
+        self.results['v_s_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))**2
+        self.results['m_s_N1'] += est.mean(self.N_samples['N_1'], self.t)
+        self.results['m_s_s_N1'] += est.mean(self.N_samples['N_1'], self.t)**2
+        self.results['m_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)
+        self.results['m_s_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)**2
+        self.results['m_s_T1'] += est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients))
+        self.results['m_s_s_T1'] += (est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients)))**2
+        self.results['m_s_W2'] += est.mean(s_wait_2, len(self.clients))
+        self.results['m_s_s_W2'] += est.mean(s_wait_2, len(self.clients))**2
+        self.results['v_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))
+        self.results['v_s_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))**2
+        self.results['m_s_N2'] += est.mean(self.N_samples['N_2'], self.t)
+        self.results['m_s_s_N2'] += est.mean(self.N_samples['N_2'], self.t)**2
+        self.results['m_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)
+        self.results['m_s_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)**2
+        self.results['m_s_T2'] += est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients))
+        self.results['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
+        self.init_sample()
 
     def start(self):
         for i in xrange(self.samples):
             while len(self.clients) < self.total_clients:
                 self.process_event()
             self.discard_clients()
-
-            s_wait_1 = 0; s_s_wait_1 = 0
-            s_wait_2 = 0; s_s_wait_2 = 0
-            s_server_1 = 0; s_server_2 = 0
-
-            print self.clients[5000].arrival[2]
-            print self.clients[5000].leave[2]
-
-            for client in self.clients:
-                s_wait_1 += client.wait(1)
-                s_s_wait_1 += client.wait(1)**2
-                s_server_1 += client.server[1]
-                s_wait_2 += client.wait(2)
-                s_s_wait_2 += client.wait(2)**2
-                s_server_2 += client.server[2]
-                
-            self.results['m_s_W1'] += est.mean(s_wait_1, len(self.clients))
-            self.results['m_s_s_W1'] += est.mean(s_wait_1, len(self.clients))**2
-            self.results['v_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))
-            self.results['v_s_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))**2
-            self.results['m_s_N1'] += est.mean(self.N_samples['N_1'], self.t)
-            self.results['m_s_s_N1'] += est.mean(self.N_samples['N_1'], self.t)**2
-            self.results['m_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)
-            self.results['m_s_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)**2
-            self.results['m_s_T1'] += est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients))
-            self.results['m_s_s_T1'] += (est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients)))**2
-            self.results['m_s_W2'] += est.mean(s_wait_2, len(self.clients))
-            self.results['m_s_s_W2'] += est.mean(s_wait_2, len(self.clients))**2
-            self.results['v_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))
-            self.results['v_s_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))**2
-            self.results['m_s_N2'] += est.mean(self.N_samples['N_2'], self.t)
-            self.results['m_s_s_N2'] += est.mean(self.N_samples['N_2'], self.t)**2
-            self.results['m_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)
-            self.results['m_s_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)**2
-            self.results['m_s_T2'] += est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients))
-            self.results['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
-            self.init_sample()
-            
+            self.process_sample()
             print "Amostra", (i+1)
             
+    def valid_confidence_interval(self):
+        return (2.0*est.confidence_interval(self.results['m_s_N1'], self.results['m_s_s_N1'], self.samples) <= 0.1*est.mean(self.results['m_s_N1'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_N2'], self.results['m_s_s_N2'], self.samples) <= 0.1*est.mean(self.results['m_s_N2'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_T1'], self.results['m_s_s_T1'], self.samples) <= 0.1*est.mean(self.results['m_s_T1'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_T2'], self.results['m_s_s_T2'], self.samples) <= 0.1*est.mean(self.results['m_s_T2'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_Nq1'], self.results['m_s_s_Nq1'], self.samples) <= 0.1*est.mean(self.results['m_s_Nq1'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_Nq2'], self.results['m_s_s_Nq2'], self.samples) <= 0.1*est.mean(self.results['m_s_Nq2'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples) <= 0.1*est.mean(self.results['m_s_W1'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples) <= 0.1*est.mean(self.results['m_s_W2'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['v_s_W1'], self.results['v_s_s_W1'], self.samples) <= 0.1*est.mean(self.results['v_s_W1'], self.samples)) and \
+               (2.0*est.confidence_interval(self.results['v_s_W2'], self.results['v_s_s_W2'], self.samples) <= 0.1*est.mean(self.results['v_s_W2'], self.samples))
+
     def report(self):
-        print "Politica de atendimento: ", self.service_policy
-        print "Rô calculado: ", (2*self.entry_rate)/self.server_rate
-        print "E[N1]: ", est.mean(self.results['m_s_N1'], self.samples)
-        print "E[N2]: ", est.mean(self.results['m_s_N2'], self.samples)
-        print "IC - E[N2]: ", est.confidence_interval(self.results['m_s_N2'], self.results['m_s_s_N2'], self.samples)        
-        print "E[T1]: ", est.mean(self.results['m_s_T1'], self.samples)
-        print "E[T2]: ", est.mean(self.results['m_s_T2'], self.samples)
-        print "E[Nq1]: ", est.mean(self.results['m_s_Nq1'], self.samples)
-        print "E[Nq2]: ", est.mean(self.results['m_s_Nq2'], self.samples)
-        print "E[W1]: ", est.mean(self.results['m_s_W1'], self.samples)
-        print "IC - E[W1]: ", est.confidence_interval(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
-        print "E[W2]: ", est.mean(self.results['m_s_W2'], self.samples)
-        print "V[W1]: ", est.mean(self.results['v_s_W1'], self.samples)
-        print "V[W2]: ", est.mean(self.results['v_s_W2'], self.samples)
+        if self.valid_confidence_interval():
+            print "Intervalos de confiança estimados válidos!, exibindo os resultados:"
+            print "E[N1]: ", est.mean(self.results['m_s_N1'], self.samples)
+            print "IC - E[N1]", est.confidence_interval(self.results['m_s_N1'], self.results['m_s_s_N1'], self.samples)
+            print "E[N2]: ", est.mean(self.results['m_s_N2'], self.samples)
+            print "IC - E[N2]", est.confidence_interval(self.results['m_s_N2'], self.results['m_s_s_N2'], self.samples)
+            print "E[T1]: ", est.mean(self.results['m_s_T1'], self.samples)
+            print "IC - E[T1]", est.confidence_interval(self.results['m_s_T1'], self.results['m_s_s_T1'], self.samples)
+            print "E[T2]: ", est.mean(self.results['m_s_T2'], self.samples)
+            print "IC - E[T2]", est.confidence_interval(self.results['m_s_T2'], self.results['m_s_s_T2'], self.samples)
+            print "E[Nq1]: ", est.mean(self.results['m_s_Nq1'], self.samples)
+            print "IC - E[Nq1]", est.confidence_interval(self.results['m_s_Nq1'], self.results['m_s_s_Nq1'], self.samples)
+            print "E[Nq2]: ", est.mean(self.results['m_s_Nq2'], self.samples)
+            print "IC - E[Nq2]", est.confidence_interval(self.results['m_s_Nq2'], self.results['m_s_s_Nq2'], self.samples)
+            print "E[W1]: ", est.mean(self.results['m_s_W1'], self.samples)
+            print "IC - E[W1]", est.confidence_interval(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
+            print "E[W2]: ", est.mean(self.results['m_s_W2'], self.samples)
+            print "IC - E[W2]", est.confidence_interval(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples)
+            print "V(W1): ", est.mean(self.results['v_s_W1'], self.samples)
+            print "IC - V(W1)", est.confidence_interval(self.results['v_s_W1'], self.results['v_s_s_W1'], self.samples)
+            print "V(W2): ", est.mean(self.results['v_s_W2'], self.samples)
+            print "IC - V(W2)", est.confidence_interval(self.results['v_s_W2'], self.results['v_s_s_W2'], self.samples)
+        else:
+            print "Intervalos de confiança estimados inválidos. Aumente o numero de amostras ou de clientes por amostra"
                  
     
     @staticmethod
