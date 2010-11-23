@@ -30,6 +30,4 @@ Trabalho de AD: Simulador de Filas
 7) Documentação
 
 TO DO:
-	- Plotar os graficos e/ou tabelas com os resultados obtidos.
-	- Adicionar métodos para calcular os dados de forma analítica (para comparação)
-       * Feito. Dando diferente do resultado estimado para a fila 2.
+    - Ajustar os resultados encontrados para a fila 2.
