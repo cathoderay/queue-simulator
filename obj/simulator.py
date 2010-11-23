@@ -200,13 +200,15 @@ class Simulator:
         }
 
         if self.valid_confidence_interval():
-            print "Intervalos de confiança estimados válidos!, exibindo os resultados:"
+            print "Intervalos de confiança estimados válidos!"
+            print "Exibindo os resultados:"
             for key in self.results.keys():
                 print key, ': ', self.results[key]['value'], ' - I.C: ', self.results[key]['c_i']
             return self.results
         else:
-            print "Intervalos de confiança estimados inválidos. Aumente o numero de amostras ou de clientes por amostra"
-            return {}
+            print "Intervalos de confiança estimados inválidos. Aumente o numero de amostras ou de clientes por amostra."
+            print "Programa terminando..."
+            return None
     
     @staticmethod
     def pop_queue1_fcfs(instance):

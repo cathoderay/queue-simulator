@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
-
+import sys
 from copy import copy
 from obj.simulator import *
 from obj.analytic import *
@@ -43,8 +43,12 @@ if __name__ == "__main__":
             print "Iniciando simulação:"
             simulator = Simulator(entry_rate=entry_rate, warm_up=warm_up, clients=clients, samples=samples, service_policy=service_policy['value'])
             simulator.start()
-            results[service_policy['value']][2.0*entry_rate]['simulator'] = simulator.report()            
-            
+            simulator_result = simulator.report()
+            if simulator_result:
+                results[service_policy['value']][2.0*entry_rate]['simulator'] = simulator_result
+            else:
+                sys.exit()
+                            
             print "Iniciando cálculo analítico:"
             analytic = Analytic(entry_rate=entry_rate, service_policy=service_policy['value'])
             analytic.start()
