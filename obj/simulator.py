@@ -1,11 +1,13 @@
 # -*- coding:utf-8 -*-
 #Simulator object
+import sys
 import math
 import numpy as np
 from collections import deque
 from util.constants import *
-from util import dist, plot
+from util.progress_bar import ProgressBar
 from util import estimator as est
+from util import dist
 from client import *
 from event_heap import *
 
@@ -27,40 +29,19 @@ class Simulator:
             Simulator.__dict__['pop_queue2'] = Simulator.pop_queue2_lcfs
             self.service_policy = 'Last Come First Served (LCFS)'
         self.init_sample()
-        self.results = {
-            'm_s_W1': 0,
-            'm_s_s_W1': 0,
-            'v_s_W1': 0,
-            'v_s_s_W1': 0,            
-            'm_s_N1': 0,
-            'm_s_s_N1': 0,            
-            'm_s_Nq1': 0,
-            'm_s_s_Nq1': 0,            
-            'm_s_T1': 0,
-            'm_s_s_T1': 0,            
-            'm_s_W2': 0,
-            'm_s_s_W2': 0,            
-            'v_s_W2': 0,
-            'v_s_s_W2': 0,            
-            'm_s_N2': 0,
-            'm_s_s_N2': 0,            
-            'm_s_Nq2': 0,
-            'm_s_s_Nq2': 0,            
-            'm_s_T2': 0,
-            'm_s_s_T2': 0,            
-        }
+        self.sums = { 'm_s_W1': 0, 'm_s_s_W1': 0, 'v_s_W1': 0, 'v_s_s_W1': 0,            
+                      'm_s_N1': 0, 'm_s_s_N1': 0, 'm_s_Nq1': 0, 'm_s_s_Nq1': 0,            
+                      'm_s_T1': 0, 'm_s_s_T1': 0, 'm_s_W2': 0, 'm_s_s_W2': 0,            
+                      'v_s_W2': 0, 'v_s_s_W2': 0, 'm_s_N2': 0, 'm_s_s_N2': 0,
+                      'm_s_Nq2': 0, 'm_s_s_Nq2': 0, 'm_s_T2': 0, 'm_s_s_T2': 0 }
+        self.results = {}
         
     def init_sample(self):
         self.queue1 = deque([])
         self.queue2 = deque([])
         self.server_current_client = None
         self.clients = []
-        self.N_samples = {
-            'Nq_1': 0,
-            'N_1': 0,
-            'Nq_2': 0,
-            'N_2': 0,
-        }
+        self.N_samples = { 'Nq_1': 0, 'N_1': 0, 'Nq_2': 0, 'N_2': 0 }
         self.warm_up_sample = self.warm_up
         self.t = 0.0
         self.previous_event_time = 0.0
@@ -142,7 +123,7 @@ class Simulator:
                 served_clients.append(client)
         self.clients = served_clients
         
-    def process_sample():
+    def process_sample(self):
         s_wait_1 = 0; s_s_wait_1 = 0
         s_wait_2 = 0; s_s_wait_2 = 0
         s_server_1 = 0; s_server_2 = 0
@@ -155,74 +136,77 @@ class Simulator:
             s_s_wait_2 += client.wait(2)**2
             s_server_2 += client.server[2]
             
-        self.results['m_s_W1'] += est.mean(s_wait_1, len(self.clients))
-        self.results['m_s_s_W1'] += est.mean(s_wait_1, len(self.clients))**2
-        self.results['v_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))
-        self.results['v_s_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))**2
-        self.results['m_s_N1'] += est.mean(self.N_samples['N_1'], self.t)
-        self.results['m_s_s_N1'] += est.mean(self.N_samples['N_1'], self.t)**2
-        self.results['m_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)
-        self.results['m_s_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)**2
-        self.results['m_s_T1'] += est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients))
-        self.results['m_s_s_T1'] += (est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients)))**2
-        self.results['m_s_W2'] += est.mean(s_wait_2, len(self.clients))
-        self.results['m_s_s_W2'] += est.mean(s_wait_2, len(self.clients))**2
-        self.results['v_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))
-        self.results['v_s_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))**2
-        self.results['m_s_N2'] += est.mean(self.N_samples['N_2'], self.t)
-        self.results['m_s_s_N2'] += est.mean(self.N_samples['N_2'], self.t)**2
-        self.results['m_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)
-        self.results['m_s_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)**2
-        self.results['m_s_T2'] += est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients))
-        self.results['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
+        self.sums['m_s_W1'] += est.mean(s_wait_1, len(self.clients))
+        self.sums['m_s_s_W1'] += est.mean(s_wait_1, len(self.clients))**2
+        self.sums['v_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))
+        self.sums['v_s_s_W1'] += est.variance(s_wait_1, s_s_wait_1, len(self.clients))**2
+        self.sums['m_s_N1'] += est.mean(self.N_samples['N_1'], self.t)
+        self.sums['m_s_s_N1'] += est.mean(self.N_samples['N_1'], self.t)**2
+        self.sums['m_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)
+        self.sums['m_s_s_Nq1'] += est.mean(self.N_samples['Nq_1'], self.t)**2
+        self.sums['m_s_T1'] += est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients))
+        self.sums['m_s_s_T1'] += (est.mean(s_wait_1, len(self.clients)) + est.mean(s_server_1, len(self.clients)))**2
+        self.sums['m_s_W2'] += est.mean(s_wait_2, len(self.clients))
+        self.sums['m_s_s_W2'] += est.mean(s_wait_2, len(self.clients))**2
+        self.sums['v_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))
+        self.sums['v_s_s_W2'] += est.variance(s_wait_2, s_s_wait_2, len(self.clients))**2
+        self.sums['m_s_N2'] += est.mean(self.N_samples['N_2'], self.t)
+        self.sums['m_s_s_N2'] += est.mean(self.N_samples['N_2'], self.t)**2
+        self.sums['m_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)
+        self.sums['m_s_s_Nq2'] += est.mean(self.N_samples['Nq_2'], self.t)**2
+        self.sums['m_s_T2'] += est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients))
+        self.sums['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
         self.init_sample()
 
     def start(self):
+        prog = ProgressBar(0, self.samples, 77, mode='fixed', char='#')
+        print "Processando as amostras:"
+        print prog, '\r',
+        sys.stdout.flush()        
         for i in xrange(self.samples):
             while len(self.clients) < self.total_clients:
                 self.process_event()
             self.discard_clients()
             self.process_sample()
-            print "Amostra", (i+1)
+            prog.increment_amount(1)
+            print prog, '\r',
+            sys.stdout.flush()
+        print  
             
     def valid_confidence_interval(self):
-        return (2.0*est.confidence_interval(self.results['m_s_N1'], self.results['m_s_s_N1'], self.samples) <= 0.1*est.mean(self.results['m_s_N1'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_N2'], self.results['m_s_s_N2'], self.samples) <= 0.1*est.mean(self.results['m_s_N2'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_T1'], self.results['m_s_s_T1'], self.samples) <= 0.1*est.mean(self.results['m_s_T1'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_T2'], self.results['m_s_s_T2'], self.samples) <= 0.1*est.mean(self.results['m_s_T2'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_Nq1'], self.results['m_s_s_Nq1'], self.samples) <= 0.1*est.mean(self.results['m_s_Nq1'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_Nq2'], self.results['m_s_s_Nq2'], self.samples) <= 0.1*est.mean(self.results['m_s_Nq2'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples) <= 0.1*est.mean(self.results['m_s_W1'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples) <= 0.1*est.mean(self.results['m_s_W2'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['v_s_W1'], self.results['v_s_s_W1'], self.samples) <= 0.1*est.mean(self.results['v_s_W1'], self.samples)) and \
-               (2.0*est.confidence_interval(self.results['v_s_W2'], self.results['v_s_s_W2'], self.samples) <= 0.1*est.mean(self.results['v_s_W2'], self.samples))
+        return (2.0*self.results['E[N1]']['c_i']  <= 0.1*self.results['E[N1]']['value']) and \
+               (2.0*self.results['E[N2]']['c_i']  <= 0.1*self.results['E[N2]']['value']) and \
+               (2.0*self.results['E[T1]']['c_i']  <= 0.1*self.results['E[T1]']['value']) and \
+               (2.0*self.results['E[T2]']['c_i']  <= 0.1*self.results['E[T2]']['value']) and \
+               (2.0*self.results['E[Nq1]']['c_i'] <= 0.1*self.results['E[Nq1]']['value']) and \
+               (2.0*self.results['E[Nq2]']['c_i'] <= 0.1*self.results['E[Nq2]']['value']) and \
+               (2.0*self.results['E[W1]']['c_i']  <= 0.1*self.results['E[W1]']['value']) and \
+               (2.0*self.results['E[W2]']['c_i']  <= 0.1*self.results['E[W2]']['value']) and \
+               (2.0*self.results['V(W1)']['c_i']  <= 0.1*self.results['V(W1)']['value']) and \
+               (2.0*self.results['V(W2)']['c_i']  <= 0.1*self.results['V(W2)']['value'])
 
     def report(self):
+        self.results = {
+            'E[N1]'  : { 'value' : est.mean(self.sums['m_s_N1'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_N1'], self.sums['m_s_s_N1'], self.samples) },
+            'E[N2]'  : { 'value' : est.mean(self.sums['m_s_N2'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_N2'], self.sums['m_s_s_N2'], self.samples) },
+            'E[T1]'  : { 'value' : est.mean(self.sums['m_s_T1'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_T1'], self.sums['m_s_s_T1'], self.samples) },
+            'E[T2]'  : { 'value' : est.mean(self.sums['m_s_T2'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_T2'], self.sums['m_s_s_T2'], self.samples) },
+            'E[Nq1]' : { 'value' : est.mean(self.sums['m_s_Nq1'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_Nq1'], self.sums['m_s_s_Nq1'], self.samples) },
+            'E[Nq2]' : { 'value' : est.mean(self.sums['m_s_Nq2'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_Nq2'], self.sums['m_s_s_Nq2'], self.samples) },
+            'E[W1]'  : { 'value' : est.mean(self.sums['m_s_W1'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_W1'], self.sums['m_s_s_W1'], self.samples) },
+            'E[W2]'  : { 'value' : est.mean(self.sums['m_s_W2'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_W2'], self.sums['m_s_s_W2'], self.samples) },
+            'V(W1)'  : { 'value' : est.mean(self.sums['v_s_W1'], self.samples), 'c_i' : est.confidence_interval(self.sums['v_s_W1'], self.sums['v_s_s_W1'], self.samples) },
+            'V(W2)'  : { 'value' : est.mean(self.sums['v_s_W2'], self.samples), 'c_i' : est.confidence_interval(self.sums['v_s_W2'], self.sums['v_s_s_W2'], self.samples) }
+        }
+
         if self.valid_confidence_interval():
             print "Intervalos de confiança estimados válidos!, exibindo os resultados:"
-            print "E[N1]: ", est.mean(self.results['m_s_N1'], self.samples)
-            print "IC - E[N1]", est.confidence_interval(self.results['m_s_N1'], self.results['m_s_s_N1'], self.samples)
-            print "E[N2]: ", est.mean(self.results['m_s_N2'], self.samples)
-            print "IC - E[N2]", est.confidence_interval(self.results['m_s_N2'], self.results['m_s_s_N2'], self.samples)
-            print "E[T1]: ", est.mean(self.results['m_s_T1'], self.samples)
-            print "IC - E[T1]", est.confidence_interval(self.results['m_s_T1'], self.results['m_s_s_T1'], self.samples)
-            print "E[T2]: ", est.mean(self.results['m_s_T2'], self.samples)
-            print "IC - E[T2]", est.confidence_interval(self.results['m_s_T2'], self.results['m_s_s_T2'], self.samples)
-            print "E[Nq1]: ", est.mean(self.results['m_s_Nq1'], self.samples)
-            print "IC - E[Nq1]", est.confidence_interval(self.results['m_s_Nq1'], self.results['m_s_s_Nq1'], self.samples)
-            print "E[Nq2]: ", est.mean(self.results['m_s_Nq2'], self.samples)
-            print "IC - E[Nq2]", est.confidence_interval(self.results['m_s_Nq2'], self.results['m_s_s_Nq2'], self.samples)
-            print "E[W1]: ", est.mean(self.results['m_s_W1'], self.samples)
-            print "IC - E[W1]", est.confidence_interval(self.results['m_s_W1'], self.results['m_s_s_W1'], self.samples)
-            print "E[W2]: ", est.mean(self.results['m_s_W2'], self.samples)
-            print "IC - E[W2]", est.confidence_interval(self.results['m_s_W2'], self.results['m_s_s_W2'], self.samples)
-            print "V(W1): ", est.mean(self.results['v_s_W1'], self.samples)
-            print "IC - V(W1)", est.confidence_interval(self.results['v_s_W1'], self.results['v_s_s_W1'], self.samples)
-            print "V(W2): ", est.mean(self.results['v_s_W2'], self.samples)
-            print "IC - V(W2)", est.confidence_interval(self.results['v_s_W2'], self.results['v_s_s_W2'], self.samples)
+            for key in self.results.keys():
+                print key, ': ', self.results[key]['value'], ' - I.C: ', self.results[key]['c_i']
+            return self.results
         else:
             print "Intervalos de confiança estimados inválidos. Aumente o numero de amostras ou de clientes por amostra"
-                 
+            return {}
     
     @staticmethod
     def pop_queue1_fcfs(instance):
