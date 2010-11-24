@@ -84,8 +84,9 @@ class Simulator:
             self.update_n()
             if self.queue1:
                 self.events.push((self.t, SERVER_1_IN))
-            elif self.queue2:
+            elif self.queue2 or self.server_current_client.queue == 1:
                 self.events.push((self.t, SERVER_2_IN))
+                
             if self.server_current_client.queue == 1:
                 self.queue_2_in()
             else:
@@ -97,8 +98,6 @@ class Simulator:
         self.queue2.append(client)
         client.set_queue(2)
         client.set_arrival(self.t)
-        if (not self.queue1) and (not self.server_current_client):
-            self.events.push((self.t, SERVER_2_IN))
 
     def update_n(self):
         delta = self.t - self.previous_event_time
