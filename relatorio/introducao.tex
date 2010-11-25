@@ -1,0 +1,43 @@
+\chapter{Introdução}
+\section{Funcionamento geral}
+O simulador possui uma lista de eventos que é processada continuamente, até alcançar um número máximo de clientes que desejamos atender.
+Essa lista de eventos ...
+
+\section{Estruturas internas utilizadas}
+Para viabilizar a implementação da ideia geral apresentada acima, dividimos o simulador em alguns módulos, a saber:
+
+\section{Linguagem de Programação}
+Para a codificação do simulador foi utilizada a linguagem de programação Python, versão 2.5.5.
+
+\section{Geração de variáveis aleatórias}
+A linguagem Python utiliza o gerador de números aleatórios ``Mersenne Twister", um dos métodos mais extensivamente testados existentes. 
+
+O método garante que a sequência de números gerados pela chamada random() só se repetirá em um período de $2^{19937}-1$. Como o período é bem extenso, não precisamos nos preocupar com redefinir seeds que gerassem sequências sobrepostas.
+
+A semente inicial utilizada pelo gerador, por default, é o timestamp corrente no momento do import do módulo random.
+
+\section{Métodos utilizados}
+Foi utilizado o método replicativo para a simulação.
+
+\section{Implementação do conceito de cores}
+• Indicar como implementou o conceito de cores ou equivalência;
+
+\section{Escolha dos parâmetros}
+• Explicação da escolha dos parâmetros utilizados nas rodadas da simulação e tabela com
+os valores utilizados para cada cenário e para cada utilização (número de fregueses
+coletados por rodada, número de rodadas, tamanho da fase transiente, etc.). Estes dados
+podem também serem apresentados a cada resultado da simulação do item 4.
+
+\section{Máquina utilizada}
+Para a simulação utilizamos uma máquina com as seguintes configurações:
+\begin{itemize}
+  \item Processador: Intel Core Duo 2 GHz 
+  \item Memória: 2GiB DDR 2 667
+  \item Sistema Operacional: MAC OS X 10.5.8
+\end{itemize}
+
+• Indique a máquina utilizada e a duração dos experimentos que levaram ao fator mínimo
+(explicado a frente)
+
+\section{Informações pertinentes}
+• Outras informações pertinentes
