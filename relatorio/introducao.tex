@@ -4,13 +4,29 @@ O simulador possui uma lista de eventos que é processada continuamente, até al
 Essa lista de eventos ...
 
 \section{Estruturas internas utilizadas}
-Para viabilizar a implementação da ideia geral apresentada acima, dividimos o simulador em alguns módulos, a saber:
+Para viabilizar a implementação da ideia geral apresentada acima, dividimos o simulador em alguns módulos, abaixo estão explicitados os mais importantes:
+
+\textbf{Módulos utilitários:}
+
+\begin{itemize}
+  \item Estimator: Módulo que possui métodos para retornar os estimadores de média, variância e calcula intervalos de confiança.
+  \item Dist: Módulo com o método que retorna os tempos aleatórios de chegada de uma distribuição exponencial.
+\end{itemize}
+
+\textbf{Classes:}
+
+\begin{itemize}
+  \item Client: classe que representa um cliente que entra no sistema. Possui seus tempos de entrada e saída da fila, tempo no servidor e cor.
+  \item EventHeap: classe que representa a lista de eventos que é processada durante uma rodada de simulação.
+  \item Simulator: classe que implementa a lógica principal do simulador, processa as rodadas tratando os eventos e as chegadas dos clientes. E calcula as estimativas das variáveis aleatórias.
+  \item Analytic: classe que serve para calcular os resultados de forma analítica.
+\end{itemize}
 
 \section{Linguagem de Programação}
 Para a codificação do simulador foi utilizada a linguagem de programação Python, versão 2.5.5.
 
 \section{Geração de variáveis aleatórias}
-A linguagem Python utiliza o gerador de números aleatórios ``Mersenne Twister", um dos métodos mais extensivamente testados existentes. 
+A linguagem Python utiliza o gerador de números aleatórios "Mersenne Twister", um dos métodos mais extensivamente testados existentes. 
 
 O método garante que a sequência de números gerados pela chamada random() só se repetirá em um período de $2^{19937}-1$. Como o período é bem extenso, não precisamos nos preocupar com redefinir seeds que gerassem sequências sobrepostas.
 
@@ -20,7 +36,9 @@ A semente inicial utilizada pelo gerador, por default, é o timestamp corrente n
 Foi utilizado o método replicativo para a simulação.
 
 \section{Implementação do conceito de cores}
-• Indicar como implementou o conceito de cores ou equivalência;
+O conceito de cores foi implementando adicionando o atributo "color" no objeto Client, que possui 2 valores: TRANSIENT ou EQUILIBRIUM.  O número de clientes que representam a fase transiente são associados à cor TRANSIENT e os outros clientes são associados à cor EQUILIBRIUM.
+
+Ao final da rodada de simulação os clientes que possuem a cor TRANSIENT são descartados do cálculo dos estimadores.
 
 \section{Escolha dos parâmetros}
 • Explicação da escolha dos parâmetros utilizados nas rodadas da simulação e tabela com
@@ -38,6 +56,3 @@ Para a simulação utilizamos uma máquina com as seguintes configurações:
 
 • Indique a máquina utilizada e a duração dos experimentos que levaram ao fator mínimo
 (explicado a frente)
-
-\section{Informações pertinentes}
-• Outras informações pertinentes

@@ -7,7 +7,7 @@ from collections import deque
 from util.constants import *
 from util.progress_bar import ProgressBar
 from util import estimator as est
-from util import dist
+from util import dist, plot
 from client import *
 from event_heap import *
 
@@ -156,12 +156,13 @@ class Simulator:
         self.sums['m_s_T2'] += est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients))
         self.sums['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
         self.init_sample()
+        
 
     def start(self):
         prog = ProgressBar(0, self.samples, 77, mode='fixed', char='#')
         print "Processando as amostras:"
         print prog, '\r',
-        sys.stdout.flush()        
+        sys.stdout.flush()
         for i in xrange(self.samples):
             while len(self.clients) < self.total_clients:
                 self.process_event()

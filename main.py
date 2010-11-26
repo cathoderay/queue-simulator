@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
+import time
 import sys
 from copy import copy
 from obj.simulator import *
@@ -9,10 +10,10 @@ from obj.result_parser import *
 
 
 if __name__ == "__main__":
-    warm_up = input("Entre com o número de clientes da fase transiente:")
     clients = input("Entre com o número de clientes que serão avaliados:")
     samples = input("Entre com o número total de rodadas:")
-    entry_rates = [0.1, 0.2, 0.3, 0.4, 0.45]
+    #dados de entrada (taxa de entrada e valor da fase transiente)
+    entry_data = [[0.1, 30000], [0.2, 40000], [0.3, 80000], [0.4, 600000], [0.45, 600000]]
     service_policies = [
         { 'value' : FCFS, 'name' : "F.C.F.S (First Come First Served)" },
         { 'value' : LCFS, 'name' : "L.C.F.S (Last Come First Served)"  }
@@ -35,20 +36,28 @@ if __name__ == "__main__":
         }        
     }
     
-    for entry_rate in entry_rates:
+    for entry_datum in entry_data:
+        entry_rate = entry_datum[0]
+        warm_up = entry_datum[1]
         for service_policy in service_policies:
             print "taxa de entrada =", entry_rate
+            print "tamanho da fase transiente =", warm_up
             print "política de atendimento =", service_policy['name']
             
             print "Iniciando simulação:"
+            
             simulator = Simulator(entry_rate=entry_rate, warm_up=warm_up, clients=clients, samples=samples, service_policy=service_policy['value'])
+            start = time.time()
             simulator.start()
+            finish = time.time()
+            print finish - start
             simulator_result = simulator.report()
             if simulator_result:
                 results[service_policy['value']][2.0*entry_rate]['simulator'] = simulator_result
             else:
                 sys.exit()
-                            
+            
+                                            
             print "Iniciando cálculo analítico:"
             analytic = Analytic(entry_rate=entry_rate, service_policy=service_policy['value'])
             analytic.start()

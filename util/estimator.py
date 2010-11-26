@@ -1,19 +1,24 @@
-#Helper module to calculate average and variance estimators
-#Mean returning functions separated for legibility
+# -*- coding:utf-8 -*-
+# Módulo para calcular estimadores de média e variância
+
+
 import math
 import scipy.stats
 
+
+
 #t_student table value for alpha = 0.05
 def t_st_value(samples):
+    """ Retorna o valor t de student para um intervalo de confiança de 95% e [samples] amostras. """
     return scipy.stats.t.ppf(0.975, samples)
 
 def mean(sum, samples):
-    """Returns the estimated mean using the -sum- of the calculated values and the number of -samples- """
+    """ Retorna a média estimada usando a soma [sum] dos valores calculados e o número total [samples] de valores. """
     return sum/float(samples)
 
 def variance(sum, square_sum, samples):
-    """Returns the estimated variance using the incremental form.
-       sums -sum- and -square_sum- of each sample mean and the number -samples- of samples """
+    """ Returns the estimated variance using the incremental form.
+       sums -sum- and -square_sum- of each sample mean and the number -samples- of samples  """
     return square_sum/float(samples-1) - (sum**2)/float(samples*(samples-1))
     
 def confidence_interval(sum, square_sum, samples):
