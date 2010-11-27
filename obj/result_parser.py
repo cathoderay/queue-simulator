@@ -25,7 +25,7 @@ class ResultParser:
         
         return body
     
-    def create_table(self, type, name):
+    def create_table(self, table_type, name):
         table = self.doc.createElement('table')
         table.setAttribute('cellspacing', '0')
         table.setAttribute('cellpadding', '4')
@@ -49,12 +49,11 @@ class ResultParser:
         for header in headers:
             th = self.doc.createElement('th')
             th.setAttribute('align', 'center')
-            th.setAttribute('colspan', '3')
             th.appendChild(self.doc.createTextNode(header))
             tr.appendChild(th)
         table.appendChild(tr)
         
-        utilizations = self.results[type].keys()
+        utilizations = self.results[table_type].keys()
         utilizations.sort()
         for utilization in utilizations:
             tr = self.doc.createElement('tr')
@@ -62,19 +61,26 @@ class ResultParser:
             td.setAttribute('align', 'center')
             td.setAttribute('style', 'font-weight: bold')
             td.appendChild(self.doc.createTextNode(str(utilization)))
-            tr.appendChild(td)
-            for key in self.results[type][utilization]['simulator'].keys():
+            tr.appendChild(td)            
+            for key in headers:
                 td = self.doc.createElement('td')
-                td.setAttribute('align', 'center')
-                td.appendChild(self.doc.createTextNode(str(round(self.results[type][utilization]['analytic'][key], 5))))
-                tr.appendChild(td)
-                td = self.doc.createElement('td')
-                td.setAttribute('align', 'center')
-                td.appendChild(self.doc.createTextNode(str(round(self.results[type][utilization]['simulator'][key]['value'], 5))))
-                tr.appendChild(td)
-                td = self.doc.createElement('td')
-                td.setAttribute('align', 'center')
-                td.appendChild(self.doc.createTextNode(str(round((2.0*self.results[type][utilization]['simulator'][key]['c_i']/self.results[type][utilization]['simulator'][key]['value'])*100.0, 2)) + "%"))
+                td.setAttribute('align', 'center')            
+                div = self.doc.createElement('div')
+                div.setAttribute('style', 'padding:5px;')
+                print self.results[table_type][utilization]['analytic']
+                if type(self.results[table_type][utilization]['analytic'][key]).__name__ == 'str':
+                    div.appendChild(self.doc.createTextNode(str(self.results[table_type][utilization]['analytic'][key])))
+                else:
+                    div.appendChild(self.doc.createTextNode(str(round(float(self.results[table_type][utilization]['analytic'][key]), 5))))
+                td.appendChild(div)
+                div = self.doc.createElement('div')
+                div.setAttribute('style', 'padding:5px; border-top: 1px solid #000000; border-bottom: 1px solid #000000')
+                div.appendChild(self.doc.createTextNode(str(round(float(self.results[table_type][utilization]['simulator'][key]['value']), 5))))                
+                td.appendChild(div)
+                div = self.doc.createElement('div')
+                div.setAttribute('style', 'padding:5px;')
+                div.appendChild(self.doc.createTextNode(str(round(float((2.0*self.results[table_type][utilization]['simulator'][key]['c_i']/self.results[table_type][utilization]['simulator'][key]['value'])*100.0), 2)) + "%"))
+                td.appendChild(div)
                 tr.appendChild(td)
             table.appendChild(tr)
             

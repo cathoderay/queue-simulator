@@ -1,22 +1,20 @@
 # -*- coding:utf-8 -*-
 #Simulator object
 import sys
-import math
-import numpy as np
 from collections import deque
 from util.constants import *
 from util.progress_bar import ProgressBar
 from util import estimator as est
-from util import dist, plot
+from util import dist
 from client import *
 from event_heap import *
 
 
 class Simulator:
 
-    def __init__(self, entry_rate, warm_up, service_policy, clients, samples, server_rate=1.0):
+    def __init__(self, entry_rate, warm_up, service_policy, clients, server_rate=1.0):
         self.total_clients = warm_up + clients
-        self.samples = samples
+        self.samples = 1
         self.server_rate = server_rate
         self.entry_rate = entry_rate
         self.warm_up = warm_up
@@ -47,7 +45,26 @@ class Simulator:
         self.previous_event_time = 0.0
         self.events = EventHeap()
         self.events.push((dist.exp_time(self.entry_rate), INCOMING))
-
+        
+    def start(self):
+        prog = ProgressBar(0, 0.9, 77, mode='fixed', char='#')
+        print "Processando as rodadas:"
+        print prog, '\r',
+        sys.stdout.flush()
+        
+        while not(self.valid_confidence_interval()):
+            while len(self.clients) < self.total_clients:
+                self.process_event()
+            self.discard_clients()
+            self.process_sample()
+            if self.samples > 1:
+                self.calc_results()
+                prog.update_amount(max(prog.amount, self.pb_amount()))
+                print prog, '\r',
+            self.samples += 1
+            sys.stdout.flush()
+        print
+        
     def process_event(self): 
         self.t, event_type = self.events.pop()
 
@@ -121,7 +138,7 @@ class Simulator:
             if client.served and client.color == EQUILIBRIUM:
                 served_clients.append(client)
         self.clients = served_clients
-        
+
     def process_sample(self):
         s_wait_1 = 0; s_s_wait_1 = 0
         s_wait_2 = 0; s_s_wait_2 = 0
@@ -157,35 +174,7 @@ class Simulator:
         self.sums['m_s_s_T2'] += (est.mean(s_wait_2, len(self.clients)) + est.mean(s_server_2, len(self.clients)))**2
         self.init_sample()
         
-
-    def start(self):
-        prog = ProgressBar(0, self.samples, 77, mode='fixed', char='#')
-        print "Processando as amostras:"
-        print prog, '\r',
-        sys.stdout.flush()
-        for i in xrange(self.samples):
-            while len(self.clients) < self.total_clients:
-                self.process_event()
-            self.discard_clients()
-            self.process_sample()
-            prog.increment_amount(1)
-            print prog, '\r',
-            sys.stdout.flush()
-        print  
-            
-    def valid_confidence_interval(self):
-        return (2.0*self.results['E[N1]']['c_i']  <= 0.1*self.results['E[N1]']['value']) and \
-               (2.0*self.results['E[N2]']['c_i']  <= 0.1*self.results['E[N2]']['value']) and \
-               (2.0*self.results['E[T1]']['c_i']  <= 0.1*self.results['E[T1]']['value']) and \
-               (2.0*self.results['E[T2]']['c_i']  <= 0.1*self.results['E[T2]']['value']) and \
-               (2.0*self.results['E[Nq1]']['c_i'] <= 0.1*self.results['E[Nq1]']['value']) and \
-               (2.0*self.results['E[Nq2]']['c_i'] <= 0.1*self.results['E[Nq2]']['value']) and \
-               (2.0*self.results['E[W1]']['c_i']  <= 0.1*self.results['E[W1]']['value']) and \
-               (2.0*self.results['E[W2]']['c_i']  <= 0.1*self.results['E[W2]']['value']) and \
-               (2.0*self.results['V(W1)']['c_i']  <= 0.1*self.results['V(W1)']['value']) and \
-               (2.0*self.results['V(W2)']['c_i']  <= 0.1*self.results['V(W2)']['value'])
-
-    def report(self):
+    def calc_results(self):
         self.results = {
             'E[N1]'  : { 'value' : est.mean(self.sums['m_s_N1'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_N1'], self.sums['m_s_s_N1'], self.samples) },
             'E[N2]'  : { 'value' : est.mean(self.sums['m_s_N2'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_N2'], self.sums['m_s_s_N2'], self.samples) },
@@ -198,17 +187,37 @@ class Simulator:
             'V(W1)'  : { 'value' : est.mean(self.sums['v_s_W1'], self.samples), 'c_i' : est.confidence_interval(self.sums['v_s_W1'], self.sums['v_s_s_W1'], self.samples) },
             'V(W2)'  : { 'value' : est.mean(self.sums['v_s_W2'], self.samples), 'c_i' : est.confidence_interval(self.sums['v_s_W2'], self.sums['v_s_s_W2'], self.samples) }
         }
+        
+    def pb_amount(self):
+        return 1 - max((2.0*self.results['E[N1]']['c_i']/self.results['E[N1]']['value']), \
+                       (2.0*self.results['E[N2]']['c_i']/self.results['E[N2]']['value']), \
+                       (2.0*self.results['E[T1]']['c_i']/self.results['E[T1]']['value']), \
+                       (2.0*self.results['E[T2]']['c_i']/self.results['E[T2]']['value']), \
+                       (2.0*self.results['E[Nq1]']['c_i']/self.results['E[Nq1]']['value']), \
+                       (2.0*self.results['E[Nq2]']['c_i']/self.results['E[Nq2]']['value']), \
+                       (2.0*self.results['E[W1]']['c_i']/self.results['E[W1]']['value']), \
+                       (2.0*self.results['E[W2]']['c_i']/self.results['E[W2]']['value']), \
+                       (2.0*self.results['V(W1)']['c_i']/self.results['V(W1)']['value']), \
+                       (2.0*self.results['V(W2)']['c_i']/self.results['V(W2)']['value']))
+            
+    def valid_confidence_interval(self):
+        return not(self.samples <= 2) and \
+               (2.0*self.results['E[N1]']['c_i']  <= 0.1*self.results['E[N1]']['value']) and \
+               (2.0*self.results['E[N2]']['c_i']  <= 0.1*self.results['E[N2]']['value']) and \
+               (2.0*self.results['E[T1]']['c_i']  <= 0.1*self.results['E[T1]']['value']) and \
+               (2.0*self.results['E[T2]']['c_i']  <= 0.1*self.results['E[T2]']['value']) and \
+               (2.0*self.results['E[Nq1]']['c_i'] <= 0.1*self.results['E[Nq1]']['value']) and \
+               (2.0*self.results['E[Nq2]']['c_i'] <= 0.1*self.results['E[Nq2]']['value']) and \
+               (2.0*self.results['E[W1]']['c_i']  <= 0.1*self.results['E[W1]']['value']) and \
+               (2.0*self.results['E[W2]']['c_i']  <= 0.1*self.results['E[W2]']['value']) and \
+               (2.0*self.results['V(W1)']['c_i']  <= 0.1*self.results['V(W1)']['value']) and \
+               (2.0*self.results['V(W2)']['c_i']  <= 0.1*self.results['V(W2)']['value'])
 
-        if self.valid_confidence_interval():
-            print "Intervalos de confiança estimados válidos!"
-            print "Exibindo os resultados:"
-            for key in self.results.keys():
-                print key, ': ', self.results[key]['value'], ' - I.C: ', self.results[key]['c_i']
-            return self.results
-        else:
-            print "Intervalos de confiança estimados inválidos. Aumente o numero de amostras ou de clientes por amostra."
-            print "Programa terminando..."
-            return None
+    def report(self):
+        print "Exibindo os resultados:"
+        for key in self.results.keys():
+            print key, ': ', self.results[key]['value'], ' - I.C: ', self.results[key]['c_i']
+        return [self.results, self.samples]
     
     @staticmethod
     def pop_queue1_fcfs(instance):
