@@ -9,24 +9,4 @@ Trabalho de AD: Simulador de Filas
 
 ##################################################
 
-1) Introdução
-   - Linguagem utilizada: python.
-   - Método usado: Replicativo.
-
-
-2) Testes de Correção
-
-3) Estimativa da fase transiente
-
-4) Tabelas com os resultados e comentários pertinentes (Irá ser renomeada para Resultados)
-
-5) Otimização
-   - Objeto deque para as filas de espera
-   - Uso de listas encadeadas para a lista de eventos
-
-6) Conclusões
-
-7) Documentação
-
-TO DO:
-    - Fazer o fucking relatorio \o/
+Linguagem: Python.

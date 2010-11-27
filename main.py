@@ -1,16 +1,12 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
-import time
-import sys
-import os
-import webbrowser
-import psyco
-from copy import copy
+import time, sys, os, psyco
 from obj.simulator import *
 from obj.analytic import *
 from obj.result_parser import *
 
+# O psyco é um módulo que agiliza a execu
 psyco.full()
 
 if __name__ == "__main__":
@@ -22,6 +18,7 @@ if __name__ == "__main__":
         { 'value' : LCFS, 'name' : "L.C.F.S (Last Come First Served)"  }
     ]
     
+    # Dicionário que irá guardar os resultados adquiridos pelo simulador e pelo cálculo analítico
     results = {
         FCFS : {
             0.2 : { 'simulator' : {}, 'analytic' : {} },
@@ -39,6 +36,7 @@ if __name__ == "__main__":
         }        
     }
     
+    # Loop que irá rodar o simulador para todos os casos requeridos
     for entry_datum in entry_data:
         entry_rate = entry_datum[0]
         warm_up = entry_datum[1]
@@ -48,31 +46,27 @@ if __name__ == "__main__":
             print "política de atendimento =", service_policy['name']
             
             print "Iniciando simulação:"
-            
+            # Chamada e execução do simulador
             simulator = Simulator(entry_rate=entry_rate, warm_up=warm_up, clients=clients, service_policy=service_policy['value'])
             os.system("date")
             start = time.time()
+            # Bind ao psyco para acelerar a execução da lógica do simulador
             psyco.bind(simulator.start)
             simulator.start()
             finish = time.time()
             print "Tempo total de execução :", (finish - start)
-            
-            # O simulador retorna dois resultados em uma lista: 
-            #      O dicionario com os estimadores calculados em [0];
-            #      O numero de rodadas processadas em [1];
-            simulator_results = simulator.report()
-            results[service_policy['value']][2.0*entry_rate]['simulator'] = simulator_results[0]
-            print "Número de rodadas :", simulator_results[1]
+            results[service_policy['value']][2.0*entry_rate]['simulator'] = simulator.report()
                                             
             print "Iniciando cálculo analítico:"
+            # Chamada e execução da classe que executa os cálculos analíticos
             analytic = Analytic(entry_rate=entry_rate, service_policy=service_policy['value'])
             analytic.start()
             results[service_policy['value']][2.0*entry_rate]['analytic'] = analytic.report()
 
     print "Gerando as tabelas com os resultados"
+    # Chamada e execução da classe que formata os resultados encontrados em um arquivo html
     parsed_result = ResultParser(results)
     parsed_result.parse()
     parsed_result.write('resultados.html')
-    print "Tabelas geradas com sucesso no arquivo 'resultados.html'. Abrindo..."
-    webbrowser.open('resultados.html')
+    print "Tabelas geradas com sucesso no arquivo 'resultados.html'.
     

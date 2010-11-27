@@ -1,5 +1,11 @@
+# -*- coding:utf-8 -*-
+# Módulo que usa a biblioteca matplotlib para desenhar os gráficos necessários para a estimativa da fase transiente
+# (Não é utilizado na versão final)
+
+
 from math import sin, cos
 import matplotlib.pyplot as plt
+
 
 def plot(list, *args, **kwargs):
     plt.plot(xrange(len(list)), list, *args, **kwargs)

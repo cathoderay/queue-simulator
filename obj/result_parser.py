@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# Classe que formata os resultados encontrados em um documento .html usando o parser DOM
 
 
 from xml.dom.minidom import *
@@ -11,6 +12,7 @@ class ResultParser:
         self.results = results
         self.doc = Document()
     
+    # Método que cria a estrutura html do documento e retorna o elemento <body>
     def create_header(self):
         html = self.doc.createElement('html')
         header = self.doc.createElement('header')
@@ -25,6 +27,7 @@ class ResultParser:
         
         return body
     
+    # Método que cria as tabelas
     def create_table(self, table_type, name):
         table = self.doc.createElement('table')
         table.setAttribute('cellspacing', '0')
@@ -67,7 +70,6 @@ class ResultParser:
                 td.setAttribute('align', 'center')            
                 div = self.doc.createElement('div')
                 div.setAttribute('style', 'padding:5px;')
-                print self.results[table_type][utilization]['analytic']
                 if type(self.results[table_type][utilization]['analytic'][key]).__name__ == 'str':
                     div.appendChild(self.doc.createTextNode(str(self.results[table_type][utilization]['analytic'][key])))
                 else:
@@ -86,6 +88,7 @@ class ResultParser:
             
         return table
     
+    # Método que cria o documento html usando os resultados dados
     def parse(self):
         body = self.create_header()
         table_fcfs = self.create_table(FCFS, 'F.C.F.S')
@@ -94,6 +97,7 @@ class ResultParser:
         body.appendChild(table_fcfs)
         body.appendChild(table_lcfs)
     
+    # Método que escreve o documento DOM gerado em um arquivo .html no disco
     def write(self, filename):
         file = open(filename, "w")
         print >>file, self.doc.toprettyxml()

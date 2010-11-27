@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+# Classe que realiza os cálculos analíticos dos valores a serem estimados, para comparação.
 
 
 from util.constants import *
@@ -16,6 +17,7 @@ class Analytic:
                          'E[Nq1]' : 0.0, 'E[Nq2]' : 0.0, 'E[N1]'  : 0.0, 'E[N2]'  : 0.0,
                          'V(W1)'  : 0.0, 'V(W2)'  : 'X' }
     
+    # Método que define os valores de forma analítica.
     def start(self):
         self.results['E[W1]']  = (self.utilization*self.X)/(1.0 - self.entry_rate*self.X)
         self.results['E[W2]']  = (self.utilization*self.results['E[W1]'] + 2.0*self.entry_rate*(self.service_rate**2))/(1.0 - self.utilization)
@@ -30,6 +32,7 @@ class Analytic:
         elif self.service_policy == LCFS:
             self.results['V(W1)'] = (4.0*self.entry_rate)*(self.entry_rate**2 - self.entry_rate + 1)/((1.0 - self.entry_rate)**3)
     
+    # Método que exibe os resultados encontrados e os retorna.
     def report(self):
         print "Exibindo os resultados analíticos: "
         for key in self.results.keys():
