@@ -1,10 +1,26 @@
 \chapter{Introdução}
 \section{Funcionamento geral}
-O simulador possui uma lista de eventos que é processada continuamente, até alcançar um número máximo de clientes que desejamos atender.
-Essa lista de eventos ...
+
+O simulador possui uma lista de eventos que é processada continuamente, até alcançar um número máximo de clientes que desejamos atender por rodada.
+
+São executadas tantas rodadas quanto forem necessárias até todos os intervalos de confiança dos valores que estão sendo estimados forem válidos, ou seja, $<=10\%$ da média do estimador.
+
+Inicialmente, calculamos o tempo de chegada do primeiro cliente que representa um evento de chegada no sistema. A passsagem de um cliente pelo sistema possibilita a criação dos seguintes eventos:
+\begin{itemize}
+\item <tempo, tipo: chegada no sistema>
+\item <tempo, tipo: entrada no servidor pela primeira vez>
+\item <tempo, tipo: saída do servidor>
+\item <tempo, tipo: entrada no servidor pela segunda vez>
+\end{itemize}
+
+Quando um evento de chegada ocorre, outro evento de chegada é criado com o tempo definido com o tempo de chegada baseado em uma distribuição exponencial, que representa o tempo de chegada do próximo cliente. Deste modo, os clientes vão chegando no sistema e a lista de eventos é processada.
+
+Quando um evento é processado, ele é removido da lista de eventos e os novos eventos gerados a partir deste são criados e adicionados na lista, ordenada pelos tempos em que cada evento ocorre.
+
+Todos os parâmetros, descritos na seção \ref{sec:parametros} são passados para o simulador em sua inicialização.
 
 \section{Estruturas internas utilizadas}
-Para viabilizar a implementação da ideia geral apresentada acima, dividimos o simulador em alguns módulos, abaixo estão explicitados os mais importantes:
+Para viabilizar a implementação da ideia geral apresentada acima, dividimos o simulador em alguns módulos, abaixo estão explicitados os mais importantes:\\
 
 \textbf{Módulos utilitários:}
 
@@ -36,15 +52,24 @@ A semente inicial utilizada pelo gerador, por default, é o timestamp corrente n
 Foi utilizado o método replicativo para a simulação.
 
 \section{Implementação do conceito de cores}
-O conceito de cores foi implementando adicionando o atributo "color" no objeto Client, que possui 2 valores: TRANSIENT ou EQUILIBRIUM.  O número de clientes que representam a fase transiente são associados à cor TRANSIENT e os outros clientes são associados à cor EQUILIBRIUM.
+O conceito de cores foi implementando adicionando o atributo ``color" no objeto Client, que possui 2 valores: TRANSIENT ou EQUILIBRIUM.  O número de clientes que representam a fase transiente são associados à cor TRANSIENT e os outros clientes são associados à cor EQUILIBRIUM.
 
 Ao final da rodada de simulação os clientes que possuem a cor TRANSIENT são descartados do cálculo dos estimadores.
 
 \section{Escolha dos parâmetros}
-• Explicação da escolha dos parâmetros utilizados nas rodadas da simulação e tabela com
-os valores utilizados para cada cenário e para cada utilização (número de fregueses
-coletados por rodada, número de rodadas, tamanho da fase transiente, etc.). Estes dados
-podem também serem apresentados a cada resultado da simulação do item 4.
+\label{sec:parametros}
+Ao iniciar o simulador, são executados em sequência todas as simulações necessárias para obtermos todos os dados requeridos para ambas as políticas de atendimento com os parâmetros:
+\begin{itemize}
+  \item $\rho=0.2$ - \# de clientes na frase transiente = 30000
+  \item $\rho=0.4$ - \# de clientes na frase transiente = 40000
+  \item $\rho=0.6$ - \# de clientes na frase transiente = 80000
+  \item $\rho=0.8$ - \# de clientes na frase transiente = 400000
+  \item $\rho=0.9$ - \# de clientes na frase transiente = 500000
+\end{itemize}
+
+A escolha do número de clientes da fase transiente para cada utilização foi estimada de acordo com o que é exposto no capítulo \ref{chap:estimativa}.
+
+O número de clientes processados a cada rodada é um parâmetro de entrada para o simulador. Para o cálculo dos resultados foram utilizados apenas os dados de 100000 clientes, sem contar os presentes na fase transiente.
 
 \section{Máquina utilizada}
 Para a simulação utilizamos uma máquina com as seguintes configurações:
@@ -54,5 +79,4 @@ Para a simulação utilizamos uma máquina com as seguintes configurações:
   \item Sistema Operacional: MAC OS X 10.5.8
 \end{itemize}
 
-• Indique a máquina utilizada e a duração dos experimentos que levaram ao fator mínimo
-(explicado a frente)
+Incluir durações(fator mínimo):

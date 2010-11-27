@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  25 NOV 2010 20:46
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2010.8.29)  26 NOV 2010 14:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -515,29 +515,38 @@ ue-simulator/relatorio/minerva.jpg>]
 
 (/home/kaiser/workspace/queue-simulator/relatorio/introducao.tex
 Cap\'{\i }tulo 1.
+LaTeX Font Info:    Try loading font information for OMS+aer on input line 10.
+(/usr/share/texmf/tex/latex/R/omsaer.fd
+File: omsaer.fd 1999/12/27
+)
+LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
 
-Overfull \hbox (14.59996pt too wide) in paragraph at lines 13--14
-\T1/aer/m/n/12 A lin-guagem Python uti-liza o ger-ador de números aleatórios ``
-Mersenne Twister",
+Underfull \hbox (badness 10000) in paragraph at lines 23--24
+
  []
 
 [2
 
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+aer on input line 23.
- (/usr/share/texmf/tex/latex/R/omsaer.fd
-File: omsaer.fd 1999/12/27
-)
-LaTeX Font Info:    Font shape `OMS/aer/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 23.
-) [3]
+Overfull \hbox (2.32431pt too wide) in paragraph at lines 29--30
+[]\T1/aer/m/n/12 Dist: Mó-dulo com o método que re-torna os tem-pos aleatórios 
+de chegada
+ []
+
+
+Overfull \hbox (14.59996pt too wide) in paragraph at lines 45--46
+\T1/aer/m/n/12 A lin-guagem Python uti-liza o ger-ador de números aleatórios "M
+ersenne Twister",
+ []
+
+[3]) [4] [5]
 \openout2 = `correcao.aux'.
 
-
-(/home/kaiser/workspace/queue-simulator/relatorio/correcao.tex
+ (/home/kaiser/workspace/queue-simulator/relatorio/correcao.tex
 Cap\'{\i }tulo 2.
-) [4
+) [6
 
 
 
@@ -546,7 +555,7 @@ Cap\'{\i }tulo 2.
 
  (/home/kaiser/workspace/queue-simulator/relatorio/estimativa.tex
 Cap\'{\i }tulo 3.
-) [5
+) [7
 
 
 
@@ -555,7 +564,7 @@ Cap\'{\i }tulo 3.
 
  (/home/kaiser/workspace/queue-simulator/relatorio/resultados.tex
 Cap\'{\i }tulo 4.
-) [6
+) [8
 
 
 
@@ -564,7 +573,7 @@ Cap\'{\i }tulo 4.
 
  (/home/kaiser/workspace/queue-simulator/relatorio/otimizacao.tex
 Cap\'{\i }tulo 5.
-) [7
+) [9
 
 
 
@@ -573,7 +582,7 @@ Cap\'{\i }tulo 5.
 
  (/home/kaiser/workspace/queue-simulator/relatorio/conclusoes.tex
 Cap\'{\i }tulo 6.
-) [8
+) [10
 
 
 
@@ -582,7 +591,7 @@ Cap\'{\i }tulo 6.
 
  (/home/kaiser/workspace/queue-simulator/relatorio/anexo.tex
 Cap\'{\i }tulo 7.
-) [9
+) [11
 
 
 
@@ -595,21 +604,22 @@ Cap\'{\i }tulo 7.
 (/home/kaiser/workspace/queue-simulator/relatorio/conclusoes.aux)
 (/home/kaiser/workspace/queue-simulator/relatorio/anexo.aux)) ) 
 Here is how much of TeX's memory you used:
- 3809 strings out of 495061
- 53300 string characters out of 1182621
- 117809 words of memory out of 3000000
- 6866 multiletter control sequences out of 15000+50000
+ 3813 strings out of 495061
+ 53365 string characters out of 1182621
+ 118829 words of memory out of 3000000
+ 6870 multiletter control sequences out of 15000+50000
  22406 words of font info for 50 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 45i,6n,42p,364b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 45i,6n,42p,413b,201s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/share/texm
 f-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/f
-onts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/p
-ublic/amsfonts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfont
-s/cm/cmsy10.pfb>
-Output written on relatorio.pdf (10 pages, 122531 bytes).
+onts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texmf-texlive/fonts/type1/
+public/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfo
+nts/cm/cmr8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmsy10
+.pfb>
+Output written on relatorio.pdf (12 pages, 135191 bytes).
 PDF statistics:
- 52 PDF objects out of 1000 (max. 8388607)
+ 62 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
