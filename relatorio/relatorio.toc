@@ -1,4 +1,4 @@
-\select@language {portuges}
+\select@language {portuguese}
 \contentsline {chapter}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{2}
 \contentsline {section}{\numberline {1.1}Funcionamento geral}{2}
 \contentsline {section}{\numberline {1.2}Estruturas internas utilizadas}{3}
@@ -7,12 +7,14 @@
 \contentsline {section}{\numberline {1.5}M\IeC {\'e}todos utilizados}{4}
 \contentsline {section}{\numberline {1.6}Implementa\IeC {\c c}\IeC {\~a}o do conceito de cores}{4}
 \contentsline {section}{\numberline {1.7}Escolha dos par\IeC {\^a}metros}{4}
-\contentsline {section}{\numberline {1.8}M\IeC {\'a}quina utilizada}{4}
+\contentsline {section}{\numberline {1.8}M\IeC {\'a}quina utilizada}{5}
 \contentsline {chapter}{\numberline {2}Teste de Corre\IeC {\c c}\IeC {\~a}o}{6}
 \contentsline {chapter}{\numberline {3}Estimativa da fase transiente}{7}
-\contentsline {chapter}{\numberline {4}Resultados}{8}
-\contentsline {section}{\numberline {4.1}Tabelas}{8}
-\contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{8}
-\contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{9}
-\contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{10}
-\contentsline {chapter}{\numberline {7}Implementa\IeC {\c c}\IeC {\~a}o}{11}
+\contentsline {section}{\numberline {3.1}No simulador:}{7}
+\contentsline {section}{\numberline {3.2}Gr\IeC {\'a}ficos:}{7}
+\contentsline {chapter}{\numberline {4}Resultados}{13}
+\contentsline {section}{\numberline {4.1}Tabelas}{13}
+\contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{13}
+\contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{16}
+\contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{17}
+\contentsline {chapter}{\numberline {7}Implementa\IeC {\c c}\IeC {\~a}o}{18}

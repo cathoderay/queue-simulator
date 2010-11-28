@@ -1,12 +1,26 @@
 \chapter{Resultados}
-Comente os resultados obtidos. Procure analisar a evolução dos valores e o porquê de sua
-obtenção. Garanta que todos os resultados analíticos estão dentro do intervalo de confiança.
-Isso é essencial! Apresente os resultados analíticos conhecidos junto com os valores
-medidos.
-Para cada utilização indique precisamente o número de rodadas, o tamanho das rodadas
-(explique como foi determinado), e o tamanho da fase transiente.
 
-
+Neste capítulo apresentamos os resultados obtidos na seção \ref{sec:tabelas} e os comentários a respeito deles na seção \ref{sec:coment}.
 
 \section{Tabelas}
+\label{sec:tabelas}
+
+Os resultados gerados pelo simulador são mostrados nas duas tabelas abaixo. O formato delas segue o seguinte padrão:\\
+\begin{itemize}
+  \item Cada coluna representa um tipo de resultado (Tempo de espera na fila 1, etc.).
+  \item Cada linha representa uma forma de utilização do servidor diferente.
+  \item Cada célula contém respectivamente o valor analítico do resultado, o valor estimado pelo simulador e o tamanho do intervalo de confiança em \% do valor estimado.
+\end{itemize}
+
+\begin{figure}
+   \includegraphics[width=1.0\textwidth]{tabelaFCFS.png}
+   \caption{Tabela com os valores para a política de atendimento First Come First Served.}
+\end{figure}
+
+\begin{figure}
+   \includegraphics[width=1.0\textwidth]{tabelaLCFS.png}
+   \caption{Tabela com os valores para a política de atendimento First Come First Served.}
+\end{figure}
+
 \section{Comentários}
+\label{sec:coment}
