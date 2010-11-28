@@ -14,7 +14,7 @@
 \contentsline {section}{\numberline {3.2}Gr\IeC {\'a}ficos:}{7}
 \contentsline {chapter}{\numberline {4}Resultados}{13}
 \contentsline {section}{\numberline {4.1}Tabelas}{13}
-\contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{13}
-\contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{16}
-\contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{17}
-\contentsline {chapter}{\numberline {7}Implementa\IeC {\c c}\IeC {\~a}o}{18}
+\contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{16}
+\contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{18}
+\contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{19}
+\contentsline {chapter}{\numberline {7}Implementa\IeC {\c c}\IeC {\~a}o}{20}

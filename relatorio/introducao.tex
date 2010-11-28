@@ -42,6 +42,7 @@ Para viabilizar a implementação da ideia geral apresentada acima, dividimos o 
 Para a codificação do simulador foi utilizada a linguagem de programação Python, versão 2.5.5.
 
 \section{Geração de variáveis aleatórias}
+\label{sec:random}
 A linguagem Python utiliza o gerador de números aleatórios "Mersenne Twister", um dos métodos mais extensivamente testados existentes. 
 
 O método garante que a sequência de números gerados pela chamada random() só se repetirá em um período de $2^{19937}-1$. Como o período é bem extenso, não precisamos nos preocupar com redefinir seeds que gerassem sequências sobrepostas.
@@ -69,7 +70,7 @@ Ao iniciar o simulador, são executados em sequência todas as simulações nece
 
 A escolha do número de clientes da fase transiente para cada utilização foi estimada de acordo com o que é exposto no capítulo \ref{chap:estimativa}.
 
-O número de clientes processados a cada rodada é um parâmetro de entrada para o simulador. Para o cálculo dos resultados foram utilizados apenas os dados de 100000 clientes, sem contar os presentes na fase transiente.
+O número de clientes que são avaliados a cada rodada, ou seja, pertencentes à fase de equilíbrio do sistema, é um parâmetro de entrada para o simulador. Para o cálculo dos resultados foram utilizados apenas os dados de 100.000 clientes, sem contar os presentes na fase transiente.
 
 \pagebreak
 \section{Máquina utilizada}

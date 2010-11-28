@@ -1,4 +1,4 @@
-This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.11.25)  28 NOV 2010 00:05
+This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.11.25)  28 NOV 2010 01:28
 entering extended mode
 \write18 enabled.
  file:line:error style messages enabled.
@@ -562,7 +562,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--24
 
 
 ] [3] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 76--77
+Underfull \hbox (badness 10000) in paragraph at lines 77--78
 
  []
 
@@ -580,21 +580,6 @@ Cap\'{\i }tulo 2.
 
  (./estimativa.tex
 Cap\'{\i }tulo 3.
-
-Underfull \hbox (badness 10000) in paragraph at lines 4--5
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 6--7
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 8--9
-
- []
-
 <images//V[W2]p=0_2FCFS.jpg, id=40, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_2FCFS.jpg Graphic file (type jpg)
 
@@ -652,23 +637,28 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--9
 
  []
 
-<images//tabelaFCFS.png, id=72, 806.01125pt x 541.02126pt>
+[13
+
+
+
+] <images//tabelaFCFS.png, id=75, 806.01125pt x 541.02126pt>
 File: images//tabelaFCFS.png Graphic file (type png)
 
-<use images//tabelaFCFS.png>
-<images//tabelaLCFS.png, id=73, 813.0375pt x 540.0175pt>
+<use images//tabelaFCFS.png> [14 <./images//tabelaFCFS.png>]
+<images//tabelaLCFS.png, id=79, 813.0375pt x 540.0175pt>
 File: images//tabelaLCFS.png Graphic file (type png)
 
-<use images//tabelaLCFS.png>) [13
+<use images//tabelaLCFS.png> [15 <./images//tabelaLCFS.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 30--31
 
+ []
 
-
-] [14 <./images//tabelaFCFS.png>] [15 <./images//tabelaLCFS.png>]
+[16]) [17]
 \openout2 = `otimizacao.aux'.
 
  (./otimizacao.tex
 Cap\'{\i }tulo 5.
-) [16
+) [18
 
 
 
@@ -677,7 +667,7 @@ Cap\'{\i }tulo 5.
 
  (./conclusoes.tex
 Cap\'{\i }tulo 6.
-) [17
+) [19
 
 
 
@@ -686,22 +676,22 @@ Cap\'{\i }tulo 6.
 
  (./anexo.tex
 Cap\'{\i }tulo 7.
-) [18
+) [20
 
 
 
 ] (./relatorio.aux (./introducao.aux) (./correcao.aux) (./estimativa.aux)
 (./resultados.aux) (./otimizacao.aux) (./conclusoes.aux) (./anexo.aux)) ) 
 Here is how much of TeX's memory you used:
- 3360 strings out of 94500
- 43693 string characters out of 1174972
- 101625 words of memory out of 1000000
- 6384 multiletter control sequences out of 10000+50000
+ 3363 strings out of 94500
+ 43731 string characters out of 1174972
+ 101657 words of memory out of 1000000
+ 6387 multiletter control sequences out of 10000+50000
  24555 words of font info for 53 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 32i,8n,34p,341b,297s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 32i,8n,34p,681b,303s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 92 PDF objects out of 300000
+ 98 PDF objects out of 300000
  0 named destinations out of 131072
  66 words of extra memory for PDF output out of 65536
 </opt/
@@ -710,4 +700,4 @@ local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf
 bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi1
 2.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local
 /share/texmf-dist/fonts/type1/bluesky/cm/cmbx12.pfb>
-Output written on relatorio.pdf (19 pages, 1015168 bytes).
+Output written on relatorio.pdf (21 pages, 1020199 bytes).
