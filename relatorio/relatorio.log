@@ -1,4 +1,4 @@
-This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.11.25)  28 NOV 2010 11:32
+This is pdfeTeXk, Version 3.141592-1.21a-2.2 (Web2C 7.5.4) (format=pdflatex 2010.11.25)  28 NOV 2010 14:32
 entering extended mode
 \write18 enabled.
  file:line:error style messages enabled.
@@ -446,57 +446,86 @@ Package: amsthm 2004/08/06 v2.20
 \thm@postskip=\skip55
 \thm@headsep=\skip56
 \dth@everypar=\toks28
-) (./relatorio.aux
-(./introducao.aux) (./correcao.aux) (./estimativa.aux) (./resultados.aux)
+)
+(/opt/local/share/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count117
+\lst@gtempboxa=\box30
+\lst@token=\toks29
+\lst@length=\count118
+\lst@currlwidth=\dimen123
+\lst@column=\count119
+\lst@pos=\count120
+\lst@lostspace=\dimen124
+\lst@width=\dimen125
+\lst@newlines=\count121
+\lst@lineno=\count122
+\c@lstlisting=\count123
+\lst@maxwidth=\dimen126
+
+(/opt/local/share/texmf-dist/tex/latex/listings/lstpatch.sty
+File: lstpatch.sty 2004/10/17 1.3b (Carsten Heinz)
+)
+(/opt/local/share/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2004/09/07 1.3 (Carsten Heinz)
+\c@lstnumber=\count124
+\lst@skipnumbers=\count125
+\lst@framebox=\box31
+)
+(/opt/local/share/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2004/09/05 1.3 listings configuration
+))
+Package: listings 2004/10/17 1.3b (Carsten Heinz)
+ (./relatorio.aux (./introducao.aux) (./correcao.aux) (./estimativa.aux) (./res
+ultados.aux)
 (./otimizacao.aux) (./conclusoes.aux) (./anexo.aux))
 \openout1 = `relatorio.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
-LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
+LaTeX Font Info:    ... okay on input line 13.
 
 (/opt/local/share/texmf-dist/tex/context/base/supp-pdf.tex
 (/opt/local/share/texmf-dist/tex/context/base/supp-mis.tex
 loading : Context Support Macros / Miscellaneous (2004.10.26)
-\protectiondepth=\count117
-\scratchcounter=\count118
-\scratchtoks=\toks29
-\scratchdimen=\dimen123
+\protectiondepth=\count126
+\scratchcounter=\count127
+\scratchtoks=\toks30
+\scratchdimen=\dimen127
 \scratchskip=\skip57
 \scratchmuskip=\muskip11
-\scratchbox=\box30
+\scratchbox=\box32
 \scratchread=\read1
 \scratchwrite=\write3
-\zeropoint=\dimen124
-\onepoint=\dimen125
-\onebasepoint=\dimen126
-\minusone=\count119
-\thousandpoint=\dimen127
-\onerealpoint=\dimen128
-\emptytoks=\toks30
-\nextbox=\box31
-\nextdepth=\dimen129
-\everyline=\toks31
-\!!counta=\count120
-\!!countb=\count121
-\recursecounter=\count122
+\zeropoint=\dimen128
+\onepoint=\dimen129
+\onebasepoint=\dimen130
+\minusone=\count128
+\thousandpoint=\dimen131
+\onerealpoint=\dimen132
+\emptytoks=\toks31
+\nextbox=\box33
+\nextdepth=\dimen133
+\everyline=\toks32
+\!!counta=\count129
+\!!countb=\count130
+\recursecounter=\count131
 )
 loading : Context Support Macros / PDF (2004.03.26)
-\nofMPsegments=\count123
-\nofMParguments=\count124
-\MPscratchCnt=\count125
-\MPscratchDim=\dimen130
-\MPnumerator=\count126
-\everyMPtoPDFconversion=\toks32
+\nofMPsegments=\count132
+\nofMParguments=\count133
+\MPscratchCnt=\count134
+\MPscratchDim=\dimen134
+\MPnumerator=\count135
+\everyMPtoPDFconversion=\toks33
 ) (/opt/local/share/texmf-dist/tex/latex/ms/ragged2e.sty
 Package: ragged2e 2003/03/25 v2.04 ragged2e Package (MS)
 
@@ -519,30 +548,32 @@ LaTeX Info: Redefining \selectfont on input line 125.
 \RaggedRightParindent=\skip70
 \JustifyingParindent=\skip71
 )
-Package caption Info: float package v1.2 (or newer) detected on input line 12.
+Package caption Info: float package v1.2 (or newer) detected on input line 13.
+Package caption Info: listings package v1.2 (or newer) detected on input line 1
+3.
 
 <images//minerva.jpg, id=1, 200.75pt x 233.87375pt>
 File: images//minerva.jpg Graphic file (type jpg)
  <use images//minerva.jpg>
-Underfull \hbox (badness 10000) in paragraph at lines 20--22
+Underfull \hbox (badness 10000) in paragraph at lines 21--23
 
  []
 
 
-Overfull \hbox (20.2409pt too wide) in paragraph at lines 16--23
+Overfull \hbox (20.2409pt too wide) in paragraph at lines 17--24
 []$[]$ $[]$ 
  []
 
 [1
 
 {/opt/local/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./images//mine
-rva.jpg>] (./relatorio.toc)
+rva.jpg>] (./relatorio.toc [1
+
+])
 \tf@toc=\write4
 \openout4 = `relatorio.toc'.
 
- [1
-
-]
+ [2]
 \openout2 = `introducao.aux'.
 
  (./introducao.tex
@@ -558,20 +589,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--24
 
  []
 
-[2
+[3
 
 
-] [3] [4]
+] [4] [5]
 Underfull \hbox (badness 10000) in paragraph at lines 77--78
 
  []
 
-) [5]
+) [6]
 \openout2 = `correcao.aux'.
 
  (./correcao.tex
 Cap\'{\i }tulo 2.
-) [6
+) [7
 
 
 
@@ -580,54 +611,54 @@ Cap\'{\i }tulo 2.
 
  (./estimativa.tex
 Cap\'{\i }tulo 3.
-<images//V[W2]p=0_2FCFS.jpg, id=40, 584.0pt x 290.54pt>
+<images//V[W2]p=0_2FCFS.jpg, id=43, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_2FCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_2FCFS.jpg>
-<images//V[W2]p=0_2LCFS.jpg, id=41, 584.0pt x 290.54pt>
+<images//V[W2]p=0_2LCFS.jpg, id=44, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_2LCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_2LCFS.jpg>
-<images//V[W2]p=0_4FCFS.jpg, id=42, 584.0pt x 290.54pt>
+<images//V[W2]p=0_4FCFS.jpg, id=45, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_4FCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_4FCFS.jpg>
-<images//V[W2]p=0_4LCFS.jpg, id=43, 584.0pt x 290.54pt>
+<images//V[W2]p=0_4LCFS.jpg, id=46, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_4LCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_4LCFS.jpg>
-<images//V[W2]p=0_6FCFS.jpg, id=44, 584.0pt x 290.54pt>
+<images//V[W2]p=0_6FCFS.jpg, id=47, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_6FCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_6FCFS.jpg>
-<images//V[W2]p=0_6LCFS.jpg, id=45, 584.0pt x 290.54pt>
+<images//V[W2]p=0_6LCFS.jpg, id=48, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_6LCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_6LCFS.jpg>
-<images//V[W2]p=0_8FCFS.jpg, id=46, 584.0pt x 290.54pt>
+<images//V[W2]p=0_8FCFS.jpg, id=49, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_8FCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_8FCFS.jpg>
-<images//V[W2]p=0_8LCFS.jpg, id=47, 584.0pt x 290.54pt>
+<images//V[W2]p=0_8LCFS.jpg, id=50, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_8LCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_8LCFS.jpg>
-<images//V[W2]p=0_9FCFS.jpg, id=48, 584.0pt x 290.54pt>
+<images//V[W2]p=0_9FCFS.jpg, id=51, 584.0pt x 290.54pt>
 File: images//V[W2]p=0_9FCFS.jpg Graphic file (type jpg)
 
 <use images//V[W2]p=0_9FCFS.jpg>
-<images//V[W2]p=0_9LCFS.jpg, id=49, 1168.0pt x 581.08pt>
+<images//V[W2]p=0_9LCFS.jpg, id=52, 1168.0pt x 581.08pt>
 File: images//V[W2]p=0_9LCFS.jpg Graphic file (type jpg)
 
-<use images//V[W2]p=0_9LCFS.jpg>) [7
+<use images//V[W2]p=0_9LCFS.jpg>) [8
 
 
 
-] [8 <./images//V[W2]p=0_2FCFS.jpg> <./images//V[W2]p=0_2LCFS.jpg>] [9 <./image
-s//V[W2]p=0_4FCFS.jpg> <./images//V[W2]p=0_4LCFS.jpg>] [10 <./images//V[W2]p=0_
-6FCFS.jpg> <./images//V[W2]p=0_6LCFS.jpg>]
-[11 <./images//V[W2]p=0_8FCFS.jpg> <./images//V[W2]p=0_8LCFS.jpg>] [12 <./image
-s//V[W2]p=0_9FCFS.jpg> <./images//V[W2]p=0_9LCFS.jpg>]
+] [9 <./images//V[W2]p=0_2FCFS.jpg> <./images//V[W2]p=0_2LCFS.jpg>] [10 <./imag
+es//V[W2]p=0_4FCFS.jpg> <./images//V[W2]p=0_4LCFS.jpg>] [11 <./images//V[W2]p=0
+_6FCFS.jpg> <./images//V[W2]p=0_6LCFS.jpg>] [12 <./images//V[W2]p=0_8FCFS.jpg> 
+<./images//V[W2]p=0_8LCFS.jpg>] [13 <./images//V[W2]p=0_9FCFS.jpg> <./images//V
+[W2]p=0_9LCFS.jpg>]
 \openout2 = `resultados.aux'.
 
  (./resultados.tex
@@ -637,23 +668,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--9
 
  []
 
-[13
+[14
 
 
 
-] <images//tabelaFCFS.png, id=75, 806.01125pt x 541.02126pt>
+] <images//tabelaFCFS.png, id=78, 806.01125pt x 541.02126pt>
 File: images//tabelaFCFS.png Graphic file (type png)
 
-<use images//tabelaFCFS.png> [14 <./images//tabelaFCFS.png>]
-<images//tabelaLCFS.png, id=79, 813.0375pt x 540.0175pt>
+<use images//tabelaFCFS.png> [15 <./images//tabelaFCFS.png>]
+<images//tabelaLCFS.png, id=82, 813.0375pt x 540.0175pt>
 File: images//tabelaLCFS.png Graphic file (type png)
 
-<use images//tabelaLCFS.png> [15 <./images//tabelaLCFS.png>]
+<use images//tabelaLCFS.png> [16 <./images//tabelaLCFS.png>]
 Underfull \hbox (badness 10000) in paragraph at lines 30--31
 
  []
 
-[16]) [17]
+[17]) [18]
 \openout2 = `otimizacao.aux'.
 
  (./otimizacao.tex
@@ -677,7 +708,7 @@ Overfull \hbox (14.4291pt too wide) in paragraph at lines 21--22
 rodada \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 fasestransientes\OT1/cmr/m/n/12 )$ 
  []
 
-) [18
+) [19
 
 
 
@@ -686,7 +717,7 @@ rodada \OT1/cmr/m/n/12 + \OML/cmm/m/it/12 fasestransientes\OT1/cmr/m/n/12 )$
 
  (./conclusoes.tex
 Cap\'{\i }tulo 6.
-) [19
+) [20
 
 
 
@@ -694,761 +725,83 @@ Cap\'{\i }tulo 6.
 \openout2 = `anexo.aux'.
 
  (./anexo.tex
+(/opt/local/share/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
 Cap\'{\i }tulo 7.
 
-Underfull \hbox (badness 10000) in paragraph at lines 3--4
+Underfull \hbox (badness 10000) in paragraph at lines 12--13
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 8--9
+Underfull \hbox (badness 10000) in paragraph at lines 17--18
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+aett on input line 10.
-(/opt/local/share/texmf-dist/tex/latex/ae/t1aett.fd
-File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-)
-Overfull \hbox (140.444pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 def __init__(self, entry_rate, warm_up, service_policy, c
-lients, server_rate=1.0):[] 
- []
-
-
-Overfull \hbox (109.60423pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Número total de clientes = fase transiente + client
-es a serem avaliados[] 
- []
-
-[20
-
-
-
-]
-Overfull \hbox (269.97102pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Definido aqui o método a ser utilizado para retirar
- os clientes da fila e coloca-los no servidor,[] 
- []
-
-
-Overfull \hbox (54.09265pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 Simulator.__dict__['pop_queue1'] = Simulator.pop_
-queue1_fcfs[] 
- []
-
-
-Overfull \hbox (54.09265pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 Simulator.__dict__['pop_queue2'] = Simulator.pop_
-queue2_fcfs[] 
- []
-
-
-Overfull \hbox (17.08493pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 self.service_policy = 'First Come First Served (F
-CFS)'[] 
- []
-
-
-Overfull \hbox (54.09265pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 Simulator.__dict__['pop_queue1'] = Simulator.pop_
-queue1_lcfs[] 
- []
-
-
-Overfull \hbox (54.09265pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 Simulator.__dict__['pop_queue2'] = Simulator.pop_
-queue2_lcfs[] 
- []
-
-
-Overfull \hbox (10.91698pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 self.service_policy = 'Last Come First Served (LC
-FS)'[] 
- []
-
-
-Overfull \hbox (374.82623pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Define o dicionário que irá guardar a soma e a soma
- dos quadrados das médias e variâncias estimadas a cada rodada.[] 
- []
-
-
-Overfull \hbox (84.93242pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums = { 'm_s_W1': 0, 'm_s_s_W1': 0, 'v_s_W1': 0
-, 'v_s_s_W1': 0,[] 
- []
-
-
-Overfull \hbox (97.26833pt too wide) in paragraph at lines 315--315
-[]                      \T1/aett/m/n/12 'm_s_N1': 0, 'm_s_s_N1': 0, 'm_s_Nq1': 
-0, 'm_s_s_Nq1': 0,[] 
- []
-
-
-Overfull \hbox (84.93242pt too wide) in paragraph at lines 315--315
-[]                      \T1/aett/m/n/12 'm_s_T1': 0, 'm_s_s_T1': 0, 'm_s_W2': 0
-, 'm_s_s_W2': 0,[] 
- []
-
-
-Overfull \hbox (84.93242pt too wide) in paragraph at lines 315--315
-[]                      \T1/aett/m/n/12 'v_s_W2': 0, 'v_s_s_W2': 0, 'm_s_N2': 0
-, 'm_s_s_N2': 0,[] 
- []
-
-
-Overfull \hbox (103.43628pt too wide) in paragraph at lines 315--315
-[]                      \T1/aett/m/n/12 'm_s_Nq2': 0, 'm_s_s_Nq2': 0, 'm_s_T2':
- 0, 'm_s_s_T2': 0 }[] 
- []
-
-
-Overfull \hbox (195.95558pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Dicionário que irá guardar os resultados de cada es
-timador calculados pelo simulador.[] 
- []
-
-
-Overfull \hbox (282.30693pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Cliente que está no servidor ( Quando esta variável
- for nula significa que o servidor está ocioso )[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Lista dos clientes que entraram no sistema durante 
-a rodada.[] 
- []
-
-
-Overfull \hbox (276.13898pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Dicionário com a soma das variáveis que indicam o n
-úmero de pessoas nas filas (N) e em espera (Nq)[] 
- []
-
-
-Overfull \hbox (35.58879pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.N_samples = { 'Nq_1': 0, 'N_1': 0, 'Nq_2': 0, 'N
-_2': 0 }[] 
- []
-
-
-Overfull \hbox (4.74902pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Tempo do evento anterior ao que está sendo processa
-do.[] 
- []
-
-[21]
-Overfull \hbox (152.7799pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Inicializa o simulador com o evento de chegada do p
-rimeiro cliente ao sistema.[] 
- []
-
-
-Overfull \hbox (29.42084pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.events.push((dist.exp_time(self.entry_rate), INC
-OMING))[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Inicializa a barra usada para medir o progresso do 
-simulador[] 
- []
-
-
-Overfull \hbox (282.30693pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Ela é contabilizada de acordo com o valor do menor 
-intervalo de confiança encontrado a cada rodada,[] 
- []
-
-
-Overfull \hbox (91.10037pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Chegando a 100% quando o intervalo chega a 10% da m
-édia do estimador[] 
- []
-
-
-Overfull \hbox (239.13126pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Termina quando todos os intervalos de confiança for
-em menores que 10% da média do estimador.[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Loop de cada rodada, processa um evento a cada 
-iteração.[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]                \T1/aett/m/n/12 prog.update_amount(max(prog.amount, self.pb_a
-mount()))[] 
- []
-
-
-Overfull \hbox (146.61195pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Remove um evento da lista para ser processado e atu
-aliza o tempo do simulador[] 
- []
-
-
-Overfull \hbox (214.45944pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Define a cor do cliente, verificando se ele che
-gou durante a fase transiente ou não.[] 
- []
-
-[22]
-Overfull \hbox (140.444pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Adiciona o cliente na fila 1 e define o seu tem
-po de chegada nessa fila.[] 
- []
-
-
-Overfull \hbox (337.81851pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Assim que uma chegada é processada, adiciona ou
-tro evento de chegada, dando o tempo que ela irá ocorrer.[] 
- []
-
-
-Overfull \hbox (109.60423pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 self.events.push((self.t + dist.exp_time(self.ent
-ry_rate), INCOMING))[] 
- []
-
-
-Overfull \hbox (356.32237pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Se o servidor estiver ocioso, adiciona o evento
- Entrada ao servidor pela fila 1 para esse cliente na lista.[] 
- []
-
-
-Overfull \hbox (10.91698pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Define o tempo que o cliente vai ficar no servi
-dor.[] 
- []
-
-
-Overfull \hbox (134.27605pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Adiciona o cliente no servidor e define o seu t
-empo de saída da fila 1.[] 
- []
-
-
-Overfull \hbox (4.74902pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 self.events.push((self.t + server_time, SERVER_OU
-T))[] 
- []
-
-
-Overfull \hbox (10.91698pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Define o tempo que o cliente vai ficar no servi
-dor.[] 
- []
-
-
-Overfull \hbox (134.27605pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Adiciona o cliente no servidor e define o seu t
-empo de saída da fila 2.[] 
- []
-
-
-Overfull \hbox (4.74902pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 self.events.push((self.t + server_time, SERVER_OU
-T))[] 
- []
-
-[23]
-Overfull \hbox (245.29921pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Se a fila 1 possuir clientes, adiciona o evento
- Entrada ao servidor pela fila 1 na lista.[] 
- []
-
-
-Overfull \hbox (263.80307pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Se a fila 2 possuir clientes e a fila 1 vazia, 
-ou se o sistema estiver vazio e o cliente que[] 
- []
-
-
-Overfull \hbox (319.31465pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # está no servidor entrou nele pela fila 1, adici
-ona o evento Entrada ao servidor pela fila 2 na lista.[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 elif self.queue2 or self.server_current_client.qu
-eue == 1:[] 
- []
-
-
-Overfull \hbox (202.12354pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Se o cliente que está no servidor entrou nele p
-ela fila 1, adiciona ele na fila 2.[] 
- []
-
-
-Overfull \hbox (17.08493pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 # Senão, define que ele foi servido e saiu do sis
-tema.[] 
- []
-
-
-Overfull \hbox (195.95558pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Método que trata a entrada de um cliente na fila 2. Enc
-apsulado para melhor legibilidade.[] 
- []
-
-
-Overfull \hbox (232.9633pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Pega o cliente do servidor e o adiciona na fila 2, 
-definindo seu tempo de chegada na mesma.[] 
- []
-
-
-Overfull \hbox (195.95558pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Atualiza o número de pessoas nas filas a cada chegada, 
-é chamado no início de eventos que[] 
- []
-
-
-Overfull \hbox (103.43628pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # fazem o tempo do simulador passar (Chegada ao sistema e
- Saída do servidor)[] 
- []
-
-
-Overfull \hbox (146.61195pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Calcula o intervalo de tempo entre o evento atual e
- o imediatamente anterior.[] 
- []
-
-
-Overfull \hbox (276.13898pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Soma às variáveis estimadas (Nq1) e (Nq2) o número 
-de clientes na fila de espera multiplicado pelo[] 
- []
-
-
-Overfull \hbox (158.94786pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # intervalo de tempo (delta) em que as filas ficaram 
-com esse número de clientes.[] 
- []
-
+[21
 
-Overfull \hbox (245.29921pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Testa se o cliente que está no servidor, se ele est
-iver ocupado, veio da fila 1 ou da fila 2.[] 
- []
-
-[24]
-Overfull \hbox (202.12354pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Soma às variáveis estimadas (N1) e (N2) o número de
- clientes na fila multiplicado pelo[] 
- []
-
-
-Overfull \hbox (158.94786pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # intervalo de tempo (delta) em que as filas ficaram 
-com esse número de clientes.[] 
- []
-
-
-Overfull \hbox (374.82623pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Atualiza o valor do tempo do evento anterior pelo e
-vento atual, já que o simulador vai processar o próximo evento.[] 
- []
-
-
-Overfull \hbox (405.666pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Método que descarta os clientes da fase transiente e os
- clientes que ainda estão no sistema após o término do processamento[] 
- []
-
-
-Overfull \hbox (257.63512pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Loop que faz a soma e a soma dos quadrados dos temp
-os de espera e a soma dos tempos em servidor[] 
- []
-
-
-Overfull \hbox (202.12354pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Adiciona à soma e à soma dos quadrados dos estimado
-res os valores estimados na rodada.[] 
- []
-
-
-Overfull \hbox (29.42084pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_W1'] += est.mean(s_wait_1, len(self.cl
-ients))[] 
- []
-
-
-Overfull \hbox (60.2606pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_W1'] += est.mean(s_wait_1, len(self.
-clients))**2[] 
- []
-
-
-Overfull \hbox (128.1081pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['v_s_W1'] += est.variance(s_wait_1, s_s_wai
-t_1, len(self.clients))[] 
- []
-
-
-Overfull \hbox (158.94786pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['v_s_s_W1'] += est.variance(s_wait_1, s_s_w
-ait_1, len(self.clients))**2[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_N1'] += est.mean(self.N_samples['N_1']
-, self.t)[] 
- []
-
-
-Overfull \hbox (72.59651pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_N1'] += est.mean(self.N_samples['N_1
-'], self.t)**2[] 
- []
-
-
-Overfull \hbox (54.09265pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_Nq1'] += est.mean(self.N_samples['Nq_1
-'], self.t)[] 
- []
-
-[25]
-Overfull \hbox (84.93242pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_Nq1'] += est.mean(self.N_samples['Nq
-_1'], self.t)**2[] 
- []
-
-
-Overfull \hbox (288.47488pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_T1'] += est.mean(s_wait_1, len(self.cl
-ients)) + est.mean(s_server_1, len(self.clients))[] 
- []
-
-
-Overfull \hbox (331.65056pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_T1'] += (est.mean(s_wait_1, len(self
-.clients)) + est.mean(s_server_1, len(self.clients)))**2[] 
- []
-
-
-Overfull \hbox (29.42084pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_W2'] += est.mean(s_wait_2, len(self.cl
-ients))[] 
- []
-
-
-Overfull \hbox (60.2606pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_W2'] += est.mean(s_wait_2, len(self.
-clients))**2[] 
- []
-
-
-Overfull \hbox (128.1081pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['v_s_W2'] += est.variance(s_wait_2, s_s_wai
-t_2, len(self.clients))[] 
- []
-
-
-Overfull \hbox (158.94786pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['v_s_s_W2'] += est.variance(s_wait_2, s_s_w
-ait_2, len(self.clients))**2[] 
- []
-
-
-Overfull \hbox (41.75674pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_N2'] += est.mean(self.N_samples['N_2']
-, self.t)[] 
- []
-
-
-Overfull \hbox (72.59651pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_N2'] += est.mean(self.N_samples['N_2
-'], self.t)**2[] 
- []
-
-
-Overfull \hbox (54.09265pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_Nq2'] += est.mean(self.N_samples['Nq_2
-'], self.t)[] 
- []
-
-
-Overfull \hbox (84.93242pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_Nq2'] += est.mean(self.N_samples['Nq
-_2'], self.t)**2[] 
- []
-
-
-Overfull \hbox (288.47488pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_T2'] += est.mean(s_wait_2, len(self.cl
-ients)) + est.mean(s_server_2, len(self.clients))[] 
- []
-
-
-Overfull \hbox (331.65056pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 self.sums['m_s_s_T2'] += (est.mean(s_wait_2, len(self
-.clients)) + est.mean(s_server_2, len(self.clients)))**2[] 
- []
-
-
-Overfull \hbox (17.08493pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 # Inicializa as estruturas de dados para a próxima ro
-dada.[] 
- []
 
 
-Overfull \hbox (177.45172pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Método que calcula os resultados (valor e intervalo de 
-confiança) para cada estimador.[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[N1]'  : { 'value' : est.mean(self.sums['m_s_N1
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_N1'], self.su
-ms['m_s_s_N1'], self.samples) },[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[N2]'  : { 'value' : est.mean(self.sums['m_s_N2
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_N2'], self.su
-ms['m_s_s_N2'], self.samples) },[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[T1]'  : { 'value' : est.mean(self.sums['m_s_T1
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_T1'], self.su
-ms['m_s_s_T1'], self.samples) },[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[T2]'  : { 'value' : est.mean(self.sums['m_s_T2
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_T2'], self.su
-ms['m_s_s_T2'], self.samples) },[] 
- []
-
-
-Overfull \hbox (689.39186pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[Nq1]' : { 'value' : est.mean(self.sums['m_s_Nq
-1'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_Nq1'], self.
-sums['m_s_s_Nq1'], self.samples) },[] 
- []
-
-
-Overfull \hbox (689.39186pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[Nq2]' : { 'value' : est.mean(self.sums['m_s_Nq
-2'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_Nq2'], self.
-sums['m_s_s_Nq2'], self.samples) },[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[W1]'  : { 'value' : est.mean(self.sums['m_s_W1
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_W1'], self.su
-ms['m_s_s_W1'], self.samples) },[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'E[W2]'  : { 'value' : est.mean(self.sums['m_s_W2
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['m_s_W2'], self.su
-ms['m_s_s_W2'], self.samples) },[] 
- []
-
-
-Overfull \hbox (670.888pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'V(W1)'  : { 'value' : est.mean(self.sums['v_s_W1
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['v_s_W1'], self.su
-ms['v_s_s_W1'], self.samples) },[] 
- []
-
-
-Overfull \hbox (664.72005pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 'V(W2)'  : { 'value' : est.mean(self.sums['v_s_W2
-'], self.samples), 'c_i' : est.confidence_interval(self.sums['v_s_W2'], self.su
-ms['v_s_s_W2'], self.samples) }[] 
- []
-
-
-Overfull \hbox (325.4826pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Método que atualiza a barra de progresso com o valor do
- menor intervalo de confiança encontrado a cada rodada.[] 
- []
-
-
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]        \T1/aett/m/n/12 return 1 - max((2.0*self.results['E[N1]']['c_i']/self
-.results['E[N1]']['value']), \[] 
- []
-
-
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[N2]']['c_i']/self
-.results['E[N2]']['value']), \[] 
- []
+] [22] [23] [24] [25] [26] [27] [28] [29] [30] [31] [32] [33]
+Underfull \hbox (badness 10000) in paragraph at lines 326--327
 
-
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[T1]']['c_i']/self
-.results['E[T1]']['value']), \[] 
- []
-
-
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[T2]']['c_i']/self
-.results['E[T2]']['value']), \[] 
- []
-
-
-Overfull \hbox (183.61967pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[Nq1]']['c_i']/sel
-f.results['E[Nq1]']['value']), \[] 
- []
-
-
-Overfull \hbox (183.61967pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[Nq2]']['c_i']/sel
-f.results['E[Nq2]']['value']), \[] 
- []
-
-
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[W1]']['c_i']/self
-.results['E[W1]']['value']), \[] 
- []
-
-
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['E[W2]']['c_i']/self
-.results['E[W2]']['value']), \[] 
- []
-
-[26]
-Overfull \hbox (171.28377pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['V(W1)']['c_i']/self
-.results['V(W1)']['value']), \[] 
- []
-
-
-Overfull \hbox (158.94786pt too wide) in paragraph at lines 315--315
-[]                       \T1/aett/m/n/12 (2.0*self.results['V(W2)']['c_i']/self
-.results['V(W2)']['value']))[] 
- []
-
-
-Overfull \hbox (47.9247pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Método que testa se todos os intervalos de confiança sã
-o válidos.[] 
- []
-
-
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[N1]']['c_i']  <= 0.1*self
-.results['E[N1]']['value']) and \[] 
- []
-
-
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[N2]']['c_i']  <= 0.1*self
-.results['E[N2]']['value']) and \[] 
  []
 
+[34]
+Underfull \hbox (badness 10000) in paragraph at lines 365--366
 
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[T1]']['c_i']  <= 0.1*self
-.results['E[T1]']['value']) and \[] 
  []
 
 
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[T2]']['c_i']  <= 0.1*self
-.results['E[T2]']['value']) and \[] 
- []
-
-
-Overfull \hbox (195.95558pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[Nq1]']['c_i'] <= 0.1*self
-.results['E[Nq1]']['value']) and \[] 
- []
-
+Underfull \hbox (badness 10000) in paragraph at lines 382--383
 
-Overfull \hbox (195.95558pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[Nq2]']['c_i'] <= 0.1*self
-.results['E[Nq2]']['value']) and \[] 
  []
 
+[35] [36]
+Underfull \hbox (badness 10000) in paragraph at lines 425--426
 
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[W1]']['c_i']  <= 0.1*self
-.results['E[W1]']['value']) and \[] 
  []
 
+[37] [38] [39]
+Underfull \hbox (badness 10000) in paragraph at lines 533--534
 
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['E[W2]']['c_i']  <= 0.1*self
-.results['E[W2]']['value']) and \[] 
  []
 
+[40] [41]
+Underfull \hbox (badness 10000) in paragraph at lines 571--572
 
-Overfull \hbox (189.78763pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['V(W1)']['c_i']  <= 0.1*self
-.results['V(W1)']['value']) and \[] 
  []
 
-
-Overfull \hbox (152.7799pt too wide) in paragraph at lines 315--315
-[]               \T1/aett/m/n/12 (2.0*self.results['V(W2)']['c_i']  <= 0.1*self
-.results['V(W2)']['value'])[] 
- []
-
-
-Overfull \hbox (177.45172pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Método que exibe os resultados junto com o número de ro
-dadas processadas e os retorna.[] 
- []
 
+Underfull \hbox (badness 10000) in paragraph at lines 589--590
 
-Overfull \hbox (183.61967pt too wide) in paragraph at lines 315--315
-[]            \T1/aett/m/n/12 print key, ': ', self.results[key]['value'], ' - 
-I.C: ', self.results[key]['c_i'][] 
  []
 
+[42]
+Underfull \hbox (badness 10000) in paragraph at lines 608--609
 
-Overfull \hbox (362.49033pt too wide) in paragraph at lines 315--315
-[]    \T1/aett/m/n/12 # Métodos que tratam o trânsito dos clientes das filas pa
-ra o servidor, de acordo com a política de atendimento usada.[] 
  []
 
-[27]) [28] (./relatorio.aux (./introducao.aux) (./correcao.aux)
-(./estimativa.aux) (./resultados.aux) (./otimizacao.aux) (./conclusoes.aux)
-(./anexo.aux)) ) 
+) [43] (./relatorio.aux (./introducao.aux) (./correcao.aux) (./estimativa.aux)
+(./resultados.aux) (./otimizacao.aux) (./conclusoes.aux) (./anexo.aux)) ) 
 Here is how much of TeX's memory you used:
- 3395 strings out of 94500
- 44199 string characters out of 1174972
- 107028 words of memory out of 1000000
- 6409 multiletter control sequences out of 10000+50000
- 29688 words of font info for 62 fonts, out of 500000 for 2000
+ 5225 strings out of 94500
+ 67917 string characters out of 1174972
+ 227793 words of memory out of 1000000
+ 8223 multiletter control sequences out of 10000+50000
+ 31675 words of font info for 63 fonts, out of 500000 for 2000
  580 hyphenation exceptions out of 1000
- 32i,8n,34p,681b,303s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 32i,8n,42p,681b,1608s stack positions out of 1500i,500n,5000p,200000b,5000s
 PDF statistics:
- 126 PDF objects out of 300000
+ 174 PDF objects out of 300000
  0 named destinations out of 131072
  66 words of extra memory for PDF output out of 65536
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmtt12.pfb>
-</opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share
-/texmf-dist/fonts/type1/bluesky/cm/cmr8.pfb></opt/local/share/texmf-dist/fonts/
-type1/bluesky/cm/cmsy10.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm
-/cmmi12.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt
-/local/share/texmf-dist/fonts/type1/bluesky/cm/cmbx12.pfb>
-Output written on relatorio.pdf (29 pages, 1050797 bytes).
+</opt/
+local/share/texmf-dist/fonts/type1/bluesky/cm/cmti12.pfb></opt/local/share/texm
+f-dist/fonts/type1/bluesky/cm/cmr10.pfb></opt/local/share/texmf-dist/fonts/type
+1/bluesky/cm/cmr8.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmsy1
+0.pfb></opt/local/share/texmf-dist/fonts/type1/bluesky/cm/cmmi12.pfb></opt/loca
+l/share/texmf-dist/fonts/type1/bluesky/cm/cmr12.pfb></opt/local/share/texmf-dis
+t/fonts/type1/bluesky/cm/cmbx12.pfb>
+Output written on relatorio.pdf (44 pages, 1113040 bytes).

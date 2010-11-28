@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# Módulo que declara as constantes que são utilizadas pelo simulador
+# Módulo que declara as constantes que são utilizadas pelo simulador.
 
 # Constantes utilizadas para os tipos de eventos tratados pelo simulador
 INCOMING = 1

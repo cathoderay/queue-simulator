@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-# Classe que formata os resultados encontrados em um documento .html usando o parser DOM
+# Classe que formata os resultados encontrados em um documento .html usando o parser DOM.
 
 
 from xml.dom.minidom import *

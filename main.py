@@ -6,7 +6,7 @@ from obj.simulator import *
 from obj.analytic import *
 from obj.result_parser import *
 
-# O psyco é um módulo que agiliza a execu
+# O psyco é um módulo que agiliza a execução do código.
 psyco.full()
 
 if __name__ == "__main__":
