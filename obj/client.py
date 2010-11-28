@@ -1,7 +1,10 @@
+# -*- coding:utf-8 -*-
 # Classe com os dados de um cliente que entra no sistema simulado.
 
 class Client:
-    def __init__(self, color):
+    def __init__(self, id, color):
+        # Identificador do cliente, usada para o teste de correção.
+        self.id = id
         # Tempo de chegada ao servidor (fila 1 e fila 2)
         self.arrival = {}
         # Tempo de saída do servidor (fila 1 e fila 2)

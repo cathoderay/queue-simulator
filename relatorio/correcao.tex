@@ -1,11 +1,104 @@
 \chapter{Teste de Correção}
+\label{sec:teste}
 
-Nesta seção você descreverá os testes de correção que foram efetuados para garantir o
-pleno funcionamento do simulador. Você deve demonstrar que o seu programa está
-simulando exatamente e com correção o esquema proposto. As fórmulas analíticas não
-podem ser utilizadas para garantir a correção. Servem apenas de orientação, pois na maioria
-das vezes partimos para a simulação exatamente por não termos os resultados analíticos.
-Procure rodar o simulador com cenários determinísticos com estatística conhecida,
-demonstrando que o programa está correto.
-Você deverá anexar comentários sobre a boa qualidade dos intervalos de confiança obtidos
-e como os valores exatos se encaixam nestes intervalos, para os diversos valores de r.
+Para testar a correção do simulador iremos acompanhar 10 clientes aleatórios nos quatro tipos iniciais de experimento. Se todos esses clientes gerarem a ordem esperada de eventos (Chegada ao sistema; Entrada ao servidor pela fila 1; Saída do servidor; Entrada ao servidor pela fila 2 e Saída do servidor) e eles passarem respectivamente pela fila 1, servidor, fila 2 e servidor, o simulador estará tratando os clientes da forma correta, portanto, estará gerando os valores corretos para os estimadores.
+
+A rotina de testes de correção é mostrada na seção \ref{sec:codteste}.
+
+O resultado de um dos testes feitos para o caso do valor de utilização ser $\rho=0,4$ e política de atendimento F.C.F.S está exposto abaixo:
+
+\begin{verbatim}
+teste com taxa 0.2 , tamanho de fase transiente igual a 40000 , 100000 clientes 
+avaliados e política de atendimento F.C.F.S (First Come First Served):
+
+Cliente 29003 gerou o evento Chegada ao sistema.
+Cliente 29003 entrou na fila 1.
+Cliente 29003 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 29003 entrou no servidor.
+Cliente 29003 gerou o evento Saída do servidor.
+Cliente 29003 entrou na fila 2.
+Cliente 29003 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 29003 entrou no servidor.
+Cliente 29003 gerou o evento Saída do servidor.
+Cliente 39628 gerou o evento Chegada ao sistema.
+Cliente 39628 entrou na fila 1.
+Cliente 39628 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 39628 entrou no servidor.
+Cliente 39628 gerou o evento Saída do servidor.
+Cliente 39628 entrou na fila 2.
+Cliente 39628 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 39628 entrou no servidor.
+Cliente 39628 gerou o evento Saída do servidor.
+Cliente 41689 gerou o evento Chegada ao sistema.
+Cliente 41689 entrou na fila 1.
+Cliente 41689 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 41689 entrou no servidor.
+Cliente 41689 gerou o evento Saída do servidor.
+Cliente 41689 entrou na fila 2.
+Cliente 41689 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 41689 entrou no servidor.
+Cliente 41689 gerou o evento Saída do servidor.
+Cliente 41748 gerou o evento Chegada ao sistema.
+Cliente 41748 entrou na fila 1.
+Cliente 41748 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 41748 entrou no servidor.
+Cliente 41748 gerou o evento Saída do servidor.
+Cliente 41748 entrou na fila 2.
+Cliente 41748 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 41748 entrou no servidor.
+Cliente 41748 gerou o evento Saída do servidor.
+Cliente 45957 gerou o evento Chegada ao sistema.
+Cliente 45957 entrou na fila 1.
+Cliente 45957 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 45957 entrou no servidor.
+Cliente 45957 gerou o evento Saída do servidor.
+Cliente 45957 entrou na fila 2.
+Cliente 45957 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 45957 entrou no servidor.
+Cliente 45957 gerou o evento Saída do servidor.
+Cliente 63379 gerou o evento Chegada ao sistema.
+Cliente 63379 entrou na fila 1.
+Cliente 63379 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 63379 entrou no servidor.
+Cliente 63379 gerou o evento Saída do servidor.
+Cliente 63379 entrou na fila 2.
+Cliente 63379 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 63379 entrou no servidor.
+Cliente 63379 gerou o evento Saída do servidor.
+Cliente 65525 gerou o evento Chegada ao sistema.
+Cliente 65525 entrou na fila 1.
+Cliente 65525 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 65525 entrou no servidor.
+Cliente 65525 gerou o evento Saída do servidor.
+Cliente 65525 entrou na fila 2.
+Cliente 65525 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 65525 entrou no servidor.
+Cliente 65525 gerou o evento Saída do servidor.
+Cliente 74955 gerou o evento Chegada ao sistema.
+Cliente 74955 entrou na fila 1.
+Cliente 74955 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 74955 entrou no servidor.
+Cliente 74955 gerou o evento Saída do servidor.
+Cliente 74955 entrou na fila 2.
+Cliente 74955 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 74955 entrou no servidor.
+Cliente 74955 gerou o evento Saída do servidor.
+Cliente 84645 gerou o evento Chegada ao sistema.
+Cliente 84645 entrou na fila 1.
+Cliente 84645 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 84645 entrou no servidor.
+Cliente 84645 gerou o evento Saída do servidor.
+Cliente 84645 entrou na fila 2.
+Cliente 84645 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 84645 entrou no servidor.
+Cliente 84645 gerou o evento Saída do servidor.
+Cliente 108589 gerou o evento Chegada ao sistema.
+Cliente 108589 entrou na fila 1.
+Cliente 108589 gerou o evento Entrada ao servidor pela fila 1.
+Cliente 108589 entrou no servidor.
+Cliente 108589 gerou o evento Saída do servidor.
+Cliente 108589 entrou na fila 2.
+Cliente 108589 gerou o evento Entrada ao servidor pela fila 2.
+Cliente 108589 entrou no servidor.
+Cliente 108589 gerou o evento Saída do servidor.
+\end{verbatim}

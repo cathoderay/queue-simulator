@@ -7,7 +7,7 @@
   numbersep=5pt
 }
 
-\chapter{Implementação}
+\chapter{Listagem documentada do programa}
 
 Este capítulo conterá o código fonte do simulador, dividido por tipo de módulo e ordenados por importância.\\
 
@@ -17,7 +17,7 @@ Este capítulo conterá o código fonte do simulador, dividido por tipo de módu
 Classe que implementa a lógica principal do simulador, processa as rodadas tratando os eventos e as chegadas dos clientes. E calcula as estimativas das variáveis aleatórias.\\
 
 \begin{lstlisting}
-import sys
+import sys, random, math
 from collections import deque
 from util.constants import *
 from util.progress_bar import ProgressBar
@@ -30,7 +30,7 @@ from event_heap import *
 class Simulator:
 
     # Inicializacao do simulador
-    def __init__(self, entry_rate, warm_up, service_policy, clients, server_rate=1.0):
+    def __init__(self, entry_rate, warm_up, service_policy, clients, server_rate=1.0, test=False):
         # Numero total de clientes = fase transiente + clientes a serem avaliados 
         self.total_clients = warm_up + clients
         self.samples = 1
@@ -56,6 +56,11 @@ class Simulator:
                       'm_s_Nq2': 0, 'm_s_s_Nq2': 0, 'm_s_T2': 0, 'm_s_s_T2': 0 }
         # Dicionario que ira guardar os resultados de cada estimador calculados pelo simulador.
         self.results = {}
+        # Define a lista com os clientes que serao testados, caso o simulador esteja em modo de teste.
+        self.test = test
+        self.test_list = []
+        if self.test:
+            self.init_test()
     
     # Inicializa as estruturas de dados para cada rodada
     def init_sample(self):
@@ -83,16 +88,18 @@ class Simulator:
         # Inicializa a barra usada para medir o progresso do simulador
         # Ela e contabilizada de acordo com o valor do menor intervalo de confianca encontrado a cada rodada,
         # Chegando a 100% quando o intervalo chega a 10% da media do estimador
-        prog = ProgressBar(0, 0.9, 77, mode='fixed', char='#')
-        print "Processando as rodadas:"
-        print prog, '\r',
-        sys.stdout.flush()
+        # Mostrada quando o simulador nao esta definido na forma de teste
+        if not(self.test):
+            prog = ProgressBar(0, 0.9, 77, mode='fixed', char='#')
+            print "Processando as rodadas:"
+            print prog, '\r',
+            sys.stdout.flush()
         
         # Loop principal do simulador.
         # Termina quando todos os intervalos de confianca forem menores que 10% da media do estimador.
         while not(self.valid_confidence_interval()):
             # Loop de cada rodada, processa um evento a cada iteracao.
-            while len(self.clients) < self.total_clients:
+            while len(self.clients) <= self.total_clients:
                 self.process_event()
             self.discard_clients()
             # Processa os dados gerados por uma rodada.
@@ -103,10 +110,13 @@ class Simulator:
                 print prog, '\r',
             self.samples += 1
             sys.stdout.flush()
+            # Linha para forcar o teste a executar apenas 1 rodada.
+            if self.test:
+                break
         print
     
     # Metodo que processa um evento
-    def process_event(self): 
+    def process_event(self):
         # Remove um evento da lista para ser processado e atualiza o tempo do simulador
         self.t, event_type = self.events.pop()
 
@@ -115,15 +125,19 @@ class Simulator:
             self.update_n()
             # Define a cor do cliente, verificando se ele chegou durante a fase transiente ou nao.
             if self.warm_up_sample > 0:
-                new_client = Client(TRANSIENT)
+                new_client = Client(len(self.clients), TRANSIENT)
                 self.warm_up_sample -= 1
             else:
-                new_client = Client(EQUILIBRIUM)
+                new_client = Client(len(self.clients), EQUILIBRIUM)
             # Adiciona o cliente na fila 1 e define o seu tempo de chegada nessa fila.
             new_client.set_queue(1)
             new_client.set_arrival(self.t)
             self.queue1.append(new_client)
             self.clients.append(new_client)
+            # Teste de correcao
+            if self.test and (new_client.id in self.test_list):
+                print "Cliente", new_client.id, "gerou o evento Chegada ao sistema."
+                print "Cliente", new_client.id, "entrou na fila 1."
             # Assim que uma chegada e processada, adiciona outro evento de chegada, dando o tempo que ela ira ocorrer.
             self.events.push((self.t + dist.exp_time(self.entry_rate), INCOMING))
             # Se o servidor estiver ocioso, adiciona o evento Entrada ao servidor pela fila 1 para esse cliente na lista.
@@ -138,6 +152,10 @@ class Simulator:
             self.server_current_client = self.pop_queue1()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
+            # Teste de correcao
+            if self.test and (self.server_current_client.id in self.test_list):
+                print "Cliente", self.server_current_client.id, "gerou o evento Entrada ao servidor pela fila 1."
+                print "Cliente", self.server_current_client.id, "entrou no servidor."
             # Adiciona o evento Saida do servidor na lista.
             self.events.push((self.t + server_time, SERVER_OUT))        
 
@@ -149,6 +167,10 @@ class Simulator:
             self.server_current_client = self.pop_queue2()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
+            # Teste de correcao
+            if self.test and (self.server_current_client.id in self.test_list):
+                print "Cliente", self.server_current_client.id, "gerou o evento Entrada ao servidor pela fila 2."
+                print "Cliente", self.server_current_client.id, "entrou no servidor."
             # Adiciona o evento Saida do servidor na lista.
             self.events.push((self.t + server_time, SERVER_OUT))                
 
@@ -162,6 +184,10 @@ class Simulator:
             # esta no servidor entrou nele pela fila 1, adiciona o evento Entrada ao servidor pela fila 2 na lista.
             elif self.queue2 or self.server_current_client.queue == 1:
                 self.events.push((self.t, SERVER_2_IN))
+            
+            # Teste de correcao
+            if self.test and (self.server_current_client.id in self.test_list):
+                print "Cliente", self.server_current_client.id, "gerou o evento Saida do servidor."
             
             # Se o cliente que esta no servidor entrou nele pela fila 1, adiciona ele na fila 2.
             if self.server_current_client.queue == 1:
@@ -178,6 +204,9 @@ class Simulator:
         self.queue2.append(client)
         client.set_queue(2)
         client.set_arrival(self.t)
+        # Teste de correcao
+        if self.test and (client.id in self.test_list):
+            print "Cliente", client.id, "entrou na fila 2."
 
     # Atualiza o numero de pessoas nas filas a cada chegada, e chamado no inicio de eventos que
     # fazem o tempo do simulador passar (Chegada ao sistema e Saida do servidor)
@@ -303,6 +332,11 @@ class Simulator:
             print key, ': ', self.results[key]['value'], ' - I.C: ', self.results[key]['c_i']
         print "Numero de rodadas :", self.samples
         return self.results
+        
+    # Metodo que inicializa a lista dos clientes que serao testados.
+    def init_test(self):
+        for i in range(10):
+            self.test_list.append(math.floor(random.random()*self.total_clients))
     
     # Metodos que tratam o transito dos clientes das filas para o servidor, de acordo com a politica de atendimento usada.
     @staticmethod
@@ -328,6 +362,8 @@ Classe que representa um cliente que entra no sistema. Possui seus tempos de ent
 \begin{lstlisting}
 class Client:
     def __init__(self, color):
+        # Identificador do cliente, usada para o teste de correcao.
+        self.id = id    
         # Tempo de chegada ao servidor (fila 1 e fila 2)
         self.arrival = {}
         # Tempo de saida do servidor (fila 1 e fila 2)
@@ -527,7 +563,7 @@ class ResultParser:
         file.close()
 \end{lstlisting}
 
-\section{Modulos utilitarios}
+\section{Modulos utilitários}
 
 \subsection{Estimator}
 Módulo que possui métodos para retornar os estimadores de média, variância e calcula intervalos de confiança.\\
@@ -634,3 +670,104 @@ Biblioteca usada para a construção da barra de progresso usada para efeito de 
 
 Seu código não é apresentado aqui porque ele não foi escrito por nós e os seus créditos são devidamente citados em comentários no próprio fonte.
 
+\section{Principal}
+Este é o código que executa o simulador e faz os cálculos analíticos para todo o tipo de experimento requisitado, é dado como entrada o número de clientes que serão avaliados a cada rodada. Os resultados finais gerados pelo simulador e os resultados dos cálculos analíticos são gravados em tabelas no formato .html ao final da execução.\\
+
+\begin{lstlisting}
+import time, sys, os, psyco
+from obj.simulator import *
+from obj.analytic import *
+from obj.result_parser import *
+
+# O psyco e um modulo que agiliza a execucao do codigo.
+psyco.full()
+
+if __name__ == "__main__":
+    clients = input("Entre com o numero de clientes que serao avaliados:")
+    #dados de entrada (taxa de entrada e valor da fase transiente)
+    entry_data = [[0.1, 30000], [0.2, 40000], [0.3, 80000], [0.4, 400000], [0.45, 500000]]
+    service_policies = [
+        { 'value' : FCFS, 'name' : "F.C.F.S (First Come First Served)" },
+        { 'value' : LCFS, 'name' : "L.C.F.S (Last Come First Served)"  }
+    ]
+    
+    # Dicionario que ira guardar os resultados adquiridos pelo simulador e pelo calculo analitico
+    results = {
+        FCFS : {
+            0.2 : { 'simulator' : {}, 'analytic' : {} },
+            0.4 : { 'simulator' : {}, 'analytic' : {} },
+            0.6 : { 'simulator' : {}, 'analytic' : {} },
+            0.8 : { 'simulator' : {}, 'analytic' : {} },
+            0.9 : { 'simulator' : {}, 'analytic' : {} }
+        },
+        LCFS : {
+            0.2 : { 'simulator' : {}, 'analytic' : {} },
+            0.4 : { 'simulator' : {}, 'analytic' : {} },
+            0.6 : { 'simulator' : {}, 'analytic' : {} },
+            0.8 : { 'simulator' : {}, 'analytic' : {} },
+            0.9 : { 'simulator' : {}, 'analytic' : {} }
+        }        
+    }
+    
+    # Loop que ira rodar o simulador para todos os casos requeridos
+    for entry_datum in entry_data:
+        entry_rate = entry_datum[0]
+        warm_up = entry_datum[1]
+        for service_policy in service_policies:
+            print "taxa de entrada =", entry_rate
+            print "tamanho da fase transiente =", warm_up
+            print "politica de atendimento =", service_policy['name']
+            
+            print "Iniciando simulacao:"
+            # Chamada e execucao do simulador
+            simulator = Simulator(entry_rate=entry_rate, warm_up=warm_up, clients=clients, service_policy=service_policy['value'])
+            os.system("date")
+            start = time.time()
+            # Bind ao psyco para acelerar a execucao da logica do simulador
+            psyco.bind(simulator.start)
+            simulator.start()
+            finish = time.time()
+            print "Tempo total de execucao :", (finish - start)
+            results[service_policy['value']][2.0*entry_rate]['simulator'] = simulator.report()
+                                            
+            print "Iniciando calculo analitico:"
+            # Chamada e execucao da classe que executa os calculos analiticos
+            analytic = Analytic(entry_rate=entry_rate, service_policy=service_policy['value'])
+            analytic.start()
+            results[service_policy['value']][2.0*entry_rate]['analytic'] = analytic.report()
+
+    print "Gerando as tabelas com os resultados"
+    # Chamada e execucao da classe que formata os resultados encontrados em um arquivo html
+    parsed_result = ResultParser(results)
+    parsed_result.parse()
+    parsed_result.write('resultados.html')
+    print "Tabelas geradas com sucesso no arquivo 'resultados.html'."
+\end{lstlisting}
+
+\section{Testes}
+\label{sec:codteste}
+Rotina que executa os testes de correção explicados na seção \label{sec:teste}.
+
+\begin{lstlisting}
+from obj.simulator import *
+
+
+if __name__ == "__main__":
+    print "Testando a correcao do simulador..."
+    entry_data = [[0.1, 30000], [0.2, 40000]]
+    service_policies = [
+        { 'value' : FCFS, 'name' : "F.C.F.S (First Come First Served)" },
+        { 'value' : LCFS, 'name' : "L.C.F.S (Last Come First Served)"  }
+    ]
+    clients = 100000
+    
+    for entry_datum in entry_data:
+        entry_rate = entry_datum[0]
+        warm_up = entry_datum[1]
+        for service_policy in service_policies:
+            print "teste com taxa", entry_rate, ", tamanho de fase transiente igual a", warm_up, ",", clients, "clientes avaliados", \
+                  "e politica de atendimento", service_policy['name']
+            simulator = Simulator(entry_rate=entry_rate, warm_up=warm_up, clients=clients, service_policy=service_policy['value'], test=True)
+            simulator.start()
+            simulator.report()
+\end{lstlisting}

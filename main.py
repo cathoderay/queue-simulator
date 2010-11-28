@@ -68,5 +68,5 @@ if __name__ == "__main__":
     parsed_result = ResultParser(results)
     parsed_result.parse()
     parsed_result.write('resultados.html')
-    print "Tabelas geradas com sucesso no arquivo 'resultados.html'.
+    print "Tabelas geradas com sucesso no arquivo 'resultados.html'."
     

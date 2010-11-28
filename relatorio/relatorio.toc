@@ -9,25 +9,27 @@
 \contentsline {section}{\numberline {1.7}Escolha dos par\IeC {\^a}metros}{5}
 \contentsline {section}{\numberline {1.8}M\IeC {\'a}quina utilizada}{6}
 \contentsline {chapter}{\numberline {2}Teste de Corre\IeC {\c c}\IeC {\~a}o}{7}
-\contentsline {chapter}{\numberline {3}Estimativa da fase transiente}{8}
-\contentsline {section}{\numberline {3.1}No simulador}{8}
-\contentsline {section}{\numberline {3.2}Gr\IeC {\'a}ficos}{8}
-\contentsline {chapter}{\numberline {4}Resultados}{14}
-\contentsline {section}{\numberline {4.1}Tabelas}{14}
-\contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{17}
-\contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{19}
-\contentsline {section}{\numberline {5.1}Fatores m\IeC {\'\i }nimos}{19}
-\contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{20}
-\contentsline {chapter}{\numberline {7}Implementa\IeC {\c c}\IeC {\~a}o}{21}
-\contentsline {section}{\numberline {7.1}Classes}{21}
-\contentsline {subsection}{\numberline {7.1.1}Simulator}{21}
-\contentsline {subsection}{\numberline {7.1.2}Client}{34}
-\contentsline {subsection}{\numberline {7.1.3}EventHeap}{35}
-\contentsline {subsection}{\numberline {7.1.4}Analytic}{35}
-\contentsline {subsection}{\numberline {7.1.5}ResultParser}{37}
-\contentsline {section}{\numberline {7.2}Modulos utilitarios}{40}
-\contentsline {subsection}{\numberline {7.2.1}Estimator}{40}
-\contentsline {subsection}{\numberline {7.2.2}Distribution}{42}
-\contentsline {subsection}{\numberline {7.2.3}Constants}{42}
-\contentsline {subsection}{\numberline {7.2.4}Plot}{43}
-\contentsline {subsection}{\numberline {7.2.5}ProgressBar}{43}
+\contentsline {chapter}{\numberline {3}Estimativa da fase transiente}{10}
+\contentsline {section}{\numberline {3.1}No simulador}{10}
+\contentsline {section}{\numberline {3.2}Gr\IeC {\'a}ficos}{10}
+\contentsline {chapter}{\numberline {4}Resultados}{16}
+\contentsline {section}{\numberline {4.1}Tabelas}{16}
+\contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{19}
+\contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{21}
+\contentsline {section}{\numberline {5.1}Fatores m\IeC {\'\i }nimos}{21}
+\contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{22}
+\contentsline {chapter}{\numberline {7}Listagem documentada do programa}{24}
+\contentsline {section}{\numberline {7.1}Classes}{24}
+\contentsline {subsection}{\numberline {7.1.1}Simulator}{24}
+\contentsline {subsection}{\numberline {7.1.2}Client}{38}
+\contentsline {subsection}{\numberline {7.1.3}EventHeap}{39}
+\contentsline {subsection}{\numberline {7.1.4}Analytic}{40}
+\contentsline {subsection}{\numberline {7.1.5}ResultParser}{41}
+\contentsline {section}{\numberline {7.2}Modulos utilit\IeC {\'a}rios}{45}
+\contentsline {subsection}{\numberline {7.2.1}Estimator}{45}
+\contentsline {subsection}{\numberline {7.2.2}Distribution}{46}
+\contentsline {subsection}{\numberline {7.2.3}Constants}{47}
+\contentsline {subsection}{\numberline {7.2.4}Plot}{47}
+\contentsline {subsection}{\numberline {7.2.5}ProgressBar}{48}
+\contentsline {section}{\numberline {7.3}Principal}{48}
+\contentsline {section}{\numberline {7.4}Testes}{51}

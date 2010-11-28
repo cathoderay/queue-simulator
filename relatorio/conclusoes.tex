@@ -1,10 +1,13 @@
 \chapter{Conclusões}
 
-Coloque aqui seus comentários finais.
-Descreva dificuldades encontradas, as otimizações feitas, e outras conclusões que você
-tirou do trabalho. Comente o que poderia ser melhorado, como, por exemplo, o tempo de
-execução do seu programa. Adicione quaisquer comentários que você julgar relevante.
-Cada uma das seções terá sua avaliação. Portanto, não deixe de colocar nenhuma seção no
-seu relatório. Se você não incluir uma seção, deixe-a em branco, mas não altere a
-numeração. Recomendamos fortemente que isso não ocorra. Não deixe de ler o capítulo de
-simulação na apostila.
+Inicialmente encontramos dificuldades em implementar a lógica do simulador em si. Seguindo as instruções do capítulo de simulação da apostila, conseguimos ter uma ideia razoável das estruturas de dados necessárias e do fluxo desses dados pelo simulador para que ele gere os resultados corretos. Por exemplo, a lista de eventos, a estrutura de cada evento e o modo com que esses eventos são tratados e gerados pelo simulador são implementados da mesma forma que é explicada na apostila.
+
+A forma como implementamos a lista de eventos do simulador mudou duas vezes durante a codificação do trabalho, já que encontramos dificuldades em encontrar a forma mais adequada em termos de perfomance para criar e gerenciar essa lista. Tendo em vista que ela é a estrutura mais importante do simulador, onde a maior parte do processamento é feito em cima dela, vimos como necessidade essencial otimiza-la da melhor maneira possível.
+
+O uso da linguagem python facilitou bastante a implementação dos cálculos estatísticos do simulador, utilizando módulos como o scipy para o cálculo do valor da distribuição t de student para qualquer número de amostras. Esta facilidade pode ser comprovada analisando o tamanho dos métodos usados para o cálculo das médias, variâncias e intervalos de confiança dos módulos utilitários. O gerador de números aleatórios do python também facilitou bastante a implementação, pois, como é explicado na seção \ref{sec:random}, não foi necessário se preocupar com o valor da semente do gerador a cada rodada do método replicativo.
+
+A geração dos gráficos necessários para a estimativa da fase transiente também foi feita sem menores dificuldades, devido ao uso da linguagem python.
+
+Usamos o módulo psyco para agilizar a execução do programa. 
+
+A implementação desse simulador aumentou significativamente o nosso entendimento sobre o sistema de rede de filas, foi possível verificar na prática as diferenças entre um sistema transiente e em equilíbrio; a evolução de um cliente dentro do sistema; o fato de que as médias são iguais para as duas políticas de atendimento, porém as variâncias são bastante distintas; e que os valores calculados de forma analítica puderam ser comprovados executando o simulador para todos os casos.

@@ -2,7 +2,7 @@
 # Classe que contém toda a lógica do simulador de filas.
 
 
-import sys
+import sys, random, math
 from collections import deque
 from util.constants import *
 from util.progress_bar import ProgressBar
@@ -15,7 +15,7 @@ from event_heap import *
 class Simulator:
 
     # Inicialização do simulador
-    def __init__(self, entry_rate, warm_up, service_policy, clients, server_rate=1.0):
+    def __init__(self, entry_rate, warm_up, service_policy, clients, server_rate=1.0, test=False):
         # Número total de clientes = fase transiente + clientes a serem avaliados 
         self.total_clients = warm_up + clients
         self.samples = 1
@@ -41,6 +41,11 @@ class Simulator:
                       'm_s_Nq2': 0, 'm_s_s_Nq2': 0, 'm_s_T2': 0, 'm_s_s_T2': 0 }
         # Dicionário que irá guardar os resultados de cada estimador calculados pelo simulador.
         self.results = {}
+        # Define a lista com os clientes que serão testados, caso o simulador esteja em modo de teste.
+        self.test = test
+        self.test_list = []
+        if self.test:
+            self.init_test()
     
     # Inicializa as estruturas de dados para cada rodada
     def init_sample(self):
@@ -68,16 +73,18 @@ class Simulator:
         # Inicializa a barra usada para medir o progresso do simulador
         # Ela é contabilizada de acordo com o valor do menor intervalo de confiança encontrado a cada rodada,
         # Chegando a 100% quando o intervalo chega a 10% da média do estimador
-        prog = ProgressBar(0, 0.9, 77, mode='fixed', char='#')
-        print "Processando as rodadas:"
-        print prog, '\r',
-        sys.stdout.flush()
+        # Mostrada quando o simulador não está definido na forma de teste
+        if not(self.test):
+            prog = ProgressBar(0, 0.9, 77, mode='fixed', char='#')
+            print "Processando as rodadas:"
+            print prog, '\r',
+            sys.stdout.flush()
         
         # Loop principal do simulador.
         # Termina quando todos os intervalos de confiança forem menores que 10% da média do estimador.
         while not(self.valid_confidence_interval()):
             # Loop de cada rodada, processa um evento a cada iteração.
-            while len(self.clients) < self.total_clients:
+            while len(self.clients) <= self.total_clients:
                 self.process_event()
             self.discard_clients()
             # Processa os dados gerados por uma rodada.
@@ -88,10 +95,13 @@ class Simulator:
                 print prog, '\r',
             self.samples += 1
             sys.stdout.flush()
+            # Linha para forçar o teste a executar apenas 1 rodada.
+            if self.test:
+                break
         print
     
     # Método que processa um evento
-    def process_event(self): 
+    def process_event(self):
         # Remove um evento da lista para ser processado e atualiza o tempo do simulador
         self.t, event_type = self.events.pop()
 
@@ -100,15 +110,19 @@ class Simulator:
             self.update_n()
             # Define a cor do cliente, verificando se ele chegou durante a fase transiente ou não.
             if self.warm_up_sample > 0:
-                new_client = Client(TRANSIENT)
+                new_client = Client(len(self.clients), TRANSIENT)
                 self.warm_up_sample -= 1
             else:
-                new_client = Client(EQUILIBRIUM)
+                new_client = Client(len(self.clients), EQUILIBRIUM)
             # Adiciona o cliente na fila 1 e define o seu tempo de chegada nessa fila.
             new_client.set_queue(1)
             new_client.set_arrival(self.t)
             self.queue1.append(new_client)
             self.clients.append(new_client)
+            # Teste de correção
+            if self.test and (new_client.id in self.test_list):
+                print "Cliente", new_client.id, "gerou o evento Chegada ao sistema."
+                print "Cliente", new_client.id, "entrou na fila 1."
             # Assim que uma chegada é processada, adiciona outro evento de chegada, dando o tempo que ela irá ocorrer.
             self.events.push((self.t + dist.exp_time(self.entry_rate), INCOMING))
             # Se o servidor estiver ocioso, adiciona o evento Entrada ao servidor pela fila 1 para esse cliente na lista.
@@ -123,6 +137,10 @@ class Simulator:
             self.server_current_client = self.pop_queue1()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
+            # Teste de correção
+            if self.test and (self.server_current_client.id in self.test_list):
+                print "Cliente", self.server_current_client.id, "gerou o evento Entrada ao servidor pela fila 1."
+                print "Cliente", self.server_current_client.id, "entrou no servidor."
             # Adiciona o evento Saída do servidor na lista.
             self.events.push((self.t + server_time, SERVER_OUT))        
 
@@ -134,6 +152,10 @@ class Simulator:
             self.server_current_client = self.pop_queue2()
             self.server_current_client.set_leave(self.t)
             self.server_current_client.set_server(server_time)
+            # Teste de correção
+            if self.test and (self.server_current_client.id in self.test_list):
+                print "Cliente", self.server_current_client.id, "gerou o evento Entrada ao servidor pela fila 2."
+                print "Cliente", self.server_current_client.id, "entrou no servidor."
             # Adiciona o evento Saída do servidor na lista.
             self.events.push((self.t + server_time, SERVER_OUT))                
 
@@ -147,6 +169,10 @@ class Simulator:
             # está no servidor entrou nele pela fila 1, adiciona o evento Entrada ao servidor pela fila 2 na lista.
             elif self.queue2 or self.server_current_client.queue == 1:
                 self.events.push((self.t, SERVER_2_IN))
+            
+            # Teste de correção
+            if self.test and (self.server_current_client.id in self.test_list):
+                print "Cliente", self.server_current_client.id, "gerou o evento Saída do servidor."
             
             # Se o cliente que está no servidor entrou nele pela fila 1, adiciona ele na fila 2.
             if self.server_current_client.queue == 1:
@@ -163,6 +189,9 @@ class Simulator:
         self.queue2.append(client)
         client.set_queue(2)
         client.set_arrival(self.t)
+        # Teste de correção
+        if self.test and (client.id in self.test_list):
+            print "Cliente", client.id, "entrou na fila 2."
 
     # Atualiza o número de pessoas nas filas a cada chegada, é chamado no início de eventos que
     # fazem o tempo do simulador passar (Chegada ao sistema e Saída do servidor)
@@ -288,6 +317,11 @@ class Simulator:
             print key, ': ', self.results[key]['value'], ' - I.C: ', self.results[key]['c_i']
         print "Número de rodadas :", self.samples
         return self.results
+        
+    # Método que inicializa a lista dos clientes que serão testados.
+    def init_test(self):
+        for i in range(10):
+            self.test_list.append(math.floor(random.random()*self.total_clients))
     
     # Métodos que tratam o trânsito dos clientes das filas para o servidor, de acordo com a política de atendimento usada.
     @staticmethod
