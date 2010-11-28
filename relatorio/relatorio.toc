@@ -16,5 +16,9 @@
 \contentsline {section}{\numberline {4.1}Tabelas}{13}
 \contentsline {section}{\numberline {4.2}Coment\IeC {\'a}rios}{16}
 \contentsline {chapter}{\numberline {5}Otimiza\IeC {\c c}\IeC {\~a}o}{18}
+\contentsline {section}{\numberline {5.1}Fatores m\IeC {\'\i }nimos:}{18}
 \contentsline {chapter}{\numberline {6}Conclus\IeC {\~o}es}{19}
 \contentsline {chapter}{\numberline {7}Implementa\IeC {\c c}\IeC {\~a}o}{20}
+\contentsline {section}{\numberline {7.1}Classes:}{20}
+\contentsline {subsection}{\numberline {7.1.1}Simulator:}{20}
+\contentsline {section}{\numberline {7.2}M\IeC {\'o}dulos utilit\IeC {\'a}rios:}{28}

@@ -1,14 +1,24 @@
 \chapter{Otimização}
-Para cada valor de utilização e para cada cenário, obtenha os resultados otimizados, isto é,
-considerando sempre o número de eventos de partida computados, procure determinar
-FATOR MÍNIMO (disciplina) = número de rodadas x tamanho de rodada (número de
-partidas) + fases transientes (número de partidas desprezadas), que satisfaz no seu
-simulador aos requisitos do tamanho do intervalo de simulação, independente do valor de
-utilização. Este fator mínimo deve ser independente da semente e isso tem que ser
-demonstrado.
-Obviamente, este FATOR será obtido para o caos mais crítico, entre parâmetro e valor de
-utilização. Com seu simulador operando corretamente, a busca da combinação ótima dará
-um bônus extra ao grupo que conseguir os menores valores, dentro de uma margem de
-20%. Se por exemplo, um grupo conseguir 1.000.000 eventos de partida como FATOR
-MÍNIMO e outro tenha conseguido 1.200.000, eles estarão tecnicamente empatados e
-ambos ganharão bônus (20% a mais na nota).  
+
+O fator mínimo que satisfaz a validação do intervalo de confiança para todos os valores de utilização é o mesmo que satisfaz o caso mais crítico, ou seja, com o sistema com valor de utilização igual a 0,9.
+
+Como o método utilizado para a simulação foi o replicativo, o tamanho da fase transiente é considerado em cada rodada do simulador.
+
+\section{Fatores mínimos:}
+\label{sec:fatores}
+
+O valor calculado para os fatores mínimos de cada política são mostrados a seguir:\\
+
+\textbf{F.C.F.S (First Come First Served):}
+\begin{itemize}
+  \item FATOR MÍNIMO $= (\# rodadas) * (tamanho da rodada + fases transientes)$
+  \item FATOR MÍNIMO $= 76 * (100.000 + 500.000)$
+  \item FATOR MÍNIMO $= 45.600.000$
+\end{itemize}
+
+\textbf{L.C.F.S (Last Come First Served):}
+\begin{itemize}
+  \item FATOR MÍNIMO $= (\# rodadas) * (tamanho da rodada + fases transientes)$
+  \item FATOR MÍNIMO $= 106 * (100.000 + 500.000)$
+  \item FATOR MÍNIMO $= 63.600.000$
+\end{itemize}
